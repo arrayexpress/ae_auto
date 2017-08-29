@@ -1,0 +1,29 @@
+<section id="login-container">
+    <!--<h3 class="login-title">{{ 'login'  }}</h3>-->
+    
+    <div class="login-form-container">
+        <form class="form-horizontal"  id="login-form" >
+            <div class="logo-container">
+                <img class="logo" src="http://www.ebi.ac.uk/web_guidelines/images/logos/EMBL-EBI/EMBL-EBI_Logo_black_big.png" width=250>
+            </div>
+          <div class="form-group">
+            <div ng-class="{'has-error': validationError, 'input-container': !validationError}">
+              <input id="username" ng-focus="validationError = false" name="username" ng-model="user.username" placeholder="{{ 'username'  }}" class="form-control input-md" type="text">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-container" ng-class="{'has-error': validationError, 'input-container': !validationError}">
+                <input id="password" ng-focus="validationError = false" name="password" ng-model="user.password" placeholder="{{ 'password'  }}" class="form-control input-md" type="password">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="">
+              <button class="btn btn-primary login-button" ng-click="login()">login</button>
+
+            </div>
+          </div>
+        </form>
+    </div>
+</section>
+<a class="btn btn-primary" ng-href="/#/register">Register</a>
+

@@ -1,0 +1,8 @@
+<div class="application-nav">
+    <ul class="application-nav-container nav  nav-pills">
+        <li ui-sref-active="active" ng-class="{'pull-right': ($last || $index === apps.length - 2)}" ng-repeat="app in apps" ng-if="hasPermission(app.permission)">
+            <i class="fa fa-{{ app.icon }}"></i>
+            <a ui-sref="index.{{ app.route }}" >{{ app.name  }}</a>
+        </li>
+    </ul> 
+</div>

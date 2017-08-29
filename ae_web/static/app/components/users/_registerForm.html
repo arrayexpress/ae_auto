@@ -1,0 +1,54 @@
+<div class="clearfix"></div>
+<form class="form-horizontal analyst-form" role="form" ng-submit='save()'>
+    <div class="form-group">
+        <label for="username" class="col-md-2 control-label" translate>User Name</label>
+        <div class="col-sm-4" ng-class="{'has-error': errors.username}" >
+            <input type="text"  ng-focus="errors.username = ''" ng-model="analystForm.username" class="form-control" id="username" placeholder="{{'User Name' }}">
+            <p class="help-block error-text"> {{ errors.username }} </p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="email" class="col-md-2 control-label" translate>Email</label>
+        <div class="col-sm-4" ng-class="{'has-error': errors.email}">
+            <input type="email" ng-focus="errors.email = ''"  ng-model="analystForm.email" class="form-control" id="email" placeholder="{{'Email' }}">
+            <p class="help-block error-text"> {{ errors.email }} </p>
+        </div>
+    </div>
+    
+    <div ng-if= "newUser === true" class="form-group">
+        <label for="password" class="col-md-2 control-label" translate>Password</label>
+        <div class="col-sm-4" ng-class="{'has-error': errors.password}">
+            <input type="password" ng-focus="errors.password = ''"  ng-model="analystForm.password" class="form-control" id="password" placeholder="{{'Password' }}">
+            <p class="help-block error-text"> {{ errors.password }} </p>
+        </div>
+    </div>
+
+    <div ng-if= "newUser === true" class="form-group">
+        <label for="confirm-password" class="col-md-2 control-label" translate>Confirm Password</label>
+        <div class="col-sm-4" ng-class="{'has-error': errors.confirmPassword}">
+            <input type="password" ng-focus="errors.confirmPassword = ''"  ng-model="analystForm.confirmPassword" class="form-control" id="confirm-password" placeholder="{{'Confirm P  assword' }}">
+            <p class="help-block error-text"> {{ errors.confirmPassword  }} </p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="first-name" class="col-md-2 control-label" translate>Full Name</label>
+        <div class="col-sm-4">
+            <input type="text" ng-model="analystForm.first_name" class="form-control" placeholder="{{'First Name' }}">
+        </div>
+        <div class="col-sm-4">
+            <input type="text" ng-model="analystForm.last_name" class="form-control" placeholder="{{'Last Name' }}">
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <div class="save-button-container">
+            <!--<button type="reset" class="btn btn-danger" ng-click="reset()" ng-if="cancelResetBtn" > {{ cancelResetBtn }} </button>-->
+            <button type="submit" class="btn btn-primary" >Register!</button>
+        </div>
+    </div>
+
+</form>

@@ -1,0 +1,30 @@
+{
+  "name": "ae-web",
+  "description": "Automation Tool web application",
+  "private": true,
+  "dependencies": {
+    "fontawesome": "latest",
+    "underscore": "latest",
+    "angular-ui-router": "latest",
+    "angular-cookies": "latest",
+    "bootstrap": "latest",
+    "bootstrap-arabic": "latest",
+    "angular-bootstrap" : "latest",
+    "angular-bootstrap-colorpicker": "latest",
+    "angular-loading-bar": "latest",
+    "angular-animate": "latest",
+    "nvd3": "~1.1.15-beta",
+    "angular-translate-loader-static-files": "latest",
+    "d3.layout.cloud": "latest",
+
+
+    "angular": "latest",
+    "angular-mocks": "latest",
+    "jquery": "latest",
+
+    "angular-route": "latest",
+    "angular-resource": "latest"
+
+
+  }
+}

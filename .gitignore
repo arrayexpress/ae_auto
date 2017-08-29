@@ -1,0 +1,11 @@
+# Created by .ignore support plugin (hsz.mobi)
+/ae_web/ae_web/settings/
+/tmp/
+/main.py
+/old_accessions.py
+/index.html
+/ghostdriver.log
+/settings/local.py
+/settings/test.py
+/settings/bashrc
+/settings/base.py

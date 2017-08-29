@@ -1,0 +1,196 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Project Structure &#8212; AE Auto  documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="AE Publication" href="project_modules/automation/ae_publication.html" />
+    <link rel="prev" title="AE Automation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="project_modules/automation/ae_publication.html" title="AE Publication"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="AE Automation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">AE Auto  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="project-structure">
+<h1>Project Structure<a class="headerlink" href="#project-structure" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center" id="id1">
+<img alt="_images/python_ae_package.png" src="_images/python_ae_package.png" />
+<p class="caption"><span class="caption-text">AE Automation Packages</span></p>
+</div>
+<p>The diagram above shows the top level components of the project. It lists only the most important sub-components that are being discussed in detail in this documentation.</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Automation: This is the core package that has most used and important modules. This include:</dt>
+<dd><ol class="first last loweralpha">
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="project_modules/automation/ena.html#id1"><span class="std std-ref">ENA</span></a>:  The module for ENA brokering pipeline.</dt>
+<dd><p class="first last">This module automates the process of submitting sequencing experiments to ENA.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><a class="reference internal" href="project_modules/automation/ae_publication.html#ae-publication"><span class="std std-ref">AE Publication</span></a>: collecting, scoring and saving new publications appear on <a href="https://europepmc.org/" target="_blank">Europe PMC</a>.</p>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="project_modules/automation/release_date.html#release-date"><span class="std std-ref">Release Date Management</span></a>: Automate the processes related to the experiments’ release dates.</dt>
+<dd><p class="first">The source of these requests might be one of the following:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li>ENA</li>
+<li>GEO</li>
+<li>Submitters</li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="project_modules/geo.html#id1"><span class="std std-ref">GEO</span></a>: This module contains most of the processes related to GEO experiments. This includes:</dt>
+<dd><ul class="first last simple">
+<li>Fixing SDRF after <a href="https://www.ncbi.nlm.nih.gov/geo/" target="_blank">GEO</a> import. This process is used in the internal workflow engine Conan.</li>
+<li>Importing Array Designs from <a href="https://www.ncbi.nlm.nih.gov/geo/" target="_blank">GEO</a> and loading them into ArrayExpress in <a href="https://www.ebi.ac.uk/arrayexpress/help/adf_submissions_overview.html" target="_blank">Table Data Gateways</a>.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p class="first"><a class="reference internal" href="project_modules/dal.html#dal"><span class="std std-ref">Data Access Layer (DAL)</span></a>: It is the only way to access different databases using both <a href="https://martinfowler.com/eaaCatalog/tableDataGateway.html" target="_blank">ADF format</a>, and <a href="https://martinfowler.com/eaaCatalog/transactionScript.html" target="_blank">Transaction scripts</a> Transaction scripts. It has 2 main blocks according the the database type:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>MySQL: Contains all gateways and transaction scripts for each MySQL schema</li>
+<li>Oracle: Contains the gateways and transaction scripts for each Oracle Database.</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Resources: This package contains the scripts and tools required to access external services such as Europe PMC and ENA services.</p>
+</li>
+<li><p class="first">Settings: Contains the app settings like the database connection parameters, the physical paths for data on the shared storage … etc.</p>
+</li>
+<li><p class="first">Utils: Contains shared utilities like email services, parsers, and wrappers to already existing tools like fastaq validators …etc.</p>
+</li>
+<li><p class="first">Services: Exports different  functionality of the package as a REST web service to be used by other local tools.</p>
+</li>
+</ul>
+<blockquote>
+<div>This can be added later after the core is developed by using Django REST Framework or any other alternative.</div></blockquote>
+<div class="section" id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="project_modules/automation/ae_publication.html">AE Publication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_modules/automation/ena.html">ENA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="project_modules/automation/ena.html#intoduction">Intoduction</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="project_modules/automation/release_date.html">Release Date Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_modules/dal.html">Data Access Layer (DAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_modules/geo.html">GEO</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Project Structure</a><ul>
+<li><a class="reference internal" href="#modules">Modules</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">AE Automation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="project_modules/automation/ae_publication.html"
+                        title="next chapter">AE Publication</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/structure.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="project_modules/automation/ae_publication.html" title="AE Publication"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="AE Automation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">AE Auto  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, EMBL-EBI.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.1.
+    </div>
+  </body>
+</html>

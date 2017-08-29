@@ -1,0 +1,27 @@
+<div id="header">
+    <!--img src="/static/assets/imgs/embl_logo.png" width=150 /> -->
+    <a title="Go to the EMBL-EBI homepage" href="//www.ebi.ac.uk/" target="_blank">
+<img alt="European Bioinformatics Institute" src="//www.ebi.ac.uk/web_guidelines/images/logos/EMBL-EBI/EMBL_EBI_Logo_black.png">
+</a>
+    <ul class="header-nav-container nav  nav-pills">
+        <li ui-sref-active="active" ng-repeat="nav in navs" ng-if="hasPermission(nav.permission)">
+            <a ui-sref="index.{{ nav.link }}" >{{ nav.name  }}</a>
+        </li>
+        <!--li>
+            <a href="/accounts/logout" translate> logout </a>
+        </li-->
+        <li>
+
+            <span class="username">Hi {{ user.first_name }}!
+                <br/>
+
+            <a href="/accounts/logout">&nbsp; logout </a>
+             </span>
+
+        </li>
+        <li><button class="btn btn-primary login-button" ng-click="restart_framework()">Restart Framework</button></li>
+        <div class="clearfix"></div>
+    </ul> 
+    <div class="clearfix"></div>
+</div>
+

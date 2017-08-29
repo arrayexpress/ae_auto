@@ -1,0 +1,13 @@
+<section class="all-queries-container well">
+    <h2 translate> All Publications</h2>
+    <uib-tabset active="active">
+
+
+
+        <uib-tab ng-repeat="tab in publicationTabs" heading="{{ tab.name }}"  ng-click="filterTabs(tab.id)">
+
+            <publication-list></publication-list>
+
+        </uib-tab>
+    </uib-tabset>
+</section>

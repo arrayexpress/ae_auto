@@ -1,0 +1,4 @@
+python-dev
+libxml2-dev
+libxslt-dev
+phantomjs

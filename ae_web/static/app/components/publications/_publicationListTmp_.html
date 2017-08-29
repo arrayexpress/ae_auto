@@ -1,0 +1,49 @@
+            <div ng-if="publications" class="pagination-container">
+                <pagination ng-if="publications.length > 0"  boundary-links="true" total-items="paginationSettings.totalItems" ng-model="paginationSettings.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="size" first-text="&laquo;" last-text="&raquo;"></pagination>
+            </div>
+            <p ng-if="publications.length === 0" class="no-queries" >  No Publications Available </p>
+            <table ng-if="!_.isEmpty(queries)" cellspacing="0" cellpadding="0"class="all-queries-table">
+                    <thead>
+                            <tr align="center">
+                                    <th scope="col" class="col-md-1" >publication</th>
+                                    <th scope="col" class="col-md-1" >Experiment</th>
+                                    <th scope="col" class="col-md-1" >options</th>
+                                    <th scope="col" class="col-md-1" >Test</th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="query-name-container" ng-repeat="publication in publications">
+                            <td>
+                                <div class="query-name-container">
+                                    <span class="table-text">
+                                    <a href="http://europepmc.org/articles/{{ publication.pmc_id }}" target="_blank">{{ publication.title }}</a>
+                                    </span>
+
+                                </div>
+                            </td>
+                            <td>
+                                <div class="query-name-container">
+                                    <span class="table-text">
+                                    <a href="http://europepmc.org/articles/{{ publication.pmc_id }}" target="_blank">{{ publication.Experiment}}</a>
+                                    </span>
+
+                                </div>
+                            </td>
+
+                            <td id="options">
+                                <div class="query-name-container">
+                                    <span>
+                                <i ng-click="openEditModal(query)" class="fa fa-edit" tooltip="{{ 'edit query'  }}"></i>
+                                <i ng-click="deleteQuery(query)" class="fa fa-trash" tooltip="{{ 'delete query'  }}"></i>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                            <a ui-sref="index.viewQuery({id: query.id})" >Test</a>
+                            </td>
+                        </tr>
+                    </tbody>
+            </table>
+            <div ng-if="queries" class="pagination-container">
+                <pagination ng-if="queries.length > 0" ng-change="pageChanged(channel.id)" boundary-links="true" total-items="paginationSettings.totalItems" ng-model="paginationSettings.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" items-per-page="size" first-text="&laquo;" last-text="&raquo;"></pagination>
+            </div>

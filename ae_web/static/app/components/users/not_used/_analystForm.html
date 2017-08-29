@@ -1,0 +1,113 @@
+<div class="clearfix"></div>
+<form class="form-horizontal analyst-form" role="form" ng-submit='save()'>
+    <div class="form-group">
+        <label for="username" class="col-md-2 control-label" translate>username</label>
+        <div class="col-sm-4" ng-class="{'has-error': errors.username}" >
+            <input type="text"  ng-focus="errors.username = ''" ng-model="analystForm.username" class="form-control" id="username" placeholder="{{'username' }}">
+            <p class="help-block error-text"> {{ errors.username }} </p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="email" class="col-md-2 control-label" translate>email</label>
+        <div class="col-sm-4" ng-class="{'has-error': errors.email}">
+            <input type="email" ng-focus="errors.email = ''"  ng-model="analystForm.email" class="form-control" id="email" placeholder="{{'email' }}">
+            <p class="help-block error-text"> {{ errors.email }} </p>
+        </div>
+    </div>
+    
+    <div ng-if= "newUser === true" class="form-group">
+        <label for="password" class="col-md-2 control-label" translate>password</label>
+        <div class="col-sm-4" ng-class="{'has-error': errors.password}">
+            <input type="password" ng-focus="errors.password = ''"  ng-model="analystForm.password" class="form-control" id="password" placeholder="{{'password' }}">
+            <p class="help-block error-text"> {{ errors.password }} </p>
+        </div>
+    </div>
+
+    <div ng-if= "newUser === true" class="form-group">
+        <label for="confirm-password" class="col-md-2 control-label" translate>confirm password</label>
+        <div class="col-sm-4" ng-class="{'has-error': errors.confirmPassword}">
+            <input type="password" ng-focus="errors.confirmPassword = ''"  ng-model="analystForm.confirmPassword" class="form-control" id="confirm-password" placeholder="{{'confirm password' }}">
+            <p class="help-block error-text"> {{ errors.confirmPassword  }} </p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="first-name" class="col-md-2 control-label" translate>fullname</label>
+        <div class="col-sm-4">
+            <input type="text" ng-model="analystForm.first_name" class="form-control" placeholder="{{'first name' }}">
+        </div>
+        <div class="col-sm-4">
+            <input type="text" ng-model="analystForm.last_name" class="form-control" placeholder="{{'last name' }}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="country-list" class="col-md-2 control-label" translate>country</label>
+        <div class="col-sm-5" ng-class="{'has-error': errors.country}">
+            <select id="country-list" class="form-control" ng-focus="errors.country = ''" ng-model="analystForm.country" ng-options="country.name for country in countries track by country.name"></select>
+            <p class="help-block error-text"> {{ errors.country }} </p>
+        </div>
+    </div>
+
+    <!--<div class="form-group" has-permission="superAdmin">-->
+        <!--<label for="manager-list" class="col-md-2 control-label" translate> manager </label>-->
+        <!--<div class="col-sm-5" ng-class="{'has-error': errors.manager}">-->
+            <!--<select id="manager-list" class="form-control" ng-focus="errors.manager= ''" ng-model="analystForm.manager" ng-options="manager.username for manager in manager track by manager.id"></select>-->
+            <!--<p class="help-block error-text"> {{ errors.manager }} </p>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="form-group" ng-if="!currentUserSettings">
+        <label class="col-md-2 control-label" translate>module permissions</label>
+        <div class="col-sm-9" >
+            <label class="chk-box-label" has-permission="interactive">
+                <input ng-model="analystForm.has_interactive_access" type="checkbox" value="has_interactive_access">
+                interactive
+            </label>
+            <label class="chk-box-label" has-permission="reporting">
+                <input ng-model="analystForm.has_reporting_access" type="checkbox" value="has_reporting_access">
+                reporting
+            </label>
+            <label class="chk-box-label" has-permission="streams">
+                <input ng-model="analystForm.has_streams_access" type="checkbox" value="has_streams_access">
+                streams
+            </label>
+            <label class="chk-box-label" has-permission="live">
+                <input ng-model="analystForm.has_live_access" type="checkbox" value="has_live_access">
+                live
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label" translate>gender</label>
+        <div class="col-sm-9" ng-class="{'has-error': errors.gender}" >
+            <label class="radio-inline">
+                <input ng-model="analystForm.gender" ng-focus="errors.gender = ''" type="radio" name="gender" value="M" ng-checked="true"> {{'male' }}
+            </label>
+            <label class="radio-inline">
+                <input ng-model="analystForm.gender" ng-focus="errors.gender = ''" type="radio" name="gender" value="F"> {{'female' }}
+            </label>
+            <p class="help-block error-text"> {{ errors.gender }} </p>
+        </div>
+    </div>
+
+    <div class="form-group" ng-if="!currentUserSettings">
+        <label class="col-md-2 control-label" translate>admin</label>
+        <div class="col-sm-9">
+            <label class="chk-box-label">
+                <input ng-model="analystForm.is_admin" type="checkbox" value="is_admin">
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="save-button-container">
+            <button type="reset" class="btn btn-danger" ng-click="reset()" ng-if="cancelResetBtn" translate> {{ cancelResetBtn }} </button>
+            <button type="submit" class="btn btn-primary" translate>save</button>
+        </div>
+    </div>
+
+</form>
+    <button class="btn btn-primary" ng-click="openEditPasswordModal(analyst)">change password</button>

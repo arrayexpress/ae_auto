@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html ng-app="rootApp">
+    <head>
+        {% csrf_token %}
+        {% verbatim %}
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title ng-bind="'EA AUTOMATION'"></title>
+        <!--[if lt IE 9]-->
+        <!-- // <script src="js/html5shiv.js"></script> -->
+        <!-- [endif]-->
+
+        <!-- Fonts -->
+            <!--<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>-->
+        <!-- End Fonts -->
+
+        <!-- Styles -->
+            <!-- External Libs -->
+            <link href="/static/assets/libs/fontawesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" >
+            <link rel="stylesheet" href="/static/assets/libs/nvd3/nv.d3.css">
+            <link rel="stylesheet" href="/static/assets/libs/angular-bootstrap-colorpicker/css/colorpicker.css">
+            <link rel="stylesheet" href="/static/assets/libs/angular-loading-bar/src/loading-bar.css">
+            <!-- End External Libs -->
+            <link href="/static/assets/css/main.css" rel="stylesheet" type="text/css" />
+
+        <!-- End Styles -->
+    </head>
+    <body ng-cloak>
+
+        <main id="main" class="container-fluid">
+            <header ui-view="header"></header>
+            <nav ui-view="applicationNav"></nav>
+            <div class="flash_message alert " ng-class="{'alert-danger': error, 'alert-success': success, 'alert-info': info}" id="flash" ng-show="flash"><p translate> {{ flash }}</p></div>
+            <section id="content" ui-view="content"></section>
+            <div ng-class="{'loading-overlay': loading, 'hidden': !loading}">
+                <div class="loader"></div>
+            </div>
+        </main>
+        <footer id="footer" ui-view="footer"></footer>
+
+        <!-- JS from Bower Components -->
+            <script src="/static/assets/libs/angular/angular.min.js"></script>
+            <script src="/static/assets/libs/underscore/underscore-min.js"></script>
+            <script src="/static/assets/libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+            <script src="/static/assets/libs/angular-bootstrap/ui-bootstrap.min.js"></script>
+            <script src="/static/assets/libs/angular-resource/angular-resource.js"></script>
+            <script src="/static/assets/libs/angular-ui-router/release/angular-ui-router.js"></script>
+            <script src="/static/assets/libs/angular-translate/angular-translate.js"></script>
+            <script src="/static/assets/libs/angular-cookies/angular-cookies.min.js"></script>
+            <script src="/static/assets/libs/d3/d3.min.js"></script>
+           <script src="/static/assets/libs/nvd3/nv.d3.min.js"></script>
+            <script src="/static/assets/libs/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
+            <script src="/static/assets/libs/angular-animate/angular-animate.min.js"></script>
+            <script src="/static/assets/libs/angular-loading-bar/src/loading-bar.js"></script>
+            <script src="/static/assets/libs/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+        <!-- Add New Bower Component JS Above -->
+
+        <!-- App Main Components-->
+            <script src="/static/app/app.modules.js"></script>
+            <script src="/static/app/app.routes.js"></script>
+            <script src="/static/app/app.configs.js"></script>
+        <!-- End App Main Components-->
+
+        <!-- Controllers-->
+            <script src="/static/app/components/login/loginController.js"></script>
+            <script src="/static/app/components/users/addUserController.js"></script>
+            <script src="/static/app/components/users/allUsersController.js"></script>
+            <script src="/static/app/components/users/editAnalystController.js"></script>
+           <script src="/static/app/components/publications/publicationController.js"></script>
+
+        <!-- End Controllers -->
+
+        <!-- Services -->
+            <script src="/static/app/components/login/loginServices.js"></script>
+            <script src="/static/app/components/users/analystServices.js"></script>
+            <script src="/static/app/components/users/userServices.js"></script>
+            <script src="/static/app/components/publications/publicationServices.js"></script>
+        <!-- End Services -->
+
+        <!-- Directives -->
+            <script src="/static/app/components/users/userDirectives.js"></script>
+            <script src="/static/app/components/publications/publicationDirectives.js"></script>
+        <!-- End Directives -->
+
+        <!-- Config -->
+        <!-- End Config-->
+
+        <!-- Core -->
+            <script src="/static/app/components/core/header/headerController.js"></script>
+            <script src="/static/app/components/core/header/headerService.js"></script>
+            <script src="/static/app/components/core/applicationNav/applicationNavController.js"></script>
+        <!-- End Core -->
+
+        <!-- Shared -->
+            <script src="/static/app/shared/permission/permissionService.js"></script>
+            <script src="/static/app/shared/common/CommonServices.js"></script>
+            <script src="/static/app/shared/common/CommonDirectives.js"></script>
+            <script src="/static/app/shared/common/CommonControllers.js"></script>
+            <script src="/static/app/shared/common/PieChartDirective.js"></script>
+            <script src="/static/app/shared/common/CommonFilters.js"></script>
+            <script src="/static/app/shared/permission/permissionDirective.js"></script>
+            <script src="/static/app/shared/flash/flashService.js"></script>
+        <!-- End Shared-->
+
+
+    </body>
+    {% endverbatim %}
+</html>
+

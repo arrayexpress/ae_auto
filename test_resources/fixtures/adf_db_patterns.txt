@@ -1,0 +1,144 @@
+pkr_hanks	^\w{3,5}\d+\w?$	http://pkr.sdsc.edu/html/pk_classification/pk_catalytic/pk_hanks_class.html
+swall	^[A-Z][0-9][A-Z0-9]{3}[0-9]$	http://www.ebi.ac.uk/swissprot
+poci	^(.+\.\w{3}|c.+|\w{4}.+|)$	
+embl	^([A-Z]{1}[0-9]{5}|[A-Z]{2}[0-9]{6}|[A-Z]{3}[0-9]{5}|[A-Z]{4}[0-9]{8})(\.\d*$|$)	www.ebi.ac.uk/ena
+genbank	^([A-Z]{1}[0-9]{5}|[A-Z]{2}[0-9]{6}|[A-Z]{3}[0-9]{5}|[A-Z]{4}[0-9]{8})(\.\d*$|$)	www.ncbi.nlm.nih.gov/genbank
+ncbi_clone_registry	^([A-Z]{2}[A-Z\d]+-\d+[A-Z]\d+|XX-\d+)$	www.ncbi.nlm.nih.gov/clone?
+populusDB	^([A-Z]\d{3}[A-Z]\d{2}|[A-Z]{2}\d{2}[A-Z]{3}\d{2})$	www.populus.db.umu.se
+wormbase	^([A-Z]\w+\.\w+|CBG\d{5})$	www.wormbase.org
+sgd	^([SL]\d{9}|Y[A-Z][LR]\d{3}[WC](-[A-Z])?)$	www.yeastgenome.org/
+prf	^(\d+[A-Z])$	http://www.prf.or.jp/aboutdb-e.html
+asrp	^(ASRP)?\d*$	asrp.danforthcenter.org/?
+unigene	^(Bt|Hs|Mm|Rn|Ssc|Gga|Str|Xl|Dr|Ola|Omy|Cin|Dm|Aga|Spu|Cel|Pta|Ppa|At|Gma|Les|Mtr|Ptp|Stu|Vvi|Hv|Os|Sof|Sbi|Ta|Zm|Cre|Ddi|Tgo)\.[0-9]*$	www.ncbi.nlm.nih.gov/unigene
+chromosome_coordinate	^(chr|Chr|CHR).*:\d*-\d*$	
+toxoest	^(Ctoxoqual_\d*|\d{7})$	http://toxodb.org/toxo/
+gdb	^(GDB|REG|CIT):\d+$	http://www.gdb.org
+go	^(GO:)?[0-9]{7}$	http://www.geneontology.org
+tigr_egad	^(HG|HT|ET)\d{1,6}$	
+blocks	^(IPB[0-9]{6}|PR[0-9]{5})[a-z]?$	
+refseq	^(N[CGMRPTW]{1}_[0-9]{6,9}|X[MRP]{1}_[0-9]{6,9}|ZP_[0-9]{8}|NZ_[A-Z]{4}[0-9]{8}|YP_[0-9]{6,9})(\.\d*$|$)	http://www.ncbi.nlm.nih.gov/refseq
+neurosporadb	^(NCU|ncu)\d{5}(\.\d*$|$)	www.broadinstitute.org/annotation/genome/.../GeneFinding.html?
+plasmodb	^(PF[ABCDEFIL][\d]{4}[cw]|PF[\d]{2}_[\d]{4}|MAL[\d]{1,2}P1\.[\d]*|(chr[\d]{1,2}|unmapped(-\d)?)-tRNA-[\w]{3}-[\d]*|chr[\d]{1,2}\.rRNA-.*)$	www.plasmodb.org/?
+tigr_mgi	^(TC\d{3,7}|NP\d{6})$	
+dfci_rgi	^(TC|NP)\d+$	http://compbio.dfci.harvard.edu/tgi/cgi-bin/tgi/gimain.pl?gudb=rat
+dfci_vvgi	^([A-z]{2})\d+$	
+hugo	^[\w-]+$	www.genenames.org/?
+omim	^[#*+]?\d{6}$	http://www.omim.org
+swissprot	^[A-Z][0-9][A-Z0-9]{3}[0-9]$	www.ebi.ac.uk/swissprot/?
+uniprot	^[A-Z][0-9][A-Z0-9]{3}[0-9]$	www.uniprot.org/?
+crest	^[A-Z]{1,4}\d{1,3}[A-Z]{1}\d{2}[a-z]?$	
+jcvi_cmr	^[A-Z]{2,3}_\d+$	
+vectorbase	^[A-Z]{4}[0-9]{6}-[A-Z]{2}$	https://www.vectorbase.org/?
+nia_nih	^[A-Z]\d{4}[A-Z]\d{2}-\d$	http://www.nia.nih.gov/research/scientific-resources
+pir	^[A-Z]\d{5}$	pir.georgetown.edu
+tigr_cmr	^[A-Za-z]*\d+a|b|c|A?$	
+trembl	^[OPQ][0-9][A-Z0-9]{3}[0-9]$	http://www.ebi.ac.uk/uniprot
+celera_transcript	^[rmh]CT\d{4,7}(?:\.\d+)?$	http://www.pantherdb.org/panther/globalSearch.do
+dbsnp	^[rs]s\d+$	www.ncbi.nlm.nih.gov/SNP/?
+bdgp	^\(?[A-Z]{2}[0-9]{5}\)?$	http://www.fruitfly.org
+image	^\d{0,10}$	www.imageconsortium.org/?
+uw_ecoli	^\d{1,5}$	
+unists	^\d{1,6}$	http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=unists
+locus	^\d{1,7}$	http://www.ncbi.nlm.nih.gov/gene/
+mgc	^\d{3,5}$	mgc.nci.nih.gov/?
+ncbitax	^\d{4,5}$	http://www.ncbi.nlm.nih.gov/taxonomy
+genew	^\d{4}$	
+scop	^\d{5}$	scop.mrc-lmb.cam.ac.uk/scop/?
+pubmed	^\d{6,8}$	http://www.ncbi.nlm.nih.gov/pubmed
+netaffx	^\d{7}_([sx]_)?at$	http://www.affymetrix.com/analysis/index.affx
+riken	^\d{7}[A-Z]\d{2}$|^[A-Z]{1}\d{6}[A-Z]{1}\d{2}$	
+pkr	^\d{7}$	
+pdb	^\d\w{3}$	www.rcsb.org/
+entrez	^\d+$	http://www.ncbi.nlm.nih.gov/entrez
+entrez_gene	^\d+$	http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene
+genesnps	^\d+$	www.genome.utah.edu/genesnps/
+anoest	^\w{3,4}-\w{3,6}(-\w-\d{2})?$	
+kegg	^\w{3,5}\d+\w?$	www.genome.jp/kegg/pathway.html?
+rzpd	^\w{4}[Pp]\d{3}[A-Za-z]\d{3,7}[A-Za-z]?\d?$	
+insdc_locus_tag	^\w+$	www.ebi.ac.uk/ena/about/locus_tag
+tair	^A[tT]([1-5]|M|C)[gG]\d{5}\.?\d?$	www.arabidopsis.org/
+subtilist	^BG\d{5}$	http://genolist.pasteur.fr/SubtiList/
+stack	^c[a-z]\d{4,5}$	
+hgmd	^C[DIMSRX]\d{6}$	www.hgmd.org/?
+candidadb	^CA\d{4}$ 	genolist.pasteur.fr/CandidaDB/?
+catma	^CATMA[1-5]([abc]\d{5}|ctrl\d{2})$	www.catma.org/?
+nextdb	^CELK\d{5}$	
+flybase_computed_gene	^CG\d*$	www.flybase.org
+compugen	^CGEN_\w+_\d{7}_\d$	
+c_jejuni	^Cj.*$	
+cog	^COG\d*$	http://www.ncbi.nlm.nih.gov/COG
+cp450	^CYP\d{1-3}\w*$	
+dictybase	^DDB\d{7}$	dictybase.org/?
+ec	^EC [\d-]+\.[\d-]+\.[\d-]+\.[\d-]+$	
+AmoebaDB	^EHI_\d{6}$	amoebadb.org/?
+ensembl	^ENS([A-Z]{3})?[FGPT]\d{11}$|ENSANGESTG\d{11}$|ENSGALESTG\d{11}$	www.ensembl.org
+ens_gene_id	^ENS([A-Z]{3})?G\d{11}$	www.ensembl.org
+ens_trscrpt_id	^ENS([A-Z]{3})?T\d{11}$	www.ensembl.org
+ens_fam_id	^ENSF\d{11}$	www.ensembl.org
+flybase_bt	^FBbt:\d{8}$	www.flybase.org
+flybase_dv	^FBdv:\d{8}$	www.flybase.org
+flybase	^FBgn\d{7}$	www.flybase.org
+hinv_cluster	^HIX[0-9]{7}$	
+tigr_cmr_hpylori26695	^HP\d{4}$	
+jsnp	^IMS-JST\d{6}$	
+interpro	^IPR[0-9]{6}$	www.ebi.ac.uk/interpro/?
+msu_rga	^LOC_Os.+$ 	http://rice.plantbiology.msu.edu/analyses_search_blast.shtml
+mgd	^MGI:\d{0,7}$	www.nih.gov/science/models/mouse/resources/mgd.html?
+gxd	^MGI:\d{7}$	www.informatics.jax.org/expression.shtml?
+mirbase	^MI.*$|^\w{3}-\w{3}-.*$	www.mirbase.org
+mtb	^MTB:\d{4,5}$	www.informatics.jax.org/mtbwi?
+tigr_cmr_hpylorij99	^NT01HP\d{4}$	
+halolex	^OE\d{4}([A-Z]1)?[FR]$	http://www.webcitation.org/getfile?fileid=01b4e193eb9c261f676e242d43a243e918fe52b5
+candida_genome_db	^orf\d+\.(\d+$|\d+\.\d*$)	www.candidagenome.org/?
+vega_cf	^OTTCANG\d{11}$	vega.sanger.ac.uk/?
+vega_dr	^OTTDARG\d{11}$	vega.sanger.ac.uk/?
+vega_hs	^OTTHUMG\d{11}$	vega.sanger.ac.uk/?
+vega_mm	^OTTMUSG\d{11}$	vega.sanger.ac.uk/?
+rhizobase	^p?[A-Z]{2}\d+$	genome.microbedb.jp/rhizobase/?
+pharmgkb	^PA\d{3,6}$	www.pharmgkb.org
+pseudomonas	^PA\d{4}$	
+prodom	^PD\d*$	prodom.prabi.fr/?
+pfam	^PF[0-9]{5}$	http://pfam.xfam.org/
+prosite	^PS\d*$	http://www.expasy.ch/prosite
+rgd	^RGD:\d{5,6}$	rgd.mcw.edu/?
+rgd_qtl	^RGD:\d{5}$	rgd.mcw.edu/?
+ralstonia	^RS\d{5}$	
+tuberculist	^Rv\d{4}c?$	tuberculist.epfl.ch/?
+hgvbase	^SNP\d{9}$	
+sulfolobus	^SSO\d{4,5}$	www.sulfolobus.org/
+tair_anat	^TAIR:\d{7}$	www.arabidopsis.org/
+tair_dev	^TAIR:\d{7}$	www.arabidopsis.org/
+tigr_tagi	^TC\d{3,7}$	www.arabidopsis.org/
+dfci_ssgi	^TC\d+$	http://compbio.dfci.harvard.edu/tgi/gi/ssgi/searching/xpress_search.html
+dfci_asgi	^TC\d+$	http://compbio.dfci.harvard.edu/tgi/gi/asgi/searching/xpress_search.html
+dfci_mtgi	^TC\d+$	http://compbio.dfci.harvard.edu/tgi/gi/mtgi/searching/xpress_search.html
+dfci_zgi	^TC\d+$	http://compbio.dfci.harvard.edu/tgi/cgi-bin/tgi/gimain.pl?gudb=zfish
+dfci_zmgi	^TC\d+$	http://compbio.dfci.harvard.edu/cgi-bin/tgi/gimain.pl?gudb=maize
+dfci_stgi	^TC\d+$	http://compbio.dfci.harvard.edu/tgi/gi/stgi/searching/xpress_search.html
+tigr_ssgi	^TC\d+$	
+tsc	^TSC\d{7}$	
+uhn_cpg	^UHNhscpg\d{7}$	http://data.microarrays.ca/cpg/
+plantgdb	^Zm.*$ 	www.plantgdb.org/?
+tigr_cngp	\d{3,4}\..+$	
+genolevures	CAGL.+g$	http://cbi.labri.fr/Genolevures/
+abrc_stock	AGGREGATE	http://www.arabidopsis.org/abrc/
+atcc	AGGREGATE	http://www.lgcstandards-atcc.org
+beebase	AGGREGATE	http://hymenopteragenome.org/beebase/
+dfci_atgi	^TC\d+$	http://compbio.dfci.harvard.edu/cgi-bin/tgi/gimain.pl?gudb=arab
+genecards	^GC\d+$	http://www.genecards.org
+genedb	^[A-Za-zz]{2}\d+\.\d\.\d+$	http://www.genedb.org/Homepage
+gpcrdb	AGGREGATE	www.gpcr.org/7tm/‎
+howdy	AGGREGATE	http://howdy.biosciencedbc.jp/HOWDY/top_en.pl
+hpa	AGGREGATE	http://www.proteinatlas.org/index.php
+incyte	AGGREGATE	http://www.incyte.com
+MO	^MO_\d+$	http://mged.sourceforge.net/ontologies/MGEDontology.php
+mips	AGGREGATE	http://mips.helmholtz-muenchen.de/proj/ppi/
+nasc	AGGREGATE	http://arabidopsis.info/CollectionInfo?id=19
+phyca11	AGGREGATE	http://genome.jgi-psf.org/Phyca11/Phyca11.home.html
+PlantOntology	^PO:\d+$	http://plantontology.org/
+sgn	AGGREGATE	solgenomics.net/‎
+TriTrypDB	^TcCLB\.\d+\.\d+	http://tritrypdb.org
+ToxoDB	AGGREGATE	http://www.toxodb.org
+nimblegen_chromosome_coordinate	^(chr|Chr|CHR).*:\d*-\d*\s\(\d+\)$	
+nimblegen_probe_id	^(chr|Chr|CHR|XENO)\w+$
+HarvEST35	^\d+$	http://harvest-web.org/hweb/pickassy.wc

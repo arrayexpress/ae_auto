@@ -1,0 +1,2 @@
+python /home/gemmy/PycharmProjects/ae_automation/models/lsf_data_file.pyc '{"out_file": "out_file", "file_name": "file_name", "args": [], "name": "name", "queue": "production-rh7", "user": "ahmed", "base_dir": "base_dir"}' > out_file 
+Now Running Main

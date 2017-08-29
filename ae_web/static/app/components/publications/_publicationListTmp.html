@@ -1,0 +1,92 @@
+<!--div ng-if="publications" class="pagination-container"-->
+<div ng-if="publications.length > 0">
+    <div style="text-align:center">
+    <ul uib-pagination
+        total-items="paginationSettings.totalItems"
+        ng-model="paginationSettings.currentPage"
+        max-size="size"
+        class="pagination-sm"
+        boundary-link-numbers="true"
+        force-ellipses="true"
+        ng-change="setPage(paginationSettings.currentPage)">
+        </ul>
+    </div>
+
+    <div>
+
+        <table cellspacing="0" cellpadding="0"class="all-queries-table">
+                    <thead>
+                            <tr align="center">
+                                    <th scope="col" class="col-md-1" >publication</th>
+                                    <th scope="col" class="col-md-1" >Experiment</th>
+                                    <th scope="col" class="col-md-1" >Actions</th>
+
+                            </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="query-name-container" ng-repeat="publication in publications">
+                            <td valign="top" width="45%">
+                                <div >
+                                    <span class="table-text">
+                                        <button class="button" ng-click="isCollapsed = !isCollapsed"  width="100%">
+                                        <p   style="text-align:justify;">{{ publication.publication.title }}</p>
+                                       </button>
+                                            <div uib-collapse="isCollapsed" >
+                                                <h4>Abstract</h4>
+                                           <p ng-if="publication.publication.whole_article.abstractText" style="padding-right: 0.5cm;padding-left: 0.5cm;border-left: 6px solid red;background-color: lightgrey;text-align:justify">
+                                               {{ publication.publication.whole_article.abstractText }}
+
+                                                </p>
+                                                <p ng-if="publication.publication.whole_article.abstractText === undefined" style="padding-right: 0.5cm;padding-left: 0.5cm;border-left: 6px solid red;background-color: lightgrey;text-align:justify">
+                                               Abstract not Available!
+
+                                                </p>
+
+                                               <ul >
+                                                <li style="display:inline;"><b>Full Text:</b></li>
+                                               <li style="display:inline;" ng-repeat="item in publication.publication.whole_article.fullTextUrlList.fullTextUrl">
+                                                <a href="{{ item.url }}" target="_blank" >{{ item.documentStyle }}</a> &nbsp;
+                                                 </li>
+                                                 </ul>
+                                        </div>
+                                    </span>
+
+                                </div>
+                            </td>
+                            <td valign="top" width="45%">
+                                <div >
+                                    <span class="table-text">
+                                         <button class="button" ng-click="isCollapsed = !isCollapsed" width="100%">
+                                        <p   style="text-align:justify;">{{ publication.experiment.accession }}: {{ publication.experiment.title }}</p>
+                                       </button>
+                                    <div uib-collapse="isCollapsed" >
+                                        <p style="padding-right: 0.5cm;padding-left: 0.5cm;border-left: 6px solid red;background-color: lightgrey;text-align:justify">
+                                               {{ publication.experiment.description}}
+                                               <br/>
+                                       </p>
+                                        <ul><li style="display: inline"><a href="https://www.ebi.ac.uk/arrayexpress/experiments/{{ publication.experiment.accession }}" target="_blank">View on ArrayExpress</a>
+                                        </li> </ul>
+
+                                    </div>
+                                    </span>
+
+                                </div>
+                            </td>
+
+                            <td id="options" valign="top" width="10%">
+                                <div class="query-name-container">
+                                    <span>
+                                <i ng-click="updateStatus(publication, 'A')"   class="fa fa-thumbs-o-up" tooltip="{{ 'Approve'  }}"></i>
+                                <i ng-click="updateStatus(publication, 'R')" class="fa fa-ban" tooltip="{{ 'Reject'  }}"></i>
+                                <i ng-click="updateStatus(publication, 'N')" ng-if="publication.status!='N' && !publication.is_associated" class="fa fa-undo" tooltip="{{ 'Back to new'  }}"></i>
+                                    </span>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </tbody>
+            </table>
+    </div>
+</div>
+
+<p ng-if="publications.length === 0" class="no-queries"  >  No Publications Available </p>

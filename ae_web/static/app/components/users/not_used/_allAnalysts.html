@@ -1,0 +1,37 @@
+<section class="all-users-container well">
+    <h1 class="heading" translate>all analysts </h1>
+    <table cellspacing="0" cellpadding="0" class="table table-condensed table-striped table-hover table-bordered">
+            <thead>
+                    <tr align="center">
+                            <th scope="col" class="col-md-1" translate>name</th>
+                            <th scope="col" class="col-md-1" translate>username</th>
+                            <th scope="col" class="col-md-1" translate>available modules</th>
+                            <th scope="col" class="col-md-1" translate>analyst type</th>
+                            <th scope="col" class="col-md-1" translate>options</th>
+                    </tr>
+            </thead>
+            <tbody>
+                    <tr class="all-users-td-container" ng-repeat="analyst in analysts">
+                        <td>{{ analyst.getName() }}<br>
+                            <a href="mailto:{{ analyst.email }}" target="_blank">
+                                {{ analyst.email }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ analyst.username }}
+                        </td>
+                        <td class="apps-col">
+                            <a ng-repeat="app in analyst.apps" ui-sref="app" target="_blank">{{ app }}</a>
+                        </td>
+                        <td>
+                            {{ analyst.getType() }}
+                        </td>
+			<td class="options">
+                            <i ng-click="openEditModal(analyst)" class="fa fa-edit" title="{{ 'edit'  }}"></i>
+                            <i ng-click="deleteAnalyst(analyst)" ng-if="analyst.id !== user.id" class="fa fa-trash" title="{{ 'delete user'  }}"></i>
+                            <a ng-if="user['is_super_admin'] || user.id === analyst.id" ng-click="openEditPasswordModal(analyst)">change password</a>
+			</td>
+                    </tr>
+            </tbody>
+    </table>
+</section>

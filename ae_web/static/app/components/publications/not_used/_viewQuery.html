@@ -1,0 +1,77 @@
+<section class="all-queries-container well">
+    <h2 translate> Testing Tool</h2>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-1">
+                <label>Since</label>
+            </div>
+            <div class="col-md-4">
+               <datepicker date-disabled="" ng-model="since" show-weeks="true" class="well well-sm"></datepicker>
+               <!-- <div class="dropdown">
+                  <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
+                    <div class="input-group"><input type="text" class="form-control" data-ng-model="since"><span class="input-group-addon"></span>
+                    </div>
+                  </a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker ng-model="since" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                  </ul>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+
+            <div class="col-md-1">
+                <label>Until</label>
+            </div>
+            <div class="col-md-4">
+               <datepicker ng-model="until" show-weeks="true" class="well well-sm"></datepicker>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-1">
+                <label>Sentiment</label>
+            </div>
+            <div class="col-md-4">
+                <select  class="form-control" ng-model="sentiment" name="sentiment">
+                    <option value = ""> ALL </option>
+                    <option value="-1">Negative</option>
+                    <option value="0">Neutral</option>
+                    <option value="1">Positive</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-1">
+                <label>Topics</label>
+            </div>
+            <div class="col-md-2">
+                <input name="size" type="text" id="" class="form-control" ng-model="topics"  />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-1">
+                <label>Entities</label>
+            </div>
+            <div class="col-md-2">
+                <input name="size" type="text" id="" class="form-control" ng-model="entities"  />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <button class="btn btn-primary" ng-click="generateUrls()"> Generate </button>
+    </div>
+    <div class="row" ng-if="flag">
+        <a href="http://test.trendak.dc/api/queries/{{queryId}}/stats/?{{statsParams}}" target="_blank"> Go to stats url </a>
+    </div>
+    <div class="row" ng-if="flag">
+        <a href="http://test.trendak.dc/api/queries/{{queryId}}/interactions/?{{interactionsParams}}" target="_blank"> Go to interactions url </a>
+    </div>
+</section>

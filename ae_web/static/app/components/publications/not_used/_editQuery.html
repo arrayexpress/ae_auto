@@ -1,0 +1,85 @@
+<section class="edit-query-container">
+    <h1 class="section-heading" translate> edit query</h1>
+    <hr />
+    <div class="form-group">
+        <label for="query-name" class="type-label control-label" translate>query name</label>
+        <div class="col-sm-4">
+            <input type="text" id="query-name" class="form-control" ng-model="query.name" focus-me="{{ focusInput }}" />
+        </div>
+    </div>
+    <div  class="form-group" ng-if="smChannelName === 'twitter search' || smChannelName === 'youtube keyword' || smChannelName === 'google plus_search'">
+        <label for="query-name" class="type-label control-label" translate>query</label>
+        <div class="col-sm-4">
+                    <input ng-change="toggleValidQuery()" type="text" id="query-name" class="form-control" ng-model="query['sm_channel'].identifier" focus-me="{{ focusInput }}" />
+                    <button class="btn btn-primary col-sm-3 logical-btn" 
+                        ng-click="addLogicalOpertor('AND')" 
+                        ng-if="queryForm.smChannel.displayName !== 'google plus_search'">AND</button>
+                    <button class="btn btn-primary col-sm-3 logical-btn" 
+                        ng-click="addLogicalOpertor('OR')" 
+                        ng-if="queryForm.smChannel.displayName !== 'google plus_search'">OR</button>
+                    <button class="btn btn-primary col-sm-3 logical-btn" 
+                        ng-click="addLogicalOpertor('|')"
+                        ng-if="queryForm.smChannel.displayName === 'google plus_search'">OR</button>
+                    <button class="btn btn-primary logical-btn" 
+                        ng-click="checkQuery()" 
+                        ng-if="editValidQuery" 
+                        translate> check query </button>
+        </div>
+    </div>
+    <div  class="form-group" ng-if="smChannelName === 'twitter account' || smChannelName === 'youtube account' || smChannelName === 'facebook page' || smChannelName === 'facebook group' || smChannelName === 'instagram account'">
+        <label for="query-name" class="type-label control-label" translate>query</label>
+        <div class="col-sm-4">
+            <input ng-disabled="true" type="text" id="query-name" class="form-control" ng-model="query['sm_channel'].identifier" focus-me="{{ focusInput }}" />
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="form-group col-md-12 step-three-container">
+        <div class="form-group" ng-if="!_.isEmpty(dictionaryResults)">
+            <div translate> dictionaries </div>
+            <div  id="dictionary-result">
+                <div  ng-class="{'search-result-content': !result['selected'], 'selection-active': result['selected']}" ng-click="selectDictionary(result)" ng-repeat="result in dictionaryResults" title="{{ 'click to select'  }}">
+                    <span translate> {{ result['name'] }} </span>
+                    <span ng-show="result['selected']" class="icon-container">
+                        <i class="fa fa-check-circle-o"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="form-group col-md-12 step-three-container">
+        <div class="form-group" ng-if="userResults.length === 1">
+            {{ 'there are no analysts'  }} <a ui-sref="index.addAnalyst" translate> add analyst </a>
+        </div>
+        <div class="form-group" ng-if="userResults.length > 1">
+            <div translate> analysts </div>
+            <div  id="user-result">
+                <div ng-if="user.id !== result.id" ng-class="{'search-result-content': !result['selected'], 'selection-active': result['selected']}" ng-click="selectItem(result, userResults)" ng-repeat="result in userResults" title="{{ 'click to select'  }}">
+                    <span translate> {{ result['username'] }} </span>
+                    <span ng-show="result['selected']" class="icon-container">
+                        <i class="fa fa-check-circle-o"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="form-group col-md-12 step-three-container">
+        <div class="form-group" ng-if="!_.isEmpty(applicationResults)">
+            <div translate> applications </div>
+            <div  id="application-result">
+                <div ng-if="hasPermission(result.application)"  ng-class="{'search-result-content': !result['selected'], 'selection-active': result['selected']}" ng-click="selectItem(result, applicationResults)" ng-repeat="result in applicationResults" title="{{ 'click to select'  }}">
+                    <span translate> {{ result['application'] }} </span>
+                    <span ng-show="result['selected']" class="icon-container">
+                        <i class="fa fa-check-circle-o"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <button ng-disabled="editValidQuery" ng-click="save()" class="btn btn-primary save-btn" translate> save </button>
+    <button ng-click="cancel()" class="btn btn-danger" translate> cancel </button>
+</section>

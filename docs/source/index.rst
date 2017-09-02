@@ -25,7 +25,7 @@ The source code can be found on |ae_github|.
 
    <a href="https://www.djangoproject.com/" target="_blank"><i>Django<i></a>
 
-Guid:
+Guide:
 ------
 
 .. toctree::

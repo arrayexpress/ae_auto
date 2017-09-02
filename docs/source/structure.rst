@@ -32,11 +32,11 @@ The diagram above shows the top level components of the project. It lists only t
    b. Oracle: Contains the gateways and transaction scripts for each Oracle Database.
 
 
-* Resources: This package contains the scripts and tools required to access external services such as Europe PMC and ENA services.
+* :ref:`resources`: This package contains the scripts and tools required to access external services such as Europe PMC and ENA services.
 
-* Settings: Contains the app settings like the database connection parameters, the physical paths for data on the shared storage ... etc.
+* :ref:`settings`: Contains the app settings like the database connection parameters, the physical paths for data on the shared storage ... etc.
 
-* Utils: Contains shared utilities like email services, parsers, and wrappers to already existing tools like fastaq validators ...etc.
+* :ref:`utils`: Contains shared utilities like email services, parsers, and wrappers to already existing tools like fastaq validators ...etc.
 
 * Services: Exports different  functionality of the package as a REST web service to be used by other local tools.
  This can be added later after the core is developed by using Django REST Framework or any other alternative.

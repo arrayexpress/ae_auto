@@ -1,3 +1,4 @@
+import argparse
 import codecs
 import datetime
 import os
@@ -132,12 +133,114 @@ def check_submission(accession):
 
 
 class ENASubmission:
+    """
+
+    *Main class for ENA Brokering. It handles all execution options given by user in command line interface*
+
+    :param exp_dir: Full path contining the MAGE-TAB files, e.g. MAGE-TAB_xxxx
+    :type exp_dir: str
+
+    :param accession: The Automatic ArrayExpress Accession Number, e.g. E-MTAB-xxxx
+    :type accession: str
+
+    :param meta_data_bas_dir: The base directory for the experiment's data.
+                              If not given the default value is /ebi/microarray/ma-exp/AutoSubmissions/annotare/
+    :type meta_data_bas_dir: str
+
+    :param ena_optional_dir: path/to/fastq/files/directory/
+                        The location of fastq files on ENA machine. If not
+                        given the default value is /fire/staging/aexpress/
+    :type ena_optional_dir: str
+
+    :param combined_mage_tab:  A flag indicating that the IDF and SDRF are in the
+                        same file.
+    :type combined_mage_tab: bool
+
+    :param combined_file_name:  The
+                        name of the file which contians the IDF and SDRF
+    :type combined_file_name: bool
+
+    :param conan_email: The email used to submit to Conan. The default is
+                        ahmed@ebi.ac.uk
+    :type conan_email: str
+
+    :param skip_validation: A flag for skipping validate fastq files.
+    :type skip_validation: bool
+
+    :param skip_copy: A flag for skipping copying fastq files.
+    :type skip_copy: bool
+
+    :param skip_ena_submission: A flag for skipping submission to ENA.
+    :type skip_ena_submission: bool
+
+    :param add_samples: A flag for adding new samples to existing experiment.
+    :type add_samples: bool
+
+    :param new_alias: suffix for ENA alias names
+    :type new_alias: str
+
+
+    :param receipt_date: For correction usage only
+    :type receipt_date: str, isoformat date
+
+    :param validated_before: A flag if the fastq files where validated before.
+    :type validated_before: bool
+
+    :param skip_date: skip changing the release date
+    :type skup_date: bool
+
+    :param reuse_samples: A flag indicating that there are samples to be reused.
+                        In this case an existing SDRF with the sample names
+                        and their ENA accessions must be provided.
+    :type reuse_samples: bool
+
+    :param other_experiment_dir: full directory containing the unpacked folder which
+                        has the combined MAGE-TAB containing the already
+                        submitted samples to be reused. Must have ENA
+                        accessions or Biostudies IDs and the same sample
+                        names. Required when --reuse_sample option is used.
+    :type other_experiment_dir: str
+
+    :param move: A flag for moving files from the root FTP dir.
+    :type move: bool
+
+    :param neglect_patterns: List of patterns to be neglected from file names when
+                        trying to find pairs
+    :type neglect_patterns: :obj:`list` of :obj:`str`
+
+    :param combined_pairs: A flag to tell the system that all the pairs are
+                        combined. So that, any similarity would be considered
+                        as technical replica
+    :type combined_pairs: str
+
+    :param validate_only: A flag to quite after validation.
+    :type validate_only: book
+
+    :param mixed_pairs: A flag to tell the system that the pairs are combined
+                        and not combined.
+    :type mixed_pairs: bool
+
+    :param no_spots:  A flag indicating that the spots have been calculated
+                        before.
+    :type no_spits: bool
+
+    :param idf: The idf file name.
+    :type idf: str
+
+    :param sdrf: The SDRF file_name
+    :type sdrf: str
+
+    :param test: A flag for the submission to be submitted to ENA Dev server.
+    :type test: bool
+    """
+
     def __init__(self, exp_dir, accession, meta_data_bas_dir=None, ena_optional_dir=None, combined_mage_tab=False,
                  combined_file_name=None, conan_email=None, skip_validation=False, skip_copy=False,
                  skip_ena_submission=False, add_samples=False, new_alias=None, replace_idf=False,
                  receipt_date=None, validated_before=False, skip_date=False, reuse_samples=False,
                  other_experiment_dir=None, move=False, neglect_patterns=[], combined_pairs=False, validate_only=False,
                  mixed_pairs=False, no_spots=False, idf=None, sdrf=None, test=False):
+
         self.new_alias = ''
         if new_alias:
             self.new_alias = new_alias
@@ -311,6 +414,11 @@ class ENASubmission:
         return files
 
     def validate_fastq_files(self):
+        """
+        Calls fastq files validator.
+
+        :return: True if valid, terminates if invalid
+        """
         local_file = os.path.join(self.local_tmp, '%s_validation.txt' % self.accession)
         if not self.validated_before:
             memory = ''
@@ -497,7 +605,14 @@ class ENASubmission:
         return f_name
 
     def submit_xmls(self, nodes_only=False):
+        """
+        Submits prepared ENA project xml files to ENA
 
+        :param nodes_only: flag for skipping submission of study.xml
+        :type nodes_only: bool
+
+        :return: None
+        """
         url = settings.ENA_SRA_URL
         if self.test:
             url = settings.ENA_SRA_DEV_URL
@@ -570,6 +685,19 @@ class ENASubmission:
                         env=dict(ENV=settings.BASH_PATH))
 
     def validate_xml(self, extract_num=0, assay_num=0, sample_num=0):
+        """
+        Validates generated ENA xmls before submission.
+        Terminate on wrong xml files content.
+
+        :param extract_num: number of expected extract names
+        :param assay_num: number of expected assay names
+        :param sample_num: number of expected samples
+        :type extract_num: int
+        :type assay_num: int
+        :type sample_num: int
+
+        :return: None
+        """
         self.check_utf8(f_type='submission')
         self.check_utf8(f_type='experiment')
 
@@ -838,7 +966,6 @@ class ENASubmission:
                 r.new_data_file.endswith('.sff')
             ]
 
-
             if crams:
                 # print 'calculating cram spots'
                 self.ena.send(
@@ -922,9 +1049,7 @@ class ENASubmission:
                     wait_execution(self.ena)
 
 
-if __name__ == '__main__':
-    import argparse
-
+def parse_arguments():
     parser = argparse.ArgumentParser(description='submits and loads sequencing experiment to ENA and ArrayExpress')
     parser.add_argument('dir_name', metavar='MAGE-TAB_xxxx', type=str,
                         help='''The directory name where the submission meta-date files exists.
@@ -985,12 +1110,17 @@ if __name__ == '__main__':
                         Required when --reuse_sample option is used.''')
     parser.add_argument('-np', '--neglect_patterns', nargs='+', metavar='patern1 patern2 ...',
                         help='List of patterns to be neglected from file names when trying to find pairs')
+    return parser
+
+
+if __name__ == '__main__':
+
+    parser = parse_arguments()
     args = parser.parse_args()
     if args.is_combined and not args.combined_file_name:
         print '--combined_file_name is required'
         print parser.print_help()
         exit()
-
     ena = ENASubmission(exp_dir=args.dir_name, accession=args.accession,
                         meta_data_bas_dir=args.base_dir,
                         ena_optional_dir=args.ena_dir, combined_mage_tab=args.is_combined,

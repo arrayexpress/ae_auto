@@ -9,7 +9,7 @@ from dal.oracle.conan.conan_tasks import retrieve_task, update_task_status_by_id
 from models.conan import CONAN_PIPELINES
 from utils.conan.conan import submit_conan_task
 from utils.email.sender import send_email
-from pwd import getpwuid
+# from pwd import getpwuid
 
 CONAN_LOGIN_EMAIL = settings.CONAN_LOGIN_EMAIL
 

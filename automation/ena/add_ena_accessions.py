@@ -17,6 +17,18 @@ __author__ = 'Ahmed G. Ali'
 
 
 def extract_idf_file_name(exp_path, accession):
+    """
+    Extracts the the IDF file name with latest version. IDF files first generated with the format ``submission_xxx.id.txt``
+    For other versions the file name will follow the convention of  ``E-MTAB-xxxx_v1.idf.txt``, ``E-MTAB-xxxx_v2.idf.txt`` and so on...
+
+    :param exp_path: Full path containing the experiment's MAGETAB files.
+    :type exp_path: str
+    :param accession: ArrayExpress Accession Number, e.g. E-MTAB-xxxx
+    :type accession: str
+
+    :return: The full path for IDF file with the highest version
+    :rtype: str
+    """
     lines = os.listdir(exp_path)
     f_name = ''
     idf = [l.strip() for l in lines if
@@ -32,6 +44,18 @@ def extract_idf_file_name(exp_path, accession):
 
 
 def extract_sdrf_file_name(exp_path, accession):
+    """
+        Extracts the the SDRF file name with latest version. IDF files first generated with the format ``submission_xxx.id.txt``
+        For other versions the file name will follow the convention of  ``E-MTAB-xxxx_v1.sdrf.txt``, ``E-MTAB-xxxx_v2.sdrf.txt`` and so on...
+
+        :param exp_path: Full path containing the experiment's MAGE-TAB files.
+        :type exp_path: str
+        :param accession: ArrayExpress Accession Number, e.g. E-MTAB-xxxx
+        :type accession: str
+
+        :return: The full path for SDRF file with the highest version
+        :rtype: str
+        """
     lines = os.listdir(os.path.join(exp_path, 'unpacked'))
     sdrf_file_name = [l.strip() for l in lines if accession in l and '_v' in l]
     if not sdrf_file_name or sdrf_file_name == []:
@@ -77,6 +101,15 @@ def get_idf_path(ae_acc, dir_name):
 
 
 def get_magetab_path(ae_acc):
+    """
+    Retrieve full path containing MAGE-TAB files for an experiment given its accession by searching Subs-tracking database
+    and then search recursively in the submission directory.
+
+    :param ae_acc: ArrayExpress accession, e.g. E-MTAB-xxxx
+    :type ae_acc: str
+
+    :return: Full path for the directory containing MAGE-TAB files
+    """
     exp_id = retrieve_experiment_id_by_accession(ae_acc)
     dir_name = 'MAGE-TAB_' + str(exp_id)
     dirs = os.listdir(ANNOTARE_DIR)
@@ -102,6 +135,15 @@ def get_fq_uri(acc, pair_order=''):
 
 
 def get_mage_tab(ae_acc):
+    """
+    Parse the MAGE=TAB files into mapping objects.
+
+    :param ae_acc: ArrayExpress accession, e.g. E-MTAB-xxxx
+    :type ae_acc: str
+
+    :return: (idf_object, sdrf_object)
+    :rtype: (IDF, SdrfCollection)
+    """
     dir_name = get_magetab_path(ae_acc)
     # print dir_name
     idf_file = get_idf_path(ae_acc, dir_name)
@@ -118,6 +160,15 @@ def as_range(g):
 
 
 def get_idf_ena_comment(runs):
+    """
+    Constructs the comments added to the IDF file.
+    These comments containing ENA runs associated with the brokered experiment.
+
+    :param runs: List of ENA run accessions
+
+    :return: The constructed comment containing ENA runs URLs
+    :rtype: str
+    """
     runs_int = sorted(list(set(list([int(r.replace('ERR', '')) for r in runs if r !='']))))
     urls = []
     print urls
@@ -130,6 +181,16 @@ def get_idf_ena_comment(runs):
 
 
 def add_ena_accessions(ae_acc, idf, sdrf, out_file):
+    """
+    Adds ENA accessions to an ArrayExpress experiment.
+
+    :param ae_acc: Experiment's accession numbner. e.g. E-MTAB-xxxx
+    :param idf: Idf object
+    :type idf: IDF
+    :param sdrf: SDRF object
+    :type sdrf: SdrfCollection
+    :param out_file: Full path for the output file that contains IDF and SDRF together after adding ENA accessions.
+    """
     study = get_ena_acc_and_submission_acc_by_ae_acc(ae_acc)
     ena_accession = study[0].study_id
     # submission_accession = study[0].submission_id

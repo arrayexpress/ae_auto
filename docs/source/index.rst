@@ -31,6 +31,7 @@ Guide:
 .. toctree::
     :name: mastertoc
     :glob:
+    :maxdepth: 4
 
     structure
 

@@ -1,4 +1,6 @@
 ..  _ena:
+
+
 ENA
 ===
 Background
@@ -23,40 +25,51 @@ Workflow
 
 The diagram above shows the state diagram of the ENA brokering pipeline.
 
-Code and Inline Documentation
-----------------------------
 
-:mod:`ena` Package
+Auto Documentation
 ------------------
 
-.. automodule:: automation.ena
-    :members:
-    :undoc-members:
-    :show-inheritance:
+Usage
+++++++
 
+::
 
-:mod:`add_ena_accessions` Module
---------------------------------
+    $ python ena_brokering.py [-h] [-as] [-t] [-cp] [-mp] [-m]
+                            [-bd path/to/experiment/directory/__without__/MAGE-TAB_xxx]
+                            [-ed path/to/fastq/files/directory/] [-ic] [-sv] [-sc]
+                            [-ses] [-vb] [-vo] [-cf COMBINED_FILE_NAME] [-i IDF]
+                            [-s SDRF] [-ce CONAN_EMAIL] [-d DATE] [-na NEW_ALIAS]
+                            [-sd SKIP_DATE] [-rs] [-ns]
+                            [-oed OTHER_EXPERIMENT_DIR]
+                            [-np patern1 patern2 ... [patern1 patern2 ... ...]]
+                            MAGE-TAB_xxxx E-MTAB-xxxx
 
-.. automodule:: automation.ena.add_ena_accessions
-    :members:
-    :undoc-members:
-    :show-inheritance:
+DocString
++++++++++
 
-:mod:`ena_brokering` Module
----------------------------
+Below sections are generated from python doc.
+
+:mod:`ena_brokering`
+---------------------
 
 .. automodule:: automation.ena.ena_brokering
     :members:
-    :undoc-members:
     :show-inheritance:
 
-:mod:`ena_experiment` Module
+
+
+:mod:`add_ena_accessions`
+-------------------------
+
+.. automodule:: automation.ena.add_ena_accessions
+    :members:
+    :show-inheritance:
+
+:mod:`ena_experiment`
 ----------------------------
 
 .. automodule:: automation.ena.ena_experiment
     :members:
-    :undoc-members:
     :show-inheritance:
 
 
@@ -75,4 +88,3 @@ Code and Inline Documentation
 .. |ena_url| raw:: html
 
     <a href="http://www.ebi.ac.uk/ena" target="_blank">The European Nucleotide Archive (ENA)</a>
-

@@ -21,15 +21,11 @@ The diagram above shows the top level components of the project. It lists only t
             - ENA
             - GEO
             - Submitters
-    d. :ref:`geo`: This module contains most of the processes related to GEO experiments. This includes:
-            - Fixing SDRF after |GEO_NCBI| import. This process is used in the internal workflow engine Conan.
-            - Importing Array Designs from |GEO_NCBI| and loading them into ArrayExpress in |adf|.
 
+* :ref:`dal_ref`: It is the only way to access different databases using both |gateway|, and |transaction_script| Transaction scripts. It has 2 main blocks according the the database type:
 
-* :ref:`dal`: It is the only way to access different databases using both |gateway|, and |transaction_script| Transaction scripts. It has 2 main blocks according the the database type:
-
-   a. MySQL: Contains all gateways and transaction scripts for each MySQL schema
-   b. Oracle: Contains the gateways and transaction scripts for each Oracle Database.
+   a. :ref:`MySQL`: Contains all gateways and transaction scripts for each MySQL schema
+   b. :ref:`Oracle`: Contains the gateways and transaction scripts for each Oracle Database.
 
 
 * :ref:`resources`: This package contains the scripts and tools required to access external services such as Europe PMC and ENA services.

@@ -18,6 +18,7 @@
 #
 import os
 import sys
+print os.path.abspath('../../')
 sys.path.insert(0, os.path.abspath('../../'))
 
 # -- General configuration ------------------------------------------------
@@ -31,7 +32,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 # ones.
 extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.intersphinx','sphinx.ext.autosectionlabel',
-    'sphinx.ext.ifconfig', 'sphinx.ext.autosummary']
+    'sphinx.ext.ifconfig', 'sphinx.ext.autosummary', 'sphinxarg.ext']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -93,13 +94,16 @@ todo_include_todos = False
 #         'donate.html',
 #     ]
 # }
-# html_theme = 'sphinxdoc'
-html_theme = "classic"
+html_theme = 'sphinxdoc'
+# html_theme = "classic"
 # html_theme_options = {
 #     "rightsidebar": "false",
 #     "stickysidebar": "true"
 # }
-
+# html_sidebars = {
+#    '**': ['globaltoc.html', 'sourcelink.html', 'searchbox.html'],
+#    'using/windows': ['windowssidebar.html', 'searchbox.html'],
+# }
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.

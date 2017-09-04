@@ -1,5 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
-/ae_web/ae_web/settings/
+
 /tmp/
 /main.py
 /old_accessions.py
@@ -9,3 +9,6 @@
 /settings/test.py
 /settings/bashrc
 /settings/base.py
+/ae_web/ae_web/settings/base.py
+/ae_web/ae_web/settings/local.py
+/ae_web/ae_web/settings/test.py

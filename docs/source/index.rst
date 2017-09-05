@@ -19,7 +19,7 @@ The source code can be found on |ae_github|.
 
 .. |ae_github| raw:: html
 
-   <a href="https://github.com/arrayexpress/ae-auto" target="_blank">ArrayExpress Github</a>
+   <a href="https://github.com/arrayexpress/ae_auto" target="_blank">ArrayExpress Github</a>
 
 .. |Django| raw:: html
 

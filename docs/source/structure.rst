@@ -11,7 +11,7 @@ The diagram above shows the top level components of the project. It lists only t
 
 
 
-* Automation: This is the core package that has most used and important modules. This include:
+* :ref:`automation_ref`: This is the core package that has most used and important modules. This include:
     a. :ref:`ena`:  The module for ENA brokering pipeline.
         This module automates the process of submitting sequencing experiments to ENA.
     b. :ref:`ae_publication`: collecting, scoring and saving new publications appear on |europe_pmc|.
@@ -34,8 +34,7 @@ The diagram above shows the top level components of the project. It lists only t
 
 * :ref:`utils`: Contains shared utilities like email services, parsers, and wrappers to already existing tools like fastaq validators ...etc.
 
-* Services: Exports different  functionality of the package as a REST web service to be used by other local tools.
- This can be added later after the core is developed by using Django REST Framework or any other alternative.
+* Services: Exports different  functionality of the package as a REST web service to be used by other local tools. This can be added later after the core is developed by using Django REST Framework or any other alternative.
 
 
 Modules
@@ -45,7 +44,7 @@ Modules
     :maxdepth: 2
     :glob:
 
-    project_modules/automation/*
+    project_modules/automation/automation
     project_modules/dal
     project_modules/geo
 

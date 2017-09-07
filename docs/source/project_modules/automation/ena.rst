@@ -1,15 +1,16 @@
 ..  _ena:
 
 
-ENA
-===
+ENA Brokering
+============
+
 Background
 -----------
-    ArrayExpress was first designed as a repository for microarray experiments.
+ArrayExpress was first designed as a repository for microarray experiments.
 By the beginning of the current millennium, DNA and RNA sequencing technologies have been introduced.
 Hence, came the need to work-around ArrayExpress to hold sequencing and high throughput studies.
 
-    With |ena_url| , raw data now can be stored at ENA with having the metadata analysed, curated, and stored in ArrayExpress.
+With |ena_url| , raw data now can be stored at ENA with having the metadata analysed, curated, and stored in ArrayExpress.
 This process has been done for years manually by curators, which takes lots of time and effort in addition to the introduction of human errors.
 
 This module is responsible for handling the automatic submission of a sequencing project to ENA,
@@ -26,11 +27,10 @@ Workflow
 The diagram above shows the state diagram of the ENA brokering pipeline.
 
 
-Auto Documentation
-------------------
+
 
 Usage
-++++++
+------
 
 ::
 
@@ -44,13 +44,13 @@ Usage
                             [-np patern1 patern2 ... [patern1 patern2 ... ...]]
                             MAGE-TAB_xxxx E-MTAB-xxxx
 
-DocString
-+++++++++
+Auto Documentation
+------------------
 
 Below sections are generated from python doc.
 
 :mod:`ena_brokering`
----------------------
+++++++++++++++++++++
 
 .. automodule:: automation.ena.ena_brokering
     :members:
@@ -59,14 +59,14 @@ Below sections are generated from python doc.
 
 
 :mod:`add_ena_accessions`
--------------------------
++++++++++++++++++++++++++
 
 .. automodule:: automation.ena.add_ena_accessions
     :members:
     :show-inheritance:
 
 :mod:`ena_experiment`
-----------------------------
++++++++++++++++++++++
 
 .. automodule:: automation.ena.ena_experiment
     :members:

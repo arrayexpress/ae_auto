@@ -56,7 +56,7 @@ def validate_data_files_view(request, job_id=''):
         v.save()
         py_file = os.path.abspath(
             os.path.join(os.path.dirname(__file__), '..', '..', 'utils', 'validators', 'fastq_validators.py'))
-        cmd = """ssh ebi-login-001 "source /etc/profile.d/lsf.sh;bsub -u ahmed -q production-rh7 'source /nfs/production3/ma/home/arrayexpress/ae_automation/resources-rh7/bashrc;which python; python %s %s %s'" """ % (py_file, req_id, data_dir)
+        cmd = """ssh ebi-login-001 'source /etc/profile.d/lsf.sh;bsub -u ahmed -q production-rh7 "source /nfs/production3/ma/home/arrayexpress/ae_automation/resources-rh7/bashrc;which python; python %s %s %s"' """ % (py_file, req_id, data_dir)
         # cmd = """export PYTHONPATH="${PYTHONPATH}:/home/gemmy/PycharmProjects/ae_automation";source /home/gemmy/automation/bin/activate; python %s %s %s """ % (
         #     py_file, req_id, data_dir)
         print cmd

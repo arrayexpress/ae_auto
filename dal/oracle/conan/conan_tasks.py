@@ -1,4 +1,4 @@
-from dal.oracle.comon import execute_select, execute_insert
+from dal.oracle.common import execute_select, execute_insert
 from dal.oracle.conan import db
 
 __author__ = 'Ahmed G. Ali'

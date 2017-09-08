@@ -136,7 +136,7 @@ def get_fq_uri(acc, pair_order=''):
 
 def get_mage_tab(ae_acc):
     """
-    Parse the MAGE=TAB files into mapping objects.
+    Parse the MAGE-TAB files into mapping objects.
 
     :param ae_acc: ArrayExpress accession, e.g. E-MTAB-xxxx
     :type ae_acc: str

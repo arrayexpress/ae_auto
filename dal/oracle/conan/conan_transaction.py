@@ -1,5 +1,5 @@
 import datetime
-from dal.oracle.comon import execute_select
+from dal.oracle.common import execute_select
 from dal.oracle.conan import db
 
 __author__ = 'Ahmed G. Ali'

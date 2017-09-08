@@ -1,9 +1,5 @@
 from subprocess import Popen, PIPE
 
-import pwd
-
-import os
-from nbstreamreader import NonBlockingStreamReader as NBSR
 
 __author__ = 'Ahmed G. Ali'
 

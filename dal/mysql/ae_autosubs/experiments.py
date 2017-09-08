@@ -1,5 +1,5 @@
 from dal.mysql.ae_autosubs import db
-from dal.mysql.comon import execute_select, execute_insert
+from dal.mysql.common import execute_select, execute_insert
 
 __author__ = 'Ahmed G. Ali'
 

@@ -32,6 +32,12 @@ PRIVATE = {}
 
 
 def get_permission(acc):
+    """
+    Checks whether the experiment is public or not.
+
+    :param acc: ArrayExpress experiment accession. e.g. ``E-MTAB-xxxx``
+    :type acc: str
+    """
     permission = retrieve_permission_for_accession(acc)
     release_date = None
     is_public = None
@@ -45,6 +51,17 @@ def get_permission(acc):
 
 
 def main(query='arrayexpress'):
+    """
+    Main method of execution. it is baisically and infinit loop with termination condition that does the following:
+        - Call Europe BMC utils for all articles matching the search word 'ArrayExpress' execluding GEO experiments.
+        - Filter the collected list with those matching already existing ArrayExpress experiment.
+        - Update the publication in AE database if already exists.
+        - Calls the proper method to handle association based on the number of association with publication and experiments.
+
+    :param query: The search value for Europe BMC API. Default: *arrayexpress*
+    :type query: str
+
+    """
     page = 1
     while True:
         art = search(query=query, page=page)
@@ -53,15 +70,7 @@ def main(query='arrayexpress'):
 
         page += 1
         articles = search_textmined(art)
-        # f = open('/home/gemmy/articles.json', 'w')
-        # f.write(json.dumps(articles))
-        # f.close()
-        # f = open('/home/gemmy/articles.json', 'r')
-        # articles = json.loads(f.read())
-        # f.close()
-        # print 'Articles count: ', len(articles)
         for article in articles:
-            # print 'Pubmed: ', article.get('pmid', ''), ' Accssions: ', article.get('accessions', [])
             for acc in article.get('accessions', []):
                 if acc.startswith('E-GEOD-'):
                     continue
@@ -81,10 +90,6 @@ def main(query='arrayexpress'):
                         PRIVATE[acc] = [article]
                     else:
                         PRIVATE[acc].append(article)
-                        # f = open('/home/gemmy/newpubs', 'w')
-                        # for k, v in NEW_PUBS.items():
-                        #     f.write(k + ': ' + str(len(v)) + '\n' + str(v) + '\n' + 50 * '=' + '\n')
-                        # f.close()
     print 'new: ', len(NEW_PUBS)
     print '=' * 40
     print 'connected: ', len(CONNECTING_PUBS)
@@ -94,11 +99,22 @@ def main(query='arrayexpress'):
 
 
 def manage_more_than_one_publications(acc, article, pubs):
+    """
+    This method is for the case of having more than one associated publications with the study in ArrayExpress database.
+
+    :param acc: ArrayExpress accession. e.g. ``E-MTAB-xxxx``
+    :type acc: str
+    :param article: Json object as collected from Europe BMC.
+    :type article: dict
+    :param pubs: List of Json objects for publications found in ArrayExpress database.
+    :type pubs: :obj:`list` of :obj:`dict`
+    :return:
+    """
     existing_pubs = [
         pub for pub in pubs if
         unicode(pub.get('title', None)) == unicode(article.get('title', '')) or
         pub.get('pubmed', None) == article.get('pmid', '')
-        ]
+    ]
     if len(existing_pubs) == 0:
         if acc not in NEW_PUBS.keys():
             NEW_PUBS[acc] = [article]
@@ -115,6 +131,17 @@ def manage_more_than_one_publications(acc, article, pubs):
 
 
 def manage_single_existing_publication(article, existing_pub, acc):
+    """
+    This method is for the case of having single associated publications with the study in ArrayExpress database.
+
+    :param acc: ArrayExpress accession. e.g. ``E-MTAB-xxxx``
+    :type acc: str
+    :param article: Json object as collected from Europe BMC.
+    :type article: dict
+    :param existing_pub: Json object for the single publication found in the database.
+    :type existing_pub: dict
+
+    """
     if article.get('title', None) and existing_pub.get('title', None):
         if article.get('title', '').encode('utf8') == existing_pub.get('title', ''):
             # update_publication_view_by_pubid(existing_pub.get('pubid'), article)
@@ -124,8 +151,15 @@ def manage_single_existing_publication(article, existing_pub, acc):
 
 
 def manage_no_existing_publications(acc, article):
-    # add_association(acc, article)
-    # exit()
+    """
+    This method is for the case where there is no any associated publications with the study in ArrayExpress database.
+
+    :param acc: ArrayExpress accession. e.g. ``E-MTAB-xxxx``
+    :type acc: str
+    :param article: Json object as collected from Europe BMC.
+    :type article: dict
+
+    """
     is_associated = False
 
     pub_id = retrieve_publication_by_acc(article['id'])
@@ -149,16 +183,24 @@ def manage_no_existing_publications(acc, article):
             study_id = retrieve_study_id_by_acc(acc)[0]['id']
 
             insert_study_publication(study_id, pub_id)
-            # insert_publication_view(acc, article)
     add_association(acc, article, is_associated)
 
 
 def add_association(acc, article, is_associated=False):
-    experiment = retrieve_study_by_acc(acc)[0]
+    """
+    Adding association between `Publication` and `Experiment` objects in the Django models which is used by
+    curators to approve or reject linkage between an article and a study.
 
-    # exp, exp_created = Experiment.objects.get_or_create(accession=acc,
-    #                                                     title=experiment.title,
-    #                                                     description=experiment.description)
+    :param acc: ArrayExpress accession. e.g. ``E-MTAB-xxxx``
+    :type acc: str
+    :param article: Json object as collected from Europe BMC.
+    :type article: dict
+    :param is_associated: Flag indicating whether the publication is already associated with the study in the
+        AE database or not
+    :type is_associated: bool
+
+    """
+    experiment = retrieve_study_by_acc(acc)[0]
     exp = Experiment.objects.filter(
         Q(accession=acc) | Q(title=experiment.title) | Q(description=experiment.description)).first()
     # print exp, exp_created
@@ -167,11 +209,6 @@ def add_association(acc, article, is_associated=False):
                          title=experiment.title,
                          description=experiment.description)
         exp.save()
-    # pub, pub_created = Publication.objects.get_or_create(pubmed=article.get('pmid', None),
-    # pmc_id=article.get('pmcid'),
-    #                                                      doi=article.get('doi', None),
-    #                                                      title=article['title'], whole_article=json.dumps(article))
-    # print pub, pub_created
     pub = Publication.objects.filter(
         Q(pubmed=article.get('pmid', -1)) | Q(pmc_id=article.get('pmcid')) | Q(
             doi=article.get('doi', 'ANY THING ELSE')) | Q(title=article['title'])).first()
@@ -188,9 +225,6 @@ def add_association(acc, article, is_associated=False):
     if ass_created:
         ass.is_associated = is_associated
         ass.save()
-
-        # print ass, ass_created
-        # print '=' * 30
 
 
 if __name__ == '__main__':

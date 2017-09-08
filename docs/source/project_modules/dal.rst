@@ -2,24 +2,38 @@
 
 Data Access Layer (DAL)
 ======================
+DAL is the only way of accessing databases in the whole application. There are 2 main packages namely ``mysql``
+and ``oracle`` for the 2 db resources we have. Each of them contains list of packages for each db scheme we have.
+These schema packages are simply direct implementation for |gatway| and |transaction_script| design pattern.
+
+
+
+.. |gateway| raw:: html
+
+   <a href="https://martinfowler.com/eaaCatalog/tableDataGateway.html" target="_blank"><i>Table Gate Way</i></a>
+
+.. |transaction_script| raw:: html
+
+   <a href="https://martinfowler.com/eaaCatalog/transactionScript.html" target="_blank"><i>Transaction Scripts</i></a>
 
 .. _MySQL:
 
 MySQL
--------------
+------
 
 
-:mod:`comon`
--------------------
+:mod:`common`
++++++++++++++
+This module contains basic DB connection and sql execution.
 
-.. automodule:: dal.mysql.comon
+.. automodule:: dal.mysql.common
     :members:
     :undoc-members:
     :show-inheritance:
 
 
 :mod:`ae_autosubs`
---------------------------
+++++++++++++++++++
 
 :mod:`experiments`
 ^^^^^^^^^^^^^^^^^^
@@ -30,7 +44,7 @@ MySQL
     :show-inheritance:
 
 :mod:`annotare`
-----------------
+++++++++++++++++++
 
 
 :mod:`data_files`
@@ -61,15 +75,16 @@ Oracle
 ----------------
 
 
-:mod:`comon`
--------------------
+:mod:`common`
++++++++++++++
+This module contains basic DB connection and sql execution.
 
-.. automodule:: dal.oracle.comon
+.. automodule:: dal.oracle.common
     :members:
     :undoc-members:
     :show-inheritance:
-:mod:`ae2` Package
-------------------
+:mod:`ae2`
++++++++++++++
 
 
 :mod:`ae2_transaction`

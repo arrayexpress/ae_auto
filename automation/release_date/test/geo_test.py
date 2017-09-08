@@ -7,7 +7,7 @@ import settings
 from automation.release_date import geo
 from dal.mysql.ae_autosubs import db as ae_autosubs_db
 from dal.mysql.ae_autosubs.experiments import retrieve_experiment_status
-from dal.mysql.comon import execute_insert
+from dal.mysql.common import execute_insert
 from settings import GEO_ACCESSIONS_PATH
 
 __author__ = 'Ahmed G. Ali'

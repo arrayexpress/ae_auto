@@ -1,5 +1,5 @@
 from dal.oracle.ae2 import db
-from dal.oracle.comon import execute_select, execute_insert
+from dal.oracle.common import execute_select, execute_insert
 
 __author__ = 'Ahmed G. Ali'
 

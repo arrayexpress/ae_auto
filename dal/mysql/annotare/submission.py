@@ -1,5 +1,5 @@
 from dal.mysql.annotare import db
-from dal.mysql.comon import execute_select
+from dal.mysql.common import execute_select
 
 __author__ = 'Ahmed G. Ali'
 

@@ -65,7 +65,7 @@ Modules
 
 .. |gateway| raw:: html
 
-   <a href="https://martinfowler.com/eaaCatalog/tableDataGateway.html" target="_blank">ADF format</a>
+   <a href="https://martinfowler.com/eaaCatalog/tableDataGateway.html" target="_blank">Table Data Gateway</a>
 .. |transaction_script| raw:: html
 
-   <a href="https://martinfowler.com/eaaCatalog/transactionScript.html" target="_blank">Transaction scripts</a>
+   <a href="https://martinfowler.com/eaaCatalog/transactionScript.html" target="_blank">Transaction Scripts</a>

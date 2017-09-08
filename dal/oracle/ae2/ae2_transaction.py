@@ -1,6 +1,6 @@
 import datetime
 from dal.oracle.ae2 import db
-from dal.oracle.comon import execute_select
+from dal.oracle.common import execute_select
 
 __author__ = 'Ahmed G. Ali'
 

@@ -1,4 +1,4 @@
-from dal.oracle.comon import execute_select
+from dal.oracle.common import execute_select
 from dal.oracle.era import db
 
 __author__ = 'Ahmed G. Ali'

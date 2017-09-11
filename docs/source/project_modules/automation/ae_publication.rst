@@ -3,7 +3,7 @@
 AE Publication
 ===============
 This module is responsible for importing publications form |europe_pmc| associated with ArrayExpress experiments.
-It uses the Europe PMC |pmc_rest| - client implementation is :doc:`here <../resources/europe_pmc>`- to collect all
+It uses the Europe PMC |pmc_rest| - client implementation is `here <../resources.html#pmc_serv>`_- to collect all
 articles mentioning `ArrayExpress`.
 
 After that, articles are filtered based by calling |tmt| endpoint of the rest API and execluding those articles

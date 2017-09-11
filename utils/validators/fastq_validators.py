@@ -58,7 +58,7 @@ def validate(req_id, ena_dir):
      
     :param req_id: The request ID used by the client as a unique identifier for their job. 
     :param ena_dir: The directory on ENA machine that containing the datafiles and the SDRF.
-    :return: None
+
     """
     report = {'file_errors': {}, 'pairs_errors': [], 'valid_files': [], 'execution_errors': [], 'integrity_errors': []}
     v = Validate.objects.filter(job_id=req_id)

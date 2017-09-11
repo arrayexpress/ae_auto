@@ -8,12 +8,28 @@ __author__ = 'Ahmed G. Ali'
 
 
 def search(query,  page=1, result_format='JSON', iteration=0):
+    """
+    Send get request to Europe PMC rest API ``http://www.ebi.ac.uk/europepmc/webservices/rest/`` using the
+    ``search`` endpoint with given parameters.
+
+    :param query: Query send to rest API.
+    :type query: str
+    :param page: Page number of the results.
+    :type page: int
+    :param result_format: results return format. Default: 'JSON'
+    :type result_format: str
+    :param iteration: Number indicating how many times the same request was called. Terminating the execution
+        after 10 times with 30 sec sleep between each attempt.
+    :type iteration: int
+    :return: List of JSON objects as returned from Europe PMC.
+    :rtype: :obj:`list` of :obj:`dict`
+    """
     _articles = []
     if iteration == 10:
         return _articles
     url = PMC_BASE_URL + 'search/query=' + query + '&format=' + result_format + '&page=' + str(
         page) + '&sort_date:y&resulttype=core'
-    print url
+    # print url
     # exit
     r = requests.get(url)
     res = json.loads(r.text)
@@ -69,6 +85,16 @@ def search(query,  page=1, result_format='JSON', iteration=0):
 
 
 def search_textmined(articles):
+    """
+    Send get request to Europe PMC rest API ``http://www.ebi.ac.uk/europepmc/webservices/rest/`` using the
+    ``PMC/*PMC_ID*/textMinedTerms/ACCESSION/1/json`` endpoint with given parameters.
+
+    :param articles: List of articles as collected from Europe PMC
+    :type articles: :obj:`list` of :obj:`dict`
+
+    :return: List of articles having one or more ArrayExpress Accession in their text-mined terms.
+    :rtype: :obj:`list` of :obj:`dict`
+    """
     url = PMC_BASE_URL + 'PMC/%s/textMinedTerms/ACCESSION/1/json'
     return_articles = []
     for article in articles:

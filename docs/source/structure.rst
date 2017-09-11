@@ -46,6 +46,7 @@ Modules
 
     project_modules/automation/automation
     project_modules/dal
+    project_modules/resources
     project_modules/geo
 
 

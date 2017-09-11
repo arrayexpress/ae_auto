@@ -4,7 +4,7 @@ Data Access Layer (DAL)
 ======================
 DAL is the only way of accessing databases in the whole application. There are 2 main packages namely ``mysql``
 and ``oracle`` for the 2 db resources we have. Each of them contains list of packages for each db scheme we have.
-These schema packages are simply direct implementation for |gatway| and |transaction_script| design pattern.
+These schema packages are simply direct implementation for |gateway| and |transaction_script| design pattern.
 
 
 

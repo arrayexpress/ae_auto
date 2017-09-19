@@ -16,9 +16,9 @@ curators using the :doc:`web app <../ae_web/ae_web>` of this project.
 Code and Inline Documentation
 ------------------------------
 
-
 :mod:`publications_experiments`
-++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++
+
 
 .. automodule:: automation.ae_publications.publications_experiments
     :members:

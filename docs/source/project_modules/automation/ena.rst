@@ -32,7 +32,7 @@ The diagram above shows the state diagram of the ENA brokering pipeline.
 Usage
 ------
 
-::
+.. code-block:: bash
 
     $ python ena_brokering.py [-h] [-as] [-t] [-cp] [-mp] [-m]
                             [-bd path/to/experiment/directory/__without__/MAGE-TAB_xxx]

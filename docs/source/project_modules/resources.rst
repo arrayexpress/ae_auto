@@ -55,6 +55,6 @@ This module is a client for |ncbi| |eutils|
 
    <a href="https://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a>
 
-.. |pmc_rest| raw:: html
+.. |eutils| raw:: html
 
    <a href="https://www.ncbi.nlm.nih.gov/books/NBK25501/" target="_blank">Entrez Programming Utilities (E-Utilities)</a>

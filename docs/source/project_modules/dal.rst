@@ -145,7 +145,7 @@ This module contains basic DB connection and sql execution.
 
 
 :mod:`biostudies` 
------------------
++++++++++++++
 
 :mod:`biostudies_transaction` 
 ^^^^^^^^^^^^^^^^^^
@@ -156,7 +156,7 @@ This module contains basic DB connection and sql execution.
     :show-inheritance:
 
 :mod:`conan` 
---------------------
++++++++++++++
 
 
 :mod:`conan_tasks` 
@@ -185,7 +185,7 @@ This module contains basic DB connection and sql execution.
 
 
 :mod:`era` 
-------------------
++++++++++++++
 
 
 :mod:`data_file_meta` 

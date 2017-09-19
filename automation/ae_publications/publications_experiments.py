@@ -52,7 +52,7 @@ def get_permission(acc):
 
 def main(query='arrayexpress'):
     """
-    Main method of execution. it is baisically and infinit loop with termination condition that does the following:
+    Main method of execution. it is basically and infinite loop with termination condition that does the following:
         - Call Europe BMC utils for all articles matching the search word 'ArrayExpress' execluding GEO experiments.
         - Filter the collected list with those matching already existing ArrayExpress experiment.
         - Update the publication in AE database if already exists.

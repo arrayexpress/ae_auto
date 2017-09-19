@@ -28,12 +28,15 @@ __author__ = 'Ahmed G. Ali'
 
 
 def copy_files(ena_dir, local_dir):
-    """
-    Copying the data directory for the the study from ENA machine to EBI local cluster.
-    :param ena_dir: The directory containing data files to be validated and also the SDRF file. 
-    This directory should be in /fire/staging/aexpress/
+    """Copying the data directory for the the study from ENA machine to EBI local cluster.
+
+    :param ena_dir: The directory containing data files to be validated and also the SDRF file.
+        This directory should be in `/fire/staging/aexpress/`
+    :type ena_dir: str
     :param local_dir: The temp directory created on the local shared storage. This is removed after the validation ended.
+    :type local_dir: str
     :return: std_out and std_err of the copy command.
+    :rtype: :obj:`tuple` of :obj:`str`
     """
     if not os.path.exists(local_dir):
         print 'creating %s' % local_dir
@@ -48,16 +51,18 @@ def copy_files(ena_dir, local_dir):
 
 def validate(req_id, ena_dir):
     """
-    - Validates fastq files for a seq submission. This method is called by the Django API. 
+    Validates fastq files for a seq submission. This method is called by the Django API.
     It create a new DB record for the validation job that can be retrieved by the calling the check endpoint.
     
-    - Jobs statuses are: 
-     -- P => Pending (used when the job is still running, or execution errors appeared) 
-     -- F ==> Failed
-     -- V ==> Valid
+    Jobs statuses are:
+        - P => Pending (used when the job is still running, or execution errors appeared)
+        - F ==> Failed
+        - V ==> Valid
      
-    :param req_id: The request ID used by the client as a unique identifier for their job. 
+    :param req_id: The request ID used by the client as a unique identifier for their job.
+    :type req_id: str
     :param ena_dir: The directory on ENA machine that containing the datafiles and the SDRF.
+    :type ena_dir: str
 
     """
     report = {'file_errors': {}, 'pairs_errors': [], 'valid_files': [], 'execution_errors': [], 'integrity_errors': []}

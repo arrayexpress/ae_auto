@@ -17,16 +17,16 @@ def retrieve_connection(db):
 
 
 def execute_select(sql_stmt, db, keep_connection=False):
-    """
-        Executes select statement and returning list of results.
+    """Executes select statement and returning list of results.
 
-        :param sql_stmt: SQL statement to be executed.
-        :type sql_stmt: str
-        :param db: Json object containing connection string parameters
-        :type db: dict
-        :param keep_connection: Keep the connection opened so that can be used to retrieve other nested objects.
-        e.g. the content of an xml object.
-        :return: list of results from DB
+    :param sql_stmt: SQL statement to be executed.
+    :type sql_stmt: str
+    :param db: Json object containing connection string parameters
+    :type db: dict
+    :param keep_connection: Keep the connection opened so that can be used to retrieve other nested objects.
+                            e.g. the content of an xml object.
+    :return: list of results from DB
+
         """
     res = []
     con = None

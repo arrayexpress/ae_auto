@@ -1,11 +1,10 @@
 .. _dal_ref:
 
 Data Access Layer (DAL)
-======================
+========================
 DAL is the only way of accessing databases in the whole application. There are 2 main packages namely ``mysql``
 and ``oracle`` for the 2 db resources we have. Each of them contains list of packages for each db scheme we have.
 These schema packages are simply direct implementation for |gateway| and |transaction_script| design pattern.
-
 
 
 .. |gateway| raw:: html
@@ -16,14 +15,14 @@ These schema packages are simply direct implementation for |gateway| and |transa
 
    <a href="https://martinfowler.com/eaaCatalog/transactionScript.html" target="_blank"><i>Transaction Scripts</i></a>
 
-.. _MySQL:
+.. _MySQL_ref:
 
 MySQL
 ------
 
 
-:mod:`common`
-+++++++++++++
+:mod:`MySQL.common`
++++++++++++++++++++
 This module contains basic DB connection and sql execution.
 
 .. automodule:: dal.mysql.common
@@ -69,26 +68,27 @@ This module contains basic DB connection and sql execution.
 
 
 
-.. _Oracle:
+.. _Oracle_ref:
 
 Oracle
 ----------------
 
 
-:mod:`common`
-+++++++++++++
+:mod:`Oracle.common`
+++++++++++++++++++++
 This module contains basic DB connection and sql execution.
 
 .. automodule:: dal.oracle.common
     :members:
     :undoc-members:
     :show-inheritance:
+
 :mod:`ae2`
 +++++++++++++
 
 
 :mod:`ae2_transaction`
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dal.oracle.ae2.ae2_transaction
     :members:
@@ -104,7 +104,7 @@ This module contains basic DB connection and sql execution.
     :show-inheritance:
 
 :mod:`plat_design`
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dal.oracle.ae2.plat_design
     :members:
@@ -112,7 +112,7 @@ This module contains basic DB connection and sql execution.
     :show-inheritance:
 
 :mod:`publication`
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dal.oracle.ae2.publication
     :members:
@@ -128,7 +128,7 @@ This module contains basic DB connection and sql execution.
     :show-inheritance:
 
 :mod:`study_publication`
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dal.oracle.ae2.study_publication
     :members:
@@ -136,7 +136,7 @@ This module contains basic DB connection and sql execution.
     :show-inheritance:
 
 :mod:`view_publications`
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dal.oracle.ae2.view_publications
     :members:
@@ -145,10 +145,10 @@ This module contains basic DB connection and sql execution.
 
 
 :mod:`biostudies` 
-+++++++++++++
+++++++++++++++++++
 
 :mod:`biostudies_transaction` 
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dal.oracle.biostudies.biostudies_transaction
     :members:
@@ -160,7 +160,7 @@ This module contains basic DB connection and sql execution.
 
 
 :mod:`conan_tasks` 
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dal.oracle.conan.conan_tasks
     :members:
@@ -168,7 +168,7 @@ This module contains basic DB connection and sql execution.
     :show-inheritance:
 
 :mod:`conan_transaction` 
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dal.oracle.conan.conan_transaction
     :members:
@@ -176,7 +176,7 @@ This module contains basic DB connection and sql execution.
     :show-inheritance:
 
 :mod:`conan_users` 
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dal.oracle.conan.conan_users
     :members:
@@ -189,7 +189,7 @@ This module contains basic DB connection and sql execution.
 
 
 :mod:`data_file_meta` 
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dal.oracle.era.data_file_meta
     :members:
@@ -197,7 +197,7 @@ This module contains basic DB connection and sql execution.
     :show-inheritance:
 
 :mod:`era_transaction`
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dal.oracle.era.era_transaction
     :members:
@@ -213,7 +213,7 @@ This module contains basic DB connection and sql execution.
     :show-inheritance:
 
 :mod:`experiment_sample`
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dal.oracle.era.experiment_sample
     :members:

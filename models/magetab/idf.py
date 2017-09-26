@@ -15,6 +15,14 @@ __author__ = 'Ahmed G. Ali'
 
 
 class IDFElementSingle:
+    """
+    Single complex IDF entry. e.g. Experiment
+
+    :param exps: JSON object of fields of the entry
+    :type exps: dict with :obj:`str` values
+    :param reg: Common name in the fields to be removed
+    :type reg: str
+    """
     def __init__(self, exps, reg):
         elms = {}
         for title, val in exps.items():
@@ -25,6 +33,14 @@ class IDFElementSingle:
 
 
 class IDFElementMultiple(list):
+    """
+    Muliple complex IDF entry. e.g. Person and Protocol
+
+    :param exps: JSON object of fields of the entry
+    :type exps: dict with :obj:`list` of :obj:`str` values
+    :param reg: Common name in the fields to be removed
+    :type reg: str
+    """
     def __init__(self, exps, reg):
         super(IDFElementMultiple, self).__init__()
         lst = [len(vals) for t, vals in exps.items()]
@@ -46,8 +62,29 @@ class IDFElementMultiple(list):
 
 
 class IDF:
-    def __init__(self, idf_path=None, combined=False, skip_release_date=False):
+    """
+            Main class for IDF mapping. It encapsulates the data of the `IDF` as follows:
+                - Single `string` entry: stored as :obj:`str`
+                - Complex single entry: stored as an instance of :ref:`IDFElementMultiple`.
+                    e.g. experiment attributes below construct single object ``self.experiment``
+                        - Experiment Description
+                        - Experimental Design
+                        - Experimental Design Term Source REF
+                        - Experimental Design Term Accession Number
+                        - Experimental Factor Name
+                        - Experimental Factor Type
+                        - Experimental Factor Term Source REF
+                        - Experimental Factor Term Accession Number
+                - Complex multiple entry: stored as instance of :ref:`IDFElementMultiple`. e.g. Person objects.
 
+            :param idf_path: Full path for the IDF file
+            :type idf_path: str
+            :param combined: when ``True``, the IDF and SDRF are in a single file, Default: ``False``
+            :type combined: bool
+            :param skip_release_date: when ``False``, earlier or past release date will be changed to at least 10 days in the
+                future
+            """
+    def __init__(self, idf_path=None, combined=False, skip_release_date=False):
         self.lines = []
         self.rewrite = False
         self.skip_release_date = skip_release_date
@@ -73,6 +110,10 @@ class IDF:
         self.__dict__['mage-tab_version'] = ['1.1']
 
     def __load_idf(self):
+        """
+        Private method called with ``__init__``
+        Loads IDF file.
+        """
         elms = {}
         lines = []
         with open(self.id_path, 'rb') as csvfile:
@@ -110,6 +151,10 @@ class IDF:
         self.__dict__.update(elms)
 
     def generate_idf(self):
+        """
+        Exports IDF to the same file used to load.
+
+        """
         # print self.original_mapping
         # exit()
         fields = OrderedDict([

@@ -24,8 +24,8 @@ The diagram above shows the top level components of the project. It lists only t
 
 * :ref:`dal_ref`: It is the only way to access different databases using both |gateway|, and |transaction_script| Transaction scripts. It has 2 main blocks according the the database type:
 
-   a. :ref:`MySQL`: Contains all gateways and transaction scripts for each MySQL schema
-   b. :ref:`Oracle`: Contains the gateways and transaction scripts for each Oracle Database.
+   a. :ref:`MySQL_ref`: Contains all gateways and transaction scripts for each MySQL schema
+   b. :ref:`Oracle_ref`: Contains the gateways and transaction scripts for each Oracle Database.
 
 
 * :ref:`resources`: This package contains the scripts and tools required to access external services such as Europe PMC and ENA services.
@@ -49,6 +49,7 @@ Modules
     project_modules/resources
     project_modules/settings
     project_modules/utils
+    project_modules/models/models
 
 
 

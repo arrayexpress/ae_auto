@@ -119,8 +119,15 @@ class IDF:
         with open(self.id_path, 'rb') as csvfile:
             idf_reader = csv.reader(csvfile, delimiter='\t', quotechar='|')
             for row in idf_reader:
-                # row = [u"".join([re.sub(r'[\x00-\x1f]', '',c) for c in unicodedata.normalize('NFKD', i.decode('utf8')) if not unicodedata.combining(c)]) for i in row]
-                row = [re.sub(r'[\x00-\x1f]', '', i).decode('utf8') for i in row]
+                # row = [unicodedata.normalize('NFKD', i) for i in row]
+                for i in range(len(row)):
+                    line = row[i]
+                    line = line.decode('utf-8')
+                    line = unicodedata.normalize('NFKD', line)
+                    line = u"".join([c for c in line if not unicodedata.combining(c)])
+                    line = filter(lambda x: x in string.printable, line)
+                    row[i] = line
+
                 if self.combined:
                     if '[idf]' in row[0].lower() or row == ['']:
                         continue
@@ -128,7 +135,7 @@ class IDF:
                         break
                 line = '\t'.join(row)
                 self.rewrite = True
-                line = filter(lambda x: x in string.printable, line)
+                # line = filter(lambda x: x in string.printable, line)
                 lines.append(line)
                 if row[0] == 'Public Release Date':
                     if parse(row[1]) < datetime.datetime.now() + datetime.timedelta(
@@ -152,7 +159,7 @@ class IDF:
 
     def generate_idf(self):
         """
-        Exports IDF to the same file used to load.
+        Exports IDF to as one string.
 
         """
         # print self.original_mapping
@@ -196,13 +203,20 @@ class IDF:
 
         for k, v in fields.items():
             fields[k] = '\t'.join(getattr(self, k.lower().replace(' ', '_'), []))
-
+        idf_lines = []
         for h, v in fields.items():
-            print '%s\t%s' % (h, v)
+            idf_lines.append( '%s\t%s' % (h, v))
+        return '\n'.join(idf_lines)
 
 
 if __name__ == '__main__':
-    idf = IDF(idf_path='/home/gemmy/submission3559_annotare_v1.idf.txt')
+    from sys import argv
+    if len(argv) < 2:
+        idf = IDF(idf_path='/home/gemmy/submission3559_annotare_v1.idf.txt')
+    else:
+        idf = IDF(idf_path=argv[1])
+    print idf.generate_idf()
+    exit()
     for p in idf.protocols:
         print p.description
     exit()

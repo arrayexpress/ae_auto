@@ -21,7 +21,7 @@ def get_ae_acc_by_ena_acc(ena_acc):
 
 
 def get_ena_acc_and_submission_acc_by_ae_acc(ae_acc):
-    sql = """SELECT STUDY_ID, SUBMISSION_ID FROM STUDY where ARRAYEXPRESS_ID = '%s'""" % ae_acc
+    sql = """SELECT STUDY_ID, SUBMISSION_ID FROM STUDY where ARRAYEXPRESS_ID = '%s' or STUDY_ALIAS ='%s'""" % (ae_acc,ae_acc)
     print sql
     return execute_select(sql, db)
 

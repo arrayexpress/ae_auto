@@ -145,6 +145,7 @@ def get_mage_tab(ae_acc):
     :rtype: (IDF, SdrfCollection)
     """
     dir_name = get_magetab_path(ae_acc)
+    print dir_name
     # print dir_name
     idf_file = get_idf_path(ae_acc, dir_name)
     sdrf_file = extract_sdrf_file_name(exp_path=dir_name, accession=ae_acc)
@@ -169,7 +170,7 @@ def get_idf_ena_comment(runs):
     :return: The constructed comment containing ENA runs URLs
     :rtype: str
     """
-    runs_int = sorted(list(set(list([int(r.replace('ERR', '')) for r in runs if r !='']))))
+    runs_int = sorted(list(set(list([int(r.replace('ERR', '')) for r in runs if r != '']))))
     urls = []
     print urls
     l = [as_range(g) for _, g in groupby(runs_int, key=lambda n, c=count(): n - next(c))]
@@ -249,5 +250,23 @@ if __name__ == '__main__':
     #     print 'Web site exists'
     # except urllib2.URLError, e:
     #     print e
-    _idf, _sdrf = get_mage_tab(ae_acc='E-MTAB-4617')
-    add_ena_accessions(ae_acc='E-MTAB-4617', idf=_idf, sdrf=_sdrf, out_file=_idf.id_path)
+    # _idf, _sdrf = get_mage_tab(ae_acc='E-MTAB-4617')
+    # add_ena_accessions(ae_acc='E-MTAB-4617', idf=_idf, sdrf=_sdrf, out_file=_idf.id_path)
+    runs = """ERR2093974
+ERR2093974
+ERR2093975
+ERR2093975
+ERR2093976
+ERR2093976
+ERR2093977
+ERR2093977
+ERR2093978
+ERR2093978
+ERR2093979
+ERR2093979
+ERR2093980
+ERR2093980
+ERR2093981
+
+""" .split('\n')
+    print get_idf_ena_comment(runs)

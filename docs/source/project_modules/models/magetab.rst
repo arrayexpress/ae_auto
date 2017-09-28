@@ -35,3 +35,21 @@ The main class is ``IDF`` which uses other 2 partial classes ``IDFElementSingle`
     :undoc-members:
     :private-members:
 
+:mod:`SDRF Model`
+-----------------
+The main class ``SdrfCollection`` which uses multiple ``SdrfRaw`` objects.
+
+
+:class:`SdrfCollection`
+++++++++++++++++++++++++
+.. autoclass:: models.magetab.sdrf.SdrfCollection
+    :members:
+    :undoc-members:
+    :private-members:
+
+:class:`SdrfRaw`
++++++++++++++++++
+.. autoclass:: models.magetab.sdrf.SdrfRaw
+    :members:
+    :undoc-members:
+    :private-members:

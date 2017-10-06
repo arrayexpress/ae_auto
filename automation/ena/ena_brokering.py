@@ -22,6 +22,7 @@ from dal.oracle.era.study import get_ena_acc_and_submission_acc_by_ae_acc
 from dal.oracle.era.wh_run import retrieve_ena_nodes_relations
 from ena_experiment import ENAExperiment
 from models.conan import CONAN_PIPELINES
+from models.ena_models import ENAStudy
 from models.magetab.idf import IDF
 from models.magetab.sdrf import SdrfCollection
 from resources.ssh import retrieve_plantain_connection, get_ssh_out, retrieve_ena_connection, wait_execution
@@ -63,6 +64,7 @@ def check_modify_file_names(assay_file):
 
 
 def extract_acc_dict(elems):
+    print elems
     dct = {}
     for elm in elems:
         dct[':'.join(elm.attrib['alias'].split(':')[1:])] = elm.attrib['accession']
@@ -327,22 +329,40 @@ class ENASubmission:
             print colored.red('ERROR: No SDRF File')
             exit(1)
         if self.add_samples:
-            receipts = self.copy_receipts()
+            print colored.green("Retrieving submitted Experiment, this might take few minutes.")
+            r = get_ena_acc_and_submission_acc_by_ae_acc(self.accession)[0]
+            study_acc = r.study_id
 
-            for receipt in receipts:
-                old_experiments, old_runs, old_samples, study_acc, old_biosamples = parse_receipt(
-                    os.path.join(self.local_tmp, receipt), False)
-                self.samples = merge_two_dicts(old_samples, self.samples)
-                self.runs = merge_two_dicts(old_runs, self.runs)
-                # print self.runs
-                self.experiments = merge_two_dicts(old_experiments, self.experiments)
-                if not self.study_accession:
-                    self.study_accession = study_acc
-                self.biosamples = merge_two_dicts(old_biosamples, self.biosamples)
+            study = ENAStudy(study_acc=study_acc)
+            # print str(study)
+            for exp in study.experiments:
+                self.experiments[exp.name] = exp.exp_acc
+                for run in exp.runs:
+                    self.runs[run.name] = run.run_acc
+                    self.samples[run.sample.name] = run.sample.sample_acc
+                    self.biosamples[run.sample.name] = run.sample.bio_sample
+            if not self.study_accession:
+                self.study_accession = study_acc
+
+            # receipts = self.copy_receipts()
+            #
+            # for receipt in receipts:
+            #     old_experiments, old_runs, old_samples, study_acc, old_biosamples = parse_receipt(
+            #         os.path.join(self.local_tmp, receipt), False)
+            #     self.samples = merge_two_dicts(old_samples, self.samples)
+            #     self.runs = merge_two_dicts(old_runs, self.runs)
+            #     # print self.runs
+            #     self.experiments = merge_two_dicts(old_experiments, self.experiments)
+            #     if not self.study_accession:
+            #         self.study_accession = study_acc
+            #     self.biosamples = merge_two_dicts(old_biosamples, self.biosamples)
+
             # print 'RUNS'
             # print self.runs
             # exit()
             self.added_samples = self.samples.keys()
+        # print self.samples
+        # exit()
         if combined_mage_tab:
             shutil.copyfile(os.path.join(self.exp_path, self.idf_file),
                             os.path.join(self.local_tmp, self.idf_file))

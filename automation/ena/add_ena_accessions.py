@@ -231,7 +231,7 @@ def add_ena_accessions(ae_acc, idf, sdrf, out_file):
     # idf_file = os.path.join(idf.id_path.replace('_original', '').replace('before_ena', ''))
     f = codecs.open(out_file, 'w', 'UTF8')
     try:
-        write_string = (u'%s' % os.linesep).join([i.encode('utf8') for i in combined])
+        write_string = (u'%s' % os.linesep).join([i for i in combined])
     except Exception, e:
         write_string = (u'%s' % os.linesep).join([i.decode('utf8') for i in combined])
     f.write(write_string)

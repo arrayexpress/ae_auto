@@ -123,9 +123,9 @@ class IDF:
                 for i in range(len(row)):
                     line = row[i]
                     line = line.decode('utf-8')
-                    line = unicodedata.normalize('NFKD', line)
-                    line = u"".join([c for c in line if not unicodedata.combining(c)])
-                    line = filter(lambda x: x in string.printable, line)
+                    # line = unicodedata.normalize('NFKD', line)
+                    # line = u"".join([c for c in line if not unicodedata.combining(c)])
+                    # line = filter(lambda x: x in string.printable, line)
                     row[i] = line
 
                 if self.combined:

@@ -2,7 +2,7 @@
 
 
 ENA Brokering
-============
+==============
 
 Background
 -----------
@@ -57,6 +57,7 @@ Below sections are generated from python doc.
     :show-inheritance:
 
 
+.. _add_ena_accessions_ref:
 
 :mod:`add_ena_accessions`
 +++++++++++++++++++++++++
@@ -64,6 +65,8 @@ Below sections are generated from python doc.
 .. automodule:: automation.ena.add_ena_accessions
     :members:
     :show-inheritance:
+
+.. _ena_experiment_ref:
 
 :mod:`ena_experiment`
 +++++++++++++++++++++

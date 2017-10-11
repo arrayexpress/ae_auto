@@ -9,4 +9,6 @@ for data and specific functionality of an object.
     :maxdepth: 2
 
     magetab
+    sra_xml
+    ena_models
 

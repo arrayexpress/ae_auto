@@ -236,7 +236,7 @@ This module contains basic DB connection and sql execution.
     :undoc-members:
     :show-inheritance:
 
-:mod:`study`
+:mod:`ena_study`
 ^^^^^^^^^^^^^^^^^^
 
 .. automodule:: dal.oracle.era.study

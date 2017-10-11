@@ -17,8 +17,15 @@ RUNS = None
 SAMPLES = None
 FILES = None
 
+
 class ENASample:
     def __init__(self, sample_record):
+        """Creates a mapping object for an existing ENA SAMPLE from a db record
+
+        :param sample_record: Sample database record
+        :type sample_record: Record <`dal.oracle.dbms.cursors.Record`>
+
+        """
         self.sample_acc = sample_record.sample_id
         # print colored.magenta('retrieving the sample ' + self.sample_acc)
         # db_record = retrieve_sample_by_acc(self.sample_acc)[0]
@@ -31,6 +38,15 @@ class ENASample:
 
 
 class ENARun:
+    """Creates a mapping object for an existing ENA RUN with its DATA FILES and connected Sample objects from a db record
+            and filters of global variable containing ``FILES``
+
+            :param run_record: Run database record
+            :type run_record: Record <`dal.oracle.dbms.cursors.Record`>
+            :param sample_record: Sample database record
+            :type sample_record: Record <`dal.oracle.dbms.cursors.Record`>
+            """
+
     def __init__(self, run_record, sample_record):
         global FILES
         self.run_acc = run_record.run_id
@@ -52,6 +68,13 @@ class ENARun:
 
 
 class ENAExperiment:
+    """Creates a mapping object for an existing ENA Experiment with its runs and samples objects from a db record
+    and filters of global variables containing ``RUNS`` and ``SAMPLES``
+
+    :param record: Experiment database record
+    :type record: Record <`dal.oracle.dbms.cursors.Record`>
+    """
+
     def __init__(self, record):
         global RUNS
         global SAMPLES
@@ -72,11 +95,26 @@ class ENAExperiment:
                 self.runs.append(ENARun(r, sample))
 
     def get_run_by_file_name(self, data_file):
+        """
+        Retrieve Run object containing certain data file name
+
+        :param data_file: Data file name.
+        :type data_file: str
+        :return: Run object containing the data file
+        :rtype: ENARun
+        """
         for r in self.runs:
             if data_file in r.files:
                 return r
 
     def has_data_file(self, data_file):
+        """
+        Check if an experiment object has a certain datafile in one of its runs objects
+
+        :param data_file: Data file name.
+        :return: ``True`` if file exists, ``False`` otherwise.
+        :rtype: bool
+        """
         for r in self.runs:
             if data_file in r.files:
                 return True
@@ -91,6 +129,12 @@ class ENAStudy:
     """
     Creates a mapping object for an existing ENA study by retrieving the study and its connecting nodes from
     ENA database.
+    Populates the following global variables:
+        - ``EXPERIMENTS``: list of all ENA Experiment database record associated with the study
+        - ``RUNS``: list of all ENA RUNS database record associated with the study
+        - ``SAMPLES``: list of all ENA SAMPLES database record associated with the study
+        - ``FILES``: list of all ENA FILES database record associated with the study
+
 
     :param study_acc: ENA Study Accession Number
     :type study_acc: str

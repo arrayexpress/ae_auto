@@ -172,6 +172,8 @@ class SdrfCollection:
             line = unicodedata.normalize('NFKD', line)
             line = u"".join([c for c in line if not unicodedata.combining(c)])
             line = filter(lambda x: x in string.printable, line)
+            # print type(line)
+            # exit()
             # lines[i] = line.encode('utf8', 'ignore')
             lines[i] = line
             if line == '':
@@ -588,6 +590,7 @@ class SdrfCollection:
                 else:
                     l.append(x)
             add_line = '\t'.join(l)
+            add_line = add_line.decode('utf-8', 'ignore')
             if row.combined:
                 print colored.yellow('%s is combined' % row.source)
                 write_lines.append(add_line.replace(row.fq_uri, row.fq_uri.replace('.fastq.gz', '_1.fastq.gz')))

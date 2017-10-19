@@ -5,6 +5,9 @@ from operator import itemgetter
 import os
 import shutil
 import copy
+
+from clint.textui import colored
+
 from dal.mysql.ae_autosubs.experiments import retrieve_experiment_id_by_accession
 from dal.oracle.era.study import get_ena_acc_and_submission_acc_by_ae_acc
 from dal.oracle.era.wh_run import retrieve_ena_nodes_relations
@@ -178,7 +181,7 @@ def get_idf_ena_comment(runs):
         url = 'http://www.ebi.ac.uk/ena/data/view/ERR%s-ERR%s' % (i[0], i[1])
         urls.append(url)
 
-    return "Comment[SequenceDataURI]\t" + '\t'.join(sorted(list(set(urls))))
+    return unicode("Comment[SequenceDataURI]\t" + '\t'.join(sorted(list(set(urls)))))
 
 
 def add_ena_accessions(ae_acc, idf, sdrf, out_file):
@@ -221,11 +224,11 @@ def add_ena_accessions(ae_acc, idf, sdrf, out_file):
     idf_ena_comment = get_idf_ena_comment([r.ena_run for r in sdrf.rows])
     # print idf_ena_comment
 
-    combined = ['[IDF]'] + idf.lines + \
-               ['Comment[SecondaryAccession]\t' +
-                ena_accession] + \
+    combined = [u'[IDF]'] + idf.lines + \
+               [u'Comment[SecondaryAccession]\t' +
+                unicode(ena_accession)] + \
                [idf_ena_comment] + \
-               ['[SDRF]'] + sdrf.get_lines_with_ena()
+               [u'[SDRF]'] + sdrf.get_lines_with_ena()
     # for i in combined:
     #     print i.encode('utf8')
     # idf_file = os.path.join(idf.id_path.replace('_original', '').replace('before_ena', ''))
@@ -233,6 +236,7 @@ def add_ena_accessions(ae_acc, idf, sdrf, out_file):
     try:
         write_string = (u'%s' % os.linesep).join([i for i in combined])
     except Exception, e:
+        print colored.red(e)
         write_string = (u'%s' % os.linesep).join([i.decode('utf8') for i in combined])
     f.write(write_string)
     f.close()

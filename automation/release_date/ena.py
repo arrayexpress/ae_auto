@@ -5,12 +5,18 @@ import requests
 import rt
 from dateutil.parser import parse
 import time
+
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 import settings
+from automation.ena.action import send_ena_action
 from dal.oracle.ae2.ae2_transaction import retrieve_release_date_by_ena_accession
 from models.sra_xml import submission_api
 from utils.email.sender import send_email
 
 __author__ = 'Ahmed G. Ali'
+
+rt.requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
 def change_ena_release_date(ena_acc, ae_release_date):
@@ -50,7 +56,10 @@ def change_ena_release_date(ena_acc, ae_release_date):
 
 
 def retrieve_ena_rt_tickets(queue='arrayexpress', **kwargs):
+
+
     tracker = rt.Rt('https://helpdesk.ebi.ac.uk/REST/1.0/', 'arrayexpress', '04kySSpu')
+    tracker.session.verify = False
     tracker.login()
     tickets = tracker.search(Queue=queue, **kwargs)
     return_tickets = []
@@ -109,6 +118,7 @@ def check_ena_release(ticket):
             REPORT['CORRECT'].append((ae_acc + ':' + ena_acc, release_date.date().isoformat()))
             # self.move_ticket_to_release_date()
     tracker = rt.Rt('https://helpdesk.ebi.ac.uk/REST/1.0/', 'arrayexpress', '04kySSpu')
+    tracker.session.verify = False
     tracker.login()
     if not REPORT['ERROR']:
         if not REPORT['FIXED']:
@@ -126,22 +136,29 @@ def check_ena_release(ticket):
     else:
         if ticket['owner'] !='ahmed':
             ed = tracker.edit_ticket(ticket_id=ticket['id'], Owner='ahmed', Status='open')
-        comm = tracker.comment(ticket_id=ticket['id'],
-                               text='There are the following errors:\n' +
-                                    '\n'.join(REPORT['ERROR']) + "\nRequest sent to ENA using Ahmed's email")
+
+
         if REPORT['COMMENT']:
+            done = False
             ena_message = "Dear ENA Colleague,\n" + \
                           "Kindly suppress the following Project(s) to the dates specified below:\n\n"
 
             for c in REPORT['COMMENT']:
+                done = send_ena_action(c[0], "SUPPRESS", test=False, date=c[2], samples=True)
                 ena_message += '%s to %s. This is ArrayExpress %s\n' % (c[0], c[2], c[1])
-            ena_message += '\nThanks,\nArrayExpress Data Management.'
-            comm2 = tracker.reply(ticket_id=ticket['id'], text=ena_message, cc='datasubs@ebi.ac.uk', bcc='')
-            print comm2
-            send_email(body=ena_message,
-                       from_email='ahmed@ebi.ac.uk',
-                       to_emails=['datasubs@ebi.ac.uk'],
-                       subject='Project Suppress Request')
+            comm = tracker.comment(ticket_id=ticket['id'],
+                                   text='There are the following errors:\n' +
+                                        '\n'.join(REPORT['ERROR']) + "\nRequest send to ENA automatically.")
+            # ena_message += '\nThanks,\nArrayExpress Data Management.'
+            # comm2 = tracker.reply(ticket_id=ticket['id'], text=ena_message, cc='datasubs@ebi.ac.uk', bcc='')
+            print comm
+            if done:
+                tracker.edit_ticket(ticket_id=ticket['id'], Status='resolved')
+
+            # send_email(body=ena_message,
+            #            from_email='ahmed@ebi.ac.uk',
+            #            to_emails=['datasubs@ebi.ac.uk'],
+            #            subject='Project Suppress Request')
 
     print 'done'
 

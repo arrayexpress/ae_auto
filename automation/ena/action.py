@@ -7,6 +7,7 @@ import datetime
 import requests
 import time
 from clint.textui import colored
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 from dal.oracle.era.era_transaction import retrieve_samples_by_study_id
 from models.sra_xml import submission_api
@@ -83,6 +84,7 @@ def send_ena_action(ena_acc, action, test=False, date=None, samples=False):
         url = settings.ENA_SRA_DEV_URL
         print colored.magenta('This submission is going to ENA Dev Server')
     content = '<html>'
+    requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     while '<html>' in content:
         files = {'SUBMISSION': open(file_path, 'rb')}
         r = requests.post(url, files=files, verify=False, timeout=1000)
@@ -100,10 +102,12 @@ def send_ena_action(ena_acc, action, test=False, date=None, samples=False):
         errors = content.split('<ERROR>')
         for e in errors[1:]:
             print colored.red(e.split('</ERROR>')[0])
+        return False
 
 
     else:
         print colored.green("%s was applied successfully on %s in the %s server" % (action, ena_acc, server))
+        return True
 
 
 def valid_date_type(arg_date_str):

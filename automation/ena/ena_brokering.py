@@ -10,6 +10,8 @@ from glob import glob
 import chardet
 import requests
 from clint.textui import colored
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 import settings
 from automation.erad.erad_submission import reload_experiment
 from dal.mysql.ae_autosubs.experiments import retrieve_experiment_status, retrieve_checker_score
@@ -699,6 +701,7 @@ class ENASubmission:
                             'rb')
         # print colored.blue(str(files))
         # exit()
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         r = requests.post(url, files=files, verify=False, timeout=1000)
         content = r.content
         if '<html>' in content:

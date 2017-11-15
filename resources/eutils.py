@@ -19,6 +19,7 @@ def esearch(db, term, history=False):
     :return: Json object containing results as collected from the endpoint.
     :rtype: dict or list
     """
+    term = term.replace('(', ' ').replace(')', ' ')
     url = BASE_URL + 'esearch.fcgi'
     data = {'db': db, 'term': term, 'retmode': 'json'}
     if history:
@@ -81,10 +82,20 @@ def esummary(db, query_id, web_env, ret_start=0, ret_max=500):
 
 
 if __name__ == '__main__':
-    a = esearch(db='gds', term='GPL[ETYP]', history=True)
+    organism = "Mycoplasma gallisepticum str. R(high)"
+    db = 'taxonomy'
+    a = esearch(db=db, term=organism)
+    # print a
+    # a = esearch(db='gds', term='GPL[ETYP]', history=True)
     print a
-    print esummary(
-        db='gds',
-        query_id=a['esearchresult']['querykey'],
-        web_env=a['esearchresult']['webenv']
-    )
+    if a['esearchresult']['idlist']:
+        taxonomy_id = int(a['esearchresult']['idlist'][0])
+        print taxonomy_id
+    else:
+        raise Exception('Taxonomy ID for %s was not found on eutils. '
+                        'Please try to check the organism in the SDRF' % organism)
+    # print esummary(
+    #     db='gds',
+    #     query_id=a['esearchresult']['querykey'],
+    #     web_env=a['esearchresult']['webenv']
+    # )

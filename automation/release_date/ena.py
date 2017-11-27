@@ -11,8 +11,8 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import settings
 from automation.ena.action import send_ena_action
 from dal.oracle.ae2.ae2_transaction import retrieve_release_date_by_ena_accession
+
 from models.sra_xml import submission_api
-from utils.email.sender import send_email
 
 __author__ = 'Ahmed G. Ali'
 
@@ -92,7 +92,12 @@ def check_ena_release(ticket):
             continue
         items = study.split(' | ')
         release_date = parse(items[0])
+        print items
+        if not ('(' in items[1] and ')' in items[1]):
+            continue
+
         ena_acc = items[1].split('(')[1].split(')')[0]
+
         res = retrieve_release_date_by_ena_accession(ena_acc)
         if not res:
             continue

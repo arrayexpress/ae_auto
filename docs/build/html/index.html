@@ -8,7 +8,7 @@
     
     <title>AE Automation &#8212; AE Auto  documentation</title>
     
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -36,68 +36,20 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="structure.html" title="Project Structure"
              accesskey="N">next</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">AE Auto  documentation</a> &#187;</li> 
       </ul>
-    </div>  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="ae-automation">
-<h1>AE Automation<a class="headerlink" href="#ae-automation" title="Permalink to this headline">¶</a></h1>
-<p>AE Automation tool which is developed to automate some of the processes in ArrayExpress.
-This project is developed to be used internally by AE team.
-It is an n-tier python application that has different smaller packages that are being reused through the source code.
-Most of the modules has command line interface and all the code parts can be reused in other external python apps.</p>
-<p>In addition, there is also a <a href="https://www.djangoproject.com/" target="_blank"><i>Django<i></a> application that exposes some functionality as <cite>rest API</cite> and as a web app.</p>
-<p>In the next few sections, the overall design and implementation will be discussed
-followed usage of the different modules and eventually the technical documentation and coding samples.</p>
-<p>The source code can be found on <a href="https://github.com/arrayexpress/ae-auto" target="_blank">ArrayExpress Github</a>.</p>
-<div class="section" id="guid">
-<h2>Guid:<a class="headerlink" href="#guid" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound" id="mastertoc">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="structure.html">Project Structure</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="structure.html#modules">Modules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="project_modules/automation/ae_publication.html">AE Publication</a></li>
-<li class="toctree-l3"><a class="reference internal" href="project_modules/automation/ena.html">ENA</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="project_modules/automation/ena.html#intoduction">Intoduction</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="project_modules/automation/release_date.html">Release Date Management</a></li>
-<li class="toctree-l3"><a class="reference internal" href="project_modules/dal.html">Data Access Layer (DAL)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="project_modules/geo.html">GEO</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
-</ul>
-</div>
-
-
-          </div>
-        </div>
-      </div>
+    </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">AE Automation</a><ul>
-<li><a class="reference internal" href="#guid">Guid:</a></li>
+<li><a class="reference internal" href="#guide">Guide:</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
@@ -125,6 +77,80 @@ followed usage of the different modules and eventually the technical documentati
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ae-automation">
+<h1>AE Automation<a class="headerlink" href="#ae-automation" title="Permalink to this headline">¶</a></h1>
+<p>AE Automation tool which is developed to automate some of the processes in ArrayExpress.
+This project is developed to be used internally by AE team.
+It is an n-tier python application that has different smaller packages that are being reused through the source code.
+Most of the modules has command line interface and all the code parts can be reused in other external python apps.</p>
+<p>In addition, there is also a <a href="https://www.djangoproject.com/" target="_blank"><i>Django<i></a> application that exposes some functionality as <cite>rest API</cite> and as a web app.</p>
+<p>In the next few sections, the overall design and implementation will be discussed
+followed usage of the different modules and eventually the technical documentation and coding samples.</p>
+<p>The source code can be found on <a href="https://github.com/arrayexpress/ae_auto" target="_blank">ArrayExpress Github</a>.</p>
+<div class="section" id="guide">
+<h2>Guide:<a class="headerlink" href="#guide" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound" id="mastertoc">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">Project Structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="structure.html#modules">Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="project_modules/automation/automation.html">Automation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/automation/ae_publication.html">AE Publication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/automation/ena.html">ENA Brokering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/automation/release_date.html">Release Date Management</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="project_modules/dal.html">Data Access Layer (DAL)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/dal.html#mysql">MySQL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/dal.html#oracle">Oracle</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="project_modules/resources.html">Resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/resources.html#conan">Conan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/resources.html#europe-pmc">Europe PMC</a></li>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/resources.html#eutils">EUtils</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="project_modules/settings.html">Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="project_modules/utils.html">Utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/utils.html#module-utils.conan.conan"><code class="docutils literal"><span class="pre">Conan</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/utils.html#module-utils.email.sender"><code class="docutils literal"><span class="pre">Email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/utils.html#module-utils.validators.fastq_validators"><code class="docutils literal"><span class="pre">Validators</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/utils.html#module-utils.common"><code class="docutils literal"><span class="pre">Common</span> <span class="pre">Utils</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="project_modules/models/models.html">Models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/models/magetab.html">MAGE-TAB Models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/models/sra_xml.html">ENA XML Models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="project_modules/models/ena_models.html">ENA Models</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
       <div class="clearer"></div>
     </div>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -133,6 +159,9 @@ followed usage of the different modules and eventually the technical documentati
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li class="right" >
           <a href="structure.html" title="Project Structure"
              >next</a> |</li>

@@ -46,5 +46,4 @@ def retrieve_release_date_by_ena_accession(ena_acc):
              FROM STUDY s join STUDY_ANNOTATIONS sa
              on s.ID=sa.STUDY_ID
              WHERE sa.TEXT = '%s' """ % ena_acc
-    # print sql
     return execute_select(sql, db)

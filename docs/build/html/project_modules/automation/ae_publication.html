@@ -8,7 +8,7 @@
     
     <title>AE Publication &#8212; AE Auto  documentation</title>
     
-    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -26,8 +26,8 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="ENA" href="ena.html" />
-    <link rel="prev" title="Project Structure" href="../../structure.html" /> 
+    <link rel="next" title="ENA Brokering" href="ena.html" />
+    <link rel="prev" title="Automation" href="automation.html" /> 
   </head>
   <body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -37,37 +37,38 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="ena.html" title="ENA"
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ena.html" title="ENA Brokering"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../../structure.html" title="Project Structure"
+          <a href="automation.html" title="Automation"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">AE Auto  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../structure.html" accesskey="U">Project Structure</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../../structure.html" >Project Structure</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="automation.html" accesskey="U">Automation</a> &#187;</li> 
       </ul>
-    </div>  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="ae-publication">
-<span id="id1"></span><h1>AE Publication<a class="headerlink" href="#ae-publication" title="Permalink to this headline">¶</a></h1>
-</div>
-
-
-          </div>
-        </div>
-      </div>
+    </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">AE Publication</a><ul>
+<li><a class="reference internal" href="#code-and-inline-documentation">Code and Inline Documentation</a><ul>
+<li><a class="reference internal" href="#module-automation.ae_publications.publications_experiments"><code class="docutils literal"><span class="pre">publications_experiments</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
-  <p class="topless"><a href="../../structure.html"
-                        title="previous chapter">Project Structure</a></p>
+  <p class="topless"><a href="automation.html"
+                        title="previous chapter">Automation</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="ena.html"
-                        title="next chapter">ENA</a></p>
+                        title="next chapter">ENA Brokering</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -87,6 +88,151 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ae-publication">
+<span id="id1"></span><h1>AE Publication<a class="headerlink" href="#ae-publication" title="Permalink to this headline">¶</a></h1>
+<p>This module is responsible for importing publications form <a href="https://europepmc.org/" target="_blank">Europe PMC</a> associated with ArrayExpress experiments.
+It uses the Europe PMC <a href="https://europepmc.org/RestfulWebService" target="_blank">rest API</a> - client implementation is <a class="reference external" href="../resources.html#pmc_serv">here</a>- to collect all
+articles mentioning <cite>ArrayExpress</cite>.</p>
+<p>After that, articles are filtered based by calling <a href="https://europepmc.org/RestfulWebService#tmTerms" target="_blank">text-mined terms</a> endpoint of the rest API and execluding those articles
+having no AE accessions in their text-mined terms.</p>
+<p>Then, the filtered list is then compared with what is existed in the database, and hence create the proper
+type of association between an article and an experiment which is then reviewed - approved or rejected- by
+curators using the <a class="reference internal" href="../ae_web/ae_web.html"><span class="doc">web app</span></a> of this project.</p>
+<div class="section" id="code-and-inline-documentation">
+<h2>Code and Inline Documentation<a class="headerlink" href="#code-and-inline-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-automation.ae_publications.publications_experiments">
+<span id="publications-experiments"></span><h3><code class="xref py py-mod docutils literal"><span class="pre">publications_experiments</span></code><a class="headerlink" href="#module-automation.ae_publications.publications_experiments" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="automation.ae_publications.publications_experiments.add_association">
+<code class="descclassname">automation.ae_publications.publications_experiments.</code><code class="descname">add_association</code><span class="sig-paren">(</span><em>acc</em>, <em>article</em>, <em>is_associated=False</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ae_publications.publications_experiments.add_association" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adding association between <cite>Publication</cite> and <cite>Experiment</cite> objects in the Django models which is used by
+curators to approve or reject linkage between an article and a study.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>acc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – ArrayExpress accession. e.g. <code class="docutils literal"><span class="pre">E-MTAB-xxxx</span></code></li>
+<li><strong>article</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Json object as collected from Europe BMC.</li>
+<li><strong>is_associated</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – Flag indicating whether the publication is already associated with the study in the
+AE database or not</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="automation.ae_publications.publications_experiments.get_permission">
+<code class="descclassname">automation.ae_publications.publications_experiments.</code><code class="descname">get_permission</code><span class="sig-paren">(</span><em>acc</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ae_publications.publications_experiments.get_permission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether the experiment is public or not.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>acc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – ArrayExpress experiment accession. e.g. <code class="docutils literal"><span class="pre">E-MTAB-xxxx</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="automation.ae_publications.publications_experiments.main">
+<code class="descclassname">automation.ae_publications.publications_experiments.</code><code class="descname">main</code><span class="sig-paren">(</span><em>query=’arrayexpress’</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ae_publications.publications_experiments.main" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Main method of execution. it is basically and infinite loop with termination condition that does the following:</dt>
+<dd><ul class="first last simple">
+<li>Call Europe BMC utils for all articles matching the search word ‘ArrayExpress’ execluding GEO experiments.</li>
+<li>Filter the collected list with those matching already existing ArrayExpress experiment.</li>
+<li>Update the publication in AE database if already exists.</li>
+<li>Calls the proper method to handle association based on the number of association with publication and experiments.</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The search value for Europe BMC API. Default: <em>arrayexpress</em></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="automation.ae_publications.publications_experiments.manage_more_than_one_publications">
+<code class="descclassname">automation.ae_publications.publications_experiments.</code><code class="descname">manage_more_than_one_publications</code><span class="sig-paren">(</span><em>acc</em>, <em>article</em>, <em>pubs</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ae_publications.publications_experiments.manage_more_than_one_publications" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is for the case of having more than one associated publications with the study in ArrayExpress database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>acc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – ArrayExpress accession. e.g. <code class="docutils literal"><span class="pre">E-MTAB-xxxx</span></code></li>
+<li><strong>article</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Json object as collected from Europe BMC.</li>
+<li><strong>pubs</strong> (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">dict</span></code></a>) – List of Json objects for publications found in ArrayExpress database.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="automation.ae_publications.publications_experiments.manage_no_existing_publications">
+<code class="descclassname">automation.ae_publications.publications_experiments.</code><code class="descname">manage_no_existing_publications</code><span class="sig-paren">(</span><em>acc</em>, <em>article</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ae_publications.publications_experiments.manage_no_existing_publications" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is for the case where there is no any associated publications with the study in ArrayExpress database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>acc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – ArrayExpress accession. e.g. <code class="docutils literal"><span class="pre">E-MTAB-xxxx</span></code></li>
+<li><strong>article</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Json object as collected from Europe BMC.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="automation.ae_publications.publications_experiments.manage_single_existing_publication">
+<code class="descclassname">automation.ae_publications.publications_experiments.</code><code class="descname">manage_single_existing_publication</code><span class="sig-paren">(</span><em>article</em>, <em>existing_pub</em>, <em>acc</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ae_publications.publications_experiments.manage_single_existing_publication" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is for the case of having single associated publications with the study in ArrayExpress database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>acc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – ArrayExpress accession. e.g. <code class="docutils literal"><span class="pre">E-MTAB-xxxx</span></code></li>
+<li><strong>article</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Json object as collected from Europe BMC.</li>
+<li><strong>existing_pub</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – Json object for the single publication found in the database.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
       <div class="clearer"></div>
     </div>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -96,13 +242,17 @@
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="ena.html" title="ENA"
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ena.html" title="ENA Brokering"
              >next</a> |</li>
         <li class="right" >
-          <a href="../../structure.html" title="Project Structure"
+          <a href="automation.html" title="Automation"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">AE Auto  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../structure.html" >Project Structure</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../../structure.html" >Project Structure</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="automation.html" >Automation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

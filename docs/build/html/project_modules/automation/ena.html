@@ -6,9 +6,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ENA &#8212; AE Auto  documentation</title>
+    <title>ENA Brokering &#8212; AE Auto  documentation</title>
     
-    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -37,39 +37,33 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="release_date.html" title="Release Date Management"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="ae_publication.html" title="AE Publication"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">AE Auto  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../structure.html" accesskey="U">Project Structure</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../../structure.html" >Project Structure</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="automation.html" accesskey="U">Automation</a> &#187;</li> 
       </ul>
-    </div>  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <div class="section" id="id1">
-<h1>ENA<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="intoduction">
-<h2>Intoduction<a class="headerlink" href="#intoduction" title="Permalink to this headline">¶</a></h2>
-<p>ArrayExpress was first designed as a repository for microarray experiments. By the beginning of the current millennium the introduction of sequencing</p>
-</div>
-</div>
-
-
-          </div>
-        </div>
-      </div>
+    </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">ENA</a><ul>
-<li><a class="reference internal" href="#intoduction">Intoduction</a></li>
+<li><a class="reference internal" href="#">ENA Brokering</a><ul>
+<li><a class="reference internal" href="#background">Background</a></li>
+<li><a class="reference internal" href="#workflow">Workflow</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#auto-documentation">Auto Documentation</a><ul>
+<li><a class="reference internal" href="#module-automation.ena.ena_brokering"><code class="docutils literal"><span class="pre">ena_brokering</span></code></a></li>
+<li><a class="reference internal" href="#module-automation.ena.add_ena_accessions"><code class="docutils literal"><span class="pre">add_ena_accessions</span></code></a></li>
+<li><a class="reference internal" href="#module-automation.ena.ena_experiment"><code class="docutils literal"><span class="pre">ena_experiment</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -99,6 +93,339 @@
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ena-brokering">
+<span id="ena"></span><h1>ENA Brokering<a class="headerlink" href="#ena-brokering" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>ArrayExpress was first designed as a repository for microarray experiments.
+By the beginning of the current millennium, DNA and RNA sequencing technologies have been introduced.
+Hence, came the need to work-around ArrayExpress to hold sequencing and high throughput studies.</p>
+<p>With <a href="http://www.ebi.ac.uk/ena" target="_blank">The European Nucleotide Archive (ENA)</a> , raw data now can be stored at ENA with having the metadata analysed, curated, and stored in ArrayExpress.
+This process has been done for years manually by curators, which takes lots of time and effort in addition to the introduction of human errors.</p>
+<p>This module is responsible for handling the automatic submission of a sequencing project to ENA,
+linking its components to An ArrayExpress experiment, and finally load the experiment into ArrayExpress .</p>
+</div>
+<div class="section" id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center" id="id2">
+<img alt="../../_images/ena_brokering_workflow.png" src="../../_images/ena_brokering_workflow.png" />
+<p class="caption"><span class="caption-text">ENA Brokering Pipeline Workflow</span></p>
+</div>
+<p>The diagram above shows the state diagram of the ENA brokering pipeline.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python ena_brokering.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-as<span class="o">]</span> <span class="o">[</span>-t<span class="o">]</span> <span class="o">[</span>-cp<span class="o">]</span> <span class="o">[</span>-mp<span class="o">]</span> <span class="o">[</span>-m<span class="o">]</span>
+                        <span class="o">[</span>-bd path/to/experiment/directory/__without__/MAGE-TAB_xxx<span class="o">]</span>
+                        <span class="o">[</span>-ed path/to/fastq/files/directory/<span class="o">]</span> <span class="o">[</span>-ic<span class="o">]</span> <span class="o">[</span>-sv<span class="o">]</span> <span class="o">[</span>-sc<span class="o">]</span>
+                        <span class="o">[</span>-ses<span class="o">]</span> <span class="o">[</span>-vb<span class="o">]</span> <span class="o">[</span>-vo<span class="o">]</span> <span class="o">[</span>-cf COMBINED_FILE_NAME<span class="o">]</span> <span class="o">[</span>-i IDF<span class="o">]</span>
+                        <span class="o">[</span>-s SDRF<span class="o">]</span> <span class="o">[</span>-ce CONAN_EMAIL<span class="o">]</span> <span class="o">[</span>-d DATE<span class="o">]</span> <span class="o">[</span>-na NEW_ALIAS<span class="o">]</span>
+                        <span class="o">[</span>-sd SKIP_DATE<span class="o">]</span> <span class="o">[</span>-rs<span class="o">]</span> <span class="o">[</span>-ns<span class="o">]</span>
+                        <span class="o">[</span>-oed OTHER_EXPERIMENT_DIR<span class="o">]</span>
+                        <span class="o">[</span>-np patern1 patern2 ... <span class="o">[</span>patern1 patern2 ... ...<span class="o">]]</span>
+                        MAGE-TAB_xxxx E-MTAB-xxxx
+</pre></div>
+</div>
+</div>
+<div class="section" id="auto-documentation">
+<h2>Auto Documentation<a class="headerlink" href="#auto-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Below sections are generated from python doc.</p>
+<div class="section" id="module-automation.ena.ena_brokering">
+<span id="id1"></span><h3><code class="xref py py-mod docutils literal"><span class="pre">ena_brokering</span></code><a class="headerlink" href="#module-automation.ena.ena_brokering" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="automation.ena.ena_brokering.ENASubmission">
+<em class="property">class </em><code class="descclassname">automation.ena.ena_brokering.</code><code class="descname">ENASubmission</code><span class="sig-paren">(</span><em>exp_dir</em>, <em>accession</em>, <em>meta_data_bas_dir=None</em>, <em>ena_optional_dir=None</em>, <em>combined_mage_tab=False</em>, <em>combined_file_name=None</em>, <em>conan_email=None</em>, <em>skip_validation=False</em>, <em>skip_copy=False</em>, <em>skip_ena_submission=False</em>, <em>add_samples=False</em>, <em>new_alias=None</em>, <em>replace_idf=False</em>, <em>receipt_date=None</em>, <em>validated_before=False</em>, <em>skip_date=False</em>, <em>reuse_samples=False</em>, <em>other_experiment_dir=None</em>, <em>move=False</em>, <em>neglect_patterns=[]</em>, <em>combined_pairs=False</em>, <em>validate_only=False</em>, <em>mixed_pairs=False</em>, <em>no_spots=False</em>, <em>idf=None</em>, <em>sdrf=None</em>, <em>test=False</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ena.ena_brokering.ENASubmission" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Main class for ENA Brokering. It handles all execution options given by user in command line interface</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>exp_dir</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Full path contining the MAGE-TAB files, e.g. MAGE-TAB_xxxx</li>
+<li><strong>accession</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The Automatic ArrayExpress Accession Number, e.g. E-MTAB-xxxx</li>
+<li><strong>meta_data_bas_dir</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The base directory for the experiment’s data.
+If not given the default value is /ebi/microarray/ma-exp/AutoSubmissions/annotare/</li>
+<li><strong>ena_optional_dir</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – path/to/fastq/files/directory/
+The location of fastq files on ENA machine. If not
+given the default value is /fire/staging/aexpress/</li>
+<li><strong>combined_mage_tab</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – A flag indicating that the IDF and SDRF are in the
+same file.</li>
+<li><strong>combined_file_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – The
+name of the file which contians the IDF and SDRF</li>
+<li><strong>conan_email</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The email used to submit to Conan. The default is
+<a class="reference external" href="mailto:ahmed&#37;&#52;&#48;ebi&#46;ac&#46;uk">ahmed<span>&#64;</span>ebi<span>&#46;</span>ac<span>&#46;</span>uk</a></li>
+<li><strong>skip_validation</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – A flag for skipping validate fastq files.</li>
+<li><strong>skip_copy</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – A flag for skipping copying fastq files.</li>
+<li><strong>skip_ena_submission</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – A flag for skipping submission to ENA.</li>
+<li><strong>add_samples</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – A flag for adding new samples to existing experiment.</li>
+<li><strong>new_alias</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – suffix for ENA alias names</li>
+<li><strong>receipt_date</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><em>isoformat date</em>) – For correction usage only</li>
+<li><strong>validated_before</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – A flag if the fastq files where validated before.</li>
+<li><strong>skip_date</strong> – skip changing the release date</li>
+<li><strong>reuse_samples</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – A flag indicating that there are samples to be reused.
+In this case an existing SDRF with the sample names
+and their ENA accessions must be provided.</li>
+<li><strong>other_experiment_dir</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – full directory containing the unpacked folder which
+has the combined MAGE-TAB containing the already
+submitted samples to be reused. Must have ENA
+accessions or Biostudies IDs and the same sample
+names. Required when –reuse_sample option is used.</li>
+<li><strong>move</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – A flag for moving files from the root FTP dir.</li>
+<li><strong>neglect_patterns</strong> (<code class="xref py py-obj docutils literal"><span class="pre">list</span></code> of <a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal"><span class="pre">str</span></code></a>) – List of patterns to be neglected from file names when
+trying to find pairs</li>
+<li><strong>combined_pairs</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – A flag to tell the system that all the pairs are
+combined. So that, any similarity would be considered
+as technical replica</li>
+<li><strong>validate_only</strong> (<em>book</em>) – A flag to quite after validation.</li>
+<li><strong>mixed_pairs</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – A flag to tell the system that the pairs are combined
+and not combined.</li>
+<li><strong>no_spots</strong> – A flag indicating that the spots have been calculated
+before.</li>
+<li><strong>idf</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The idf file name.</li>
+<li><strong>sdrf</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – The SDRF file_name</li>
+<li><strong>test</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – A flag for the submission to be submitted to ENA Dev server.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="automation.ena.ena_brokering.ENASubmission.submit_xmls">
+<code class="descname">submit_xmls</code><span class="sig-paren">(</span><em>nodes_only=False</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ena.ena_brokering.ENASubmission.submit_xmls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submits prepared ENA project xml files to ENA</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nodes_only</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – flag for skipping submission of study.xml</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="automation.ena.ena_brokering.ENASubmission.validate_fastq_files">
+<code class="descname">validate_fastq_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#automation.ena.ena_brokering.ENASubmission.validate_fastq_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls fastq files validator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if valid, terminates if invalid</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="automation.ena.ena_brokering.ENASubmission.validate_xml">
+<code class="descname">validate_xml</code><span class="sig-paren">(</span><em>extract_num=0</em>, <em>assay_num=0</em>, <em>sample_num=0</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ena.ena_brokering.ENASubmission.validate_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates generated ENA xmls before submission.
+Terminate on wrong xml files content.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>extract_num</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – number of expected extract names</li>
+<li><strong>assay_num</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – number of expected assay names</li>
+<li><strong>sample_num</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – number of expected samples</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-automation.ena.add_ena_accessions">
+<span id="add-ena-accessions"></span><span id="add-ena-accessions-ref"></span><h3><code class="xref py py-mod docutils literal"><span class="pre">add_ena_accessions</span></code><a class="headerlink" href="#module-automation.ena.add_ena_accessions" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="automation.ena.add_ena_accessions.add_ena_accessions">
+<code class="descclassname">automation.ena.add_ena_accessions.</code><code class="descname">add_ena_accessions</code><span class="sig-paren">(</span><em>ae_acc</em>, <em>idf</em>, <em>sdrf</em>, <em>out_file</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ena.add_ena_accessions.add_ena_accessions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds ENA accessions to an ArrayExpress experiment.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ae_acc</strong> – Experiment’s accession numbner. e.g. E-MTAB-xxxx</li>
+<li><strong>idf</strong> (<a class="reference internal" href="../models/magetab.html#models.magetab.idf.IDF" title="models.magetab.idf.IDF"><em>IDF</em></a>) – Idf object</li>
+<li><strong>sdrf</strong> (<a class="reference internal" href="../models/magetab.html#models.magetab.sdrf.SdrfCollection" title="models.magetab.sdrf.SdrfCollection"><em>SdrfCollection</em></a>) – SDRF object</li>
+<li><strong>out_file</strong> – Full path for the output file that contains IDF and SDRF together after adding ENA accessions.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="automation.ena.add_ena_accessions.extract_idf_file_name">
+<code class="descclassname">automation.ena.add_ena_accessions.</code><code class="descname">extract_idf_file_name</code><span class="sig-paren">(</span><em>exp_path</em>, <em>accession</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ena.add_ena_accessions.extract_idf_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the the IDF file name with latest version. IDF files first generated with the format <code class="docutils literal"><span class="pre">submission_xxx.id.txt</span></code>
+For other versions the file name will follow the convention of  <code class="docutils literal"><span class="pre">E-MTAB-xxxx_v1.idf.txt</span></code>, <code class="docutils literal"><span class="pre">E-MTAB-xxxx_v2.idf.txt</span></code> and so on…</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>exp_path</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Full path containing the experiment’s MAGETAB files.</li>
+<li><strong>accession</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – ArrayExpress Accession Number, e.g. E-MTAB-xxxx</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The full path for IDF file with the highest version</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="automation.ena.add_ena_accessions.extract_sdrf_file_name">
+<code class="descclassname">automation.ena.add_ena_accessions.</code><code class="descname">extract_sdrf_file_name</code><span class="sig-paren">(</span><em>exp_path</em>, <em>accession</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ena.add_ena_accessions.extract_sdrf_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the the SDRF file name with latest version. IDF files first generated with the format <code class="docutils literal"><span class="pre">submission_xxx.id.txt</span></code>
+For other versions the file name will follow the convention of  <code class="docutils literal"><span class="pre">E-MTAB-xxxx_v1.sdrf.txt</span></code>, <code class="docutils literal"><span class="pre">E-MTAB-xxxx_v2.sdrf.txt</span></code> and so on…</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>exp_path</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Full path containing the experiment’s MAGE-TAB files.</li>
+<li><strong>accession</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – ArrayExpress Accession Number, e.g. E-MTAB-xxxx</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The full path for SDRF file with the highest version</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="automation.ena.add_ena_accessions.get_idf_ena_comment">
+<code class="descclassname">automation.ena.add_ena_accessions.</code><code class="descname">get_idf_ena_comment</code><span class="sig-paren">(</span><em>runs</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ena.add_ena_accessions.get_idf_ena_comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs the comments added to the IDF file.
+These comments containing ENA runs associated with the brokered experiment.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>runs</strong> – List of ENA run accessions</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The constructed comment containing ENA runs URLs</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="automation.ena.add_ena_accessions.get_mage_tab">
+<code class="descclassname">automation.ena.add_ena_accessions.</code><code class="descname">get_mage_tab</code><span class="sig-paren">(</span><em>ae_acc</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ena.add_ena_accessions.get_mage_tab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the MAGE-TAB files into mapping objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ae_acc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – ArrayExpress accession, e.g. E-MTAB-xxxx</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(idf_object, sdrf_object)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(<a class="reference internal" href="../models/magetab.html#models.magetab.idf.IDF" title="models.magetab.idf.IDF">IDF</a>, <a class="reference internal" href="../models/magetab.html#models.magetab.sdrf.SdrfCollection" title="models.magetab.sdrf.SdrfCollection">SdrfCollection</a>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="automation.ena.add_ena_accessions.get_magetab_path">
+<code class="descclassname">automation.ena.add_ena_accessions.</code><code class="descname">get_magetab_path</code><span class="sig-paren">(</span><em>ae_acc</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ena.add_ena_accessions.get_magetab_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve full path containing MAGE-TAB files for an experiment given its accession by searching Subs-tracking database
+and then search recursively in the submission directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ae_acc</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – ArrayExpress accession, e.g. E-MTAB-xxxx</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Full path for the directory containing MAGE-TAB files</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-automation.ena.ena_experiment">
+<span id="ena-experiment"></span><span id="ena-experiment-ref"></span><h3><code class="xref py py-mod docutils literal"><span class="pre">ena_experiment</span></code><a class="headerlink" href="#module-automation.ena.ena_experiment" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="automation.ena.ena_experiment.ENAExperiment">
+<em class="property">class </em><code class="descclassname">automation.ena.ena_experiment.</code><code class="descname">ENAExperiment</code><span class="sig-paren">(</span><em>accession</em>, <em>sdrf</em>, <em>idf</em>, <em>time_stamp</em>, <em>added_samples=[]</em>, <em>study_accession=None</em>, <em>new_alias=None</em>, <em>center_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ena.ena_experiment.ENAExperiment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates XML files needed for submission to ENA. Following the guidelines in : <a class="reference external" href="http://www.ebi.ac.uk/ena/submit/preparing-xmls">http://www.ebi.ac.uk/ena/submit/preparing-xmls</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>accession</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – ArrayExpress experiment accession. e.g. E-MTAB-xxxx</li>
+<li><strong>sdrf</strong> (<a class="reference internal" href="../models/magetab.html#models.magetab.sdrf.SdrfCollection" title="models.magetab.sdrf.SdrfCollection"><em>SdrfCollection</em></a>) – SDRF Object</li>
+<li><strong>idf</strong> (<a class="reference internal" href="../models/magetab.html#models.magetab.idf.IDF" title="models.magetab.idf.IDF"><em>IDF</em></a>) – IDF Object</li>
+<li><strong>time_stamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Isoformat time stamp used in generated file names.</li>
+<li><strong>added_samples</strong> (<em>list of str</em>) – List of ENA samples added before to be skipped in genertating samples.xml</li>
+<li><strong>study_accession</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – ENA study accession, if was brokered before to ENA</li>
+<li><strong>new_alias</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – suffex to the autogenerated aliases used in submission to ENA</li>
+<li><strong>center_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a>) – Study affiliation</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="automation.ena.ena_experiment.ENAExperiment.generate_xmls">
+<code class="descname">generate_xmls</code><span class="sig-paren">(</span><em>save_dir</em><span class="sig-paren">)</span><a class="headerlink" href="#automation.ena.ena_experiment.ENAExperiment.generate_xmls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates Experiment, Sample, Study, and Submission XML files</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>save_dir</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Full path were the xml file will be saved to</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
       <div class="clearer"></div>
     </div>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -108,13 +435,17 @@
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="release_date.html" title="Release Date Management"
              >next</a> |</li>
         <li class="right" >
           <a href="ae_publication.html" title="AE Publication"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">AE Auto  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../structure.html" >Project Structure</a> &#187;</li> 
+          <li class="nav-item nav-item-1"><a href="../../structure.html" >Project Structure</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="automation.html" >Automation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

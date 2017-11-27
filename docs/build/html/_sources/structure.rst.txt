@@ -11,7 +11,7 @@ The diagram above shows the top level components of the project. It lists only t
 
 
 
-* Automation: This is the core package that has most used and important modules. This include:
+* :ref:`automation_ref`: This is the core package that has most used and important modules. This include:
     a. :ref:`ena`:  The module for ENA brokering pipeline.
         This module automates the process of submitting sequencing experiments to ENA.
     b. :ref:`ae_publication`: collecting, scoring and saving new publications appear on |europe_pmc|.
@@ -21,25 +21,20 @@ The diagram above shows the top level components of the project. It lists only t
             - ENA
             - GEO
             - Submitters
-    d. :ref:`geo`: This module contains most of the processes related to GEO experiments. This includes:
-            - Fixing SDRF after |GEO_NCBI| import. This process is used in the internal workflow engine Conan.
-            - Importing Array Designs from |GEO_NCBI| and loading them into ArrayExpress in |adf|.
+
+* :ref:`dal_ref`: It is the only way to access different databases using both |gateway|, and |transaction_script| Transaction scripts. It has 2 main blocks according the the database type:
+
+   a. :ref:`MySQL_ref`: Contains all gateways and transaction scripts for each MySQL schema
+   b. :ref:`Oracle_ref`: Contains the gateways and transaction scripts for each Oracle Database.
 
 
-* :ref:`dal`: It is the only way to access different databases using both |gateway|, and |transaction_script| Transaction scripts. It has 2 main blocks according the the database type:
+* :ref:`resources`: This package contains the scripts and tools required to access external services such as Europe PMC and ENA services.
 
-   a. MySQL: Contains all gateways and transaction scripts for each MySQL schema
-   b. Oracle: Contains the gateways and transaction scripts for each Oracle Database.
+* :ref:`settings`: Contains the app settings like the database connection parameters, the physical paths for data on the shared storage ... etc.
 
+* :ref:`utils_ref`: Contains shared utilities like email services, parsers, and wrappers to already existing tools like fastaq validators ...etc.
 
-* Resources: This package contains the scripts and tools required to access external services such as Europe PMC and ENA services.
-
-* Settings: Contains the app settings like the database connection parameters, the physical paths for data on the shared storage ... etc.
-
-* Utils: Contains shared utilities like email services, parsers, and wrappers to already existing tools like fastaq validators ...etc.
-
-* Services: Exports different  functionality of the package as a REST web service to be used by other local tools.
- This can be added later after the core is developed by using Django REST Framework or any other alternative.
+* Services: Exports different  functionality of the package as a REST web service to be used by other local tools. This can be added later after the core is developed by using Django REST Framework or any other alternative.
 
 
 Modules
@@ -49,9 +44,12 @@ Modules
     :maxdepth: 2
     :glob:
 
-    project_modules/automation/*
+    project_modules/automation/automation
     project_modules/dal
-    project_modules/geo
+    project_modules/resources
+    project_modules/settings
+    project_modules/utils
+    project_modules/models/models
 
 
 
@@ -70,7 +68,7 @@ Modules
 
 .. |gateway| raw:: html
 
-   <a href="https://martinfowler.com/eaaCatalog/tableDataGateway.html" target="_blank">ADF format</a>
+   <a href="https://martinfowler.com/eaaCatalog/tableDataGateway.html" target="_blank">Table Data Gateway</a>
 .. |transaction_script| raw:: html
 
-   <a href="https://martinfowler.com/eaaCatalog/transactionScript.html" target="_blank">Transaction scripts</a>
+   <a href="https://martinfowler.com/eaaCatalog/transactionScript.html" target="_blank">Transaction Scripts</a>

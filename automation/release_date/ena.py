@@ -149,7 +149,7 @@ def check_ena_release(ticket):
                           "Kindly suppress the following Project(s) to the dates specified below:\n\n"
 
             for c in REPORT['COMMENT']:
-                done = send_ena_action(c[0], "SUPPRESS", test=False, date=c[2], samples=True)
+                done, errors = send_ena_action(c[0], "SUPPRESS", test=False, date=c[2], samples=True)
                 ena_message += '%s to %s. This is ArrayExpress %s\n' % (c[0], c[2], c[1])
             comm = tracker.comment(ticket_id=ticket['id'],
                                    text='There are the following errors:\n' +
@@ -159,7 +159,10 @@ def check_ena_release(ticket):
             print comm
             if done:
                 tracker.edit_ticket(ticket_id=ticket['id'], Status='resolved')
-
+            else:
+                comm = tracker.comment(ticket_id=ticket['id'],
+                                       text='ENA Action Errors:\n' +
+                                            '\n'.join(errors) )
             # send_email(body=ena_message,
             #            from_email='ahmed@ebi.ac.uk',
             #            to_emails=['datasubs@ebi.ac.uk'],

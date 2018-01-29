@@ -67,7 +67,7 @@ def download_soft_file(geo_acc, by='platform'):
     #     except:
     #         raise
     #         # logging.exception('Error during download from FTP')
-    command = """wget -m %s %s """ % (url, os.path.join(adf_tmp_dir, file_name))
+    command = """wget -m %s -O %s """ % (url, os.path.join(adf_tmp_dir, file_name))
     print command
     print execute_command(command)
     return os.path.join(adf_tmp_dir, file_name)

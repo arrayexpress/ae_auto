@@ -77,4 +77,4 @@ CURATION_EMAIL = ''
 GEO_SOFT_URL = 'ftp://ftp.ncbi.nih.gov/pub/geo/DATA/SOFT/by_%s/'
 
 ATLAS_CONTACT = {'name': 'Curators', 'email': ''}
-PMC_BASE_URL = 'http://www.ebi.ac.uk/europepmc/webservices/rest/'
+PMC_BASE_URL = 'https://www.ebi.ac.uk/europepmc/webservices/rest/'

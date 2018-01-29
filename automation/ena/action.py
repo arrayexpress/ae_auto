@@ -102,12 +102,12 @@ def send_ena_action(ena_acc, action, test=False, date=None, samples=False):
         errors = content.split('<ERROR>')
         for e in errors[1:]:
             print colored.red(e.split('</ERROR>')[0])
-        return False
+        return False, [i.split('</ERROR>')[0] for i in errors]
 
 
     else:
         print colored.green("%s was applied successfully on %s in the %s server" % (action, ena_acc, server))
-        return True
+        return True, []
 
 
 def valid_date_type(arg_date_str):

@@ -213,6 +213,7 @@ def add_ena_accessions(ae_acc, idf, sdrf, out_file):
             if not row.fq_uri:
                 row.fq_uri = get_fq_uri(run.run_acc, row.pair_order)
         else:
+            print 'DATA FILE: "%s"' % row.data_file
             print 'No Experiment: ', row.__dict__
             exit()
     empty = [r.__dict__ for r in sdrf.rows if r.ena_run is None]

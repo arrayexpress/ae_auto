@@ -10,7 +10,7 @@ from clint.textui import colored
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 from dal.oracle.era.era_transaction import retrieve_samples_by_study_id
-from models.sra_xml import submission_api
+# from models.sra_xml import submission_api
 import settings
 
 __author__ = 'Ahmed G. Ali'

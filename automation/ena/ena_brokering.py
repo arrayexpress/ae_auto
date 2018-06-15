@@ -17,6 +17,7 @@ from automation.erad.erad_submission import reload_experiment
 from dal.mysql.ae_autosubs.experiments import retrieve_experiment_status, retrieve_checker_score
 
 from automation.ena.add_ena_accessions import add_ena_accessions
+from dal.mysql.annotare.submission import retrieve_submission_by_accession
 from dal.oracle.era.experiment import retrieve_experiments_by_submission_acc
 from dal.oracle.era.run import retrieve_runs_by_submission_acc
 from dal.oracle.era.sample import retrieve_samples_by_submission_acc
@@ -313,7 +314,7 @@ class ENASubmission:
 
         self.ena_dir = self.extract_ena_accession_dir()
         self.ena_full_path = '/fire/staging/aexpress/' + self.ena_dir
-        # print self.ena_dir
+        print colored.green('ENA DIR: '+ self.ena_dir)
         # exit()
         if replace_idf:
             os.remove(os.path.join(self.exp_path, self.idf_file + '_original'))
@@ -455,18 +456,18 @@ class ENASubmission:
             #     'gxa_validate_fastq.sh %s_files_to_check.txt  %s > validation_out.txt 2>&1\n' % (
             #         self.accession, memory))
             execute_command(
-                "ssh oy-ena-login-1 'source /homes/fg_cur/.bashrc;source /etc/profile; source /home/fg_cur/.bash_profile; echo \$PATH;cd %s;gxa_validate_fastq.sh %s_files_to_check.txt  "
+                "ssh sra-login-2 'source /homes/fg_cur/.bashrc;source /etc/profile; source /home/fg_cur/.bash_profile; echo \$PATH;cd %s;gxa_validate_fastq.sh %s_files_to_check.txt  "
                 "%s > validation_out.txt 2>&1'" % (
                     self.ena_full_path, self.accession, memory), 'fg_cur')
             # execute_command(
-            #     "ssh oy-ena-login-1  ' source /homes/fg_cur/.bashrc;echo LSF_ENVDIR=; echo \\$LSF_ENVDIR;echo \\$PATH; ' ", 'fg_cur')
+            #     "ssh sra-login-2  ' source /homes/fg_cur/.bashrc;echo LSF_ENVDIR=; echo \\$LSF_ENVDIR;echo \\$PATH; ' ", 'fg_cur')
             # print 'Validation command sent'
             # wait_execution(self.ena)
             # self.plantain.send(
-            #     'scp oy-ena-login-1:/fire/staging/aexpress/%s/validation_out.txt %s\n' % (
+            #     'scp sra-login-2:/fire/staging/aexpress/%s/validation_out.txt %s\n' % (
             #         self.ena_dir, self.exp_path))
             execute_command(
-                'scp oy-ena-login-1:/fire/staging/aexpress/%s/validation_out.txt %s\n' % (
+                'scp sra-login-2:/fire/staging/aexpress/%s/validation_out.txt %s\n' % (
                     self.ena_dir, self.exp_path), 'fg_cur')
             # a = wait_execution(self.plantain)
             # print a
@@ -510,7 +511,7 @@ class ENASubmission:
         return True
 
     def remove_validation_tmp_files(self):
-        execute_command("ssh oy-ena-login-1 'cd %s;rm *.pipe.*;rm ..*.pipe.*;rm gxa_validate_fastq*.err*;rm "
+        execute_command("ssh sra-login-2 'cd %s;rm *.pipe.*;rm ..*.pipe.*;rm gxa_validate_fastq*.err*;rm "
                         "gxa_validate_fastq*.out*;rm *.uniq'" % self.ena_full_path, 'fg_cur')
         # self.ena.send('rm *.pipe.*\n')
         # a = wait_execution(self.ena)
@@ -535,7 +536,7 @@ class ENASubmission:
                 print colored.blue('renaming %s to become %s' % (row.data_file, row.new_data_file))
                 # cmd = 'mv %s %s\n' % (row.data_file, row.new_data_file)
                 # self.ena.send(cmd)
-                cmd = 'ssh oy-ena-login-1 "cd %s; mv %s %s"' % (self.ena_full_path, row.data_file, row.new_data_file)
+                cmd = 'ssh sra-login-2 "cd %s; mv %s %s"' % (self.ena_full_path, row.data_file, row.new_data_file)
                 out = ' '.join(execute_command(cmd=cmd, user='fg_cur'))
                 self.renamed = True
                 # out = get_ssh_out(self.ena)
@@ -543,7 +544,7 @@ class ENASubmission:
                     # self.ena.send('ls\n')
                     # check = get_ssh_out(self.ena)
                     check = ' '.join(
-                        execute_command(cmd="ssh oy-ena-login-1 'cd %s;ls;'" % self.ena_full_path, user='fg_cur'))
+                        execute_command(cmd="ssh sra-login-2 'cd %s;ls;'" % self.ena_full_path, user='fg_cur'))
                     if row.new_data_file not in check:
                         missing_files.append(row.data_file)
         if missing_files:
@@ -562,10 +563,10 @@ class ENASubmission:
             else:
                 print 'Moving:  %s to become %s' % (file_name, new_file_name)
             # cmd = 'mv ../%s ./%s\n' % (file_name, new_file_name)
-            cmd = "ssh oy-ena-login-1 'cd %s;mv ../%s ./%s;'" % (self.ena_full_path, file_name, new_file_name)
+            cmd = "ssh sra-login-2 'cd %s;mv ../%s ./%s;'" % (self.ena_full_path, file_name, new_file_name)
             if self.ena_optional_dir:
                 # cmd = 'mv %s ./%s\n' % (os.path.join(self.ena_optional_dir, file_name), new_file_name)
-                cmd = "ssh oy-ena-login-1 'cd %s;mv %s ./%s'" % (
+                cmd = "ssh sra-login-2 'cd %s;mv %s ./%s'" % (
                     self.ena_full_path, os.path.join(self.ena_optional_dir, file_name), new_file_name)
             out = ' '.join(execute_command(cmd, 'fg_cur'))
             # out = get_ssh_out(self.ena)
@@ -574,7 +575,7 @@ class ENASubmission:
                 # check = get_ssh_out(self.ena)
                 check = ' '.join(
                     execute_command(
-                        cmd="ssh oy-ena-login-1 'cd %s;ls;'" % self.ena_full_path,
+                        cmd="ssh sra-login-2 'cd %s;ls;'" % self.ena_full_path,
                         user='fg_cur'
                     )
                 )
@@ -589,7 +590,7 @@ class ENASubmission:
         for row in self.sdrf.rows:
             # self.ena.send('mv %s ../%s\n' % (row.new_data_file, row.data_file))
             execute_command(
-                "ssh oy-ena-login-1 'mv %s/%s /fire/staging/aexpress/%s'" %
+                "ssh sra-login-2 'mv %s/%s /fire/staging/aexpress/%s'" %
                 (self.ena_full_path, row.new_data_file, row.data_file),
                 'fg_cur'
             )
@@ -597,7 +598,7 @@ class ENASubmission:
 
     def create_ena_exp_dir(self):
         if self.ena_dir == self.accession:
-            execute_command("ssh oy-ena-login-1 'mkdir /fire/staging/aexpress/%s'" % self.accession, 'fg_cur')
+            execute_command("ssh sra-login-2 'mkdir /fire/staging/aexpress/%s'" % self.accession, 'fg_cur')
         # self.ena.send('aexpress\n')
 
         # if self.ena_dir == self.accession:
@@ -605,13 +606,13 @@ class ENASubmission:
         # self.ena.send('cd %s\n' % self.ena_dir)
 
         execute_command(
-            "scp %s/unpacked/%s_files_to_check.txt oy-ena-login-1:/fire/staging/aexpress/%s/%s_files_to_check.txt\n" % (
+            "scp %s/unpacked/%s_files_to_check.txt sra-login-2:/fire/staging/aexpress/%s/%s_files_to_check.txt\n" % (
                 self.exp_path, self.accession, self.ena_dir, self.accession),
             'fg_cur'
         )
 
         # self.plantain.send(
-        #     "scp %s/unpacked/%s_files_to_check.txt oy-ena-login-1:/fire/staging/aexpress/%s/%s_files_to_check.txt\n" % (
+        #     "scp %s/unpacked/%s_files_to_check.txt sra-login-2:/fire/staging/aexpress/%s/%s_files_to_check.txt\n" % (
         #         self.exp_path, self.accession, self.ena_dir, self.accession))
         # a = wait_execution(self.plantain)
         # print a
@@ -1019,7 +1020,7 @@ class ENASubmission:
             # self.ena.send('cp ./%s /fire/staging/era/upload/Webin-24/\n' % row.data_file)
             # wait_execution(self.ena)
             execute_command(
-                "ssh oy-ena-login-1 'cp %s/%s /fire/staging/era/upload/Webin-24/'" % (
+                "ssh sra-login-2 'cp %s/%s /fire/staging/era/upload/Webin-24/'" % (
                     self.ena_full_path, row.data_file), 'fg_cur')
 
     def get_spot_length(self):
@@ -1030,7 +1031,7 @@ class ENASubmission:
             # self.ena.send('rm spots.txt;touch spots.txt\n')
             # wait_execution(self.ena)
             execute_command(
-                "ssh oy-ena-login-1 'cd %s;rm spots.txt;touch spots.txt'" % self.ena_full_path,
+                "ssh sra-login-2 'cd %s;rm spots.txt;touch spots.txt'" % self.ena_full_path,
                 'fg_cur'
             )
             crams = [r.new_data_file for r in self.sdrf.rows if
@@ -1057,7 +1058,7 @@ class ENASubmission:
                                 'fastq -I "$file" | head -n2 | tail -n1 | wc -c >>spots.txt; echo ''>>spots.txt; done;' %
                                 self.ena_full_path)
                 # execute_command(
-                #     'ssh oy-ena-login-1 "cd %s;for file in *.cram; do echo -e -n "$file\\t" >>spots.txt; cramtools '
+                #     'ssh sra-login-2 "cd %s;for file in *.cram; do echo -e -n "$file\\t" >>spots.txt; cramtools '
                 #     'fastq -I "$file" | head -n2 | tail -n1 | wc -c >>spots.txt; echo ''>>spots.txt; done;"' %
                 #     self.ena_full_path,
                 #     'fg_cur')
@@ -1083,7 +1084,7 @@ class ENASubmission:
                 commands.append('for file in *.bam ; do echo -e -n "$file\\t" >>spots.txt; '
                                 'samtools view "./$file"  | head -2 | tail -1 | wc -m >>spots.txt; echo ''>>spots.txt; ' \
                                 'done;')
-                # print command
+
 
                 # self.ena.send(command)
                 # wait_execution(self.ena)
@@ -1097,22 +1098,23 @@ class ENASubmission:
                 commands.append(
                     'for file in *.bz2; do echo -e -n "$file\\t" >>spots.txt; bzcat '
                     '"./$file"  | head -2 | tail -1 | wc -m >>spots.txt; echo ''>>spots.txt; done;' )
+            print commands
             spot_sh = os.path.join(self.local_tmp, 'spots.sh')
             f = open(spot_sh, 'w')
             f.write('\n'.join(commands))
             f.close()
-            # execute_command('scp  oy-ena-login-1:')
+            # execute_command('scp  sra-login-2:')
             # print 'copying spots'
             # self.plantain.send(
-            #     'scp oy-ena-login-1:/fire/staging/aexpress/%s/spots.txt %s\n' % (
+            #     'scp sra-login-2:/fire/staging/aexpress/%s/spots.txt %s\n' % (
             #         self.ena_dir, self.exp_path))
             # wait_execution(self.plantain)
             execute_command(
-                'scp %s oy-ena-login-1:/fire/staging/aexpress/%s/' % (
+                'scp %s sra-login-2:/fire/staging/aexpress/%s/' % (
                     spot_sh, self.ena_dir), 'fg_cur')
-            execute_command("ssh oy-ena-login-1 'cd %s;sh ./spots.sh'" % self.ena_full_path, 'fg_cur')
+            execute_command("ssh sra-login-2 'cd %s;sh ./spots.sh'" % self.ena_full_path, 'fg_cur')
             execute_command(
-                'scp oy-ena-login-1:/fire/staging/aexpress/%s/spots.txt %s' % (
+                'scp sra-login-2:/fire/staging/aexpress/%s/spots.txt %s' % (
                      self.ena_dir, self.exp_path), 'fg_cur')
             # print 'retrieving spots local'
 
@@ -1146,21 +1148,24 @@ class ENASubmission:
                         shell=True, env=dict(ENV=settings.BASH_PATH))
 
     def extract_ena_accession_dir(self):
+        r = retrieve_submission_by_accession(self.accession)
+        if r and len(r) > 0:
+            return r[0]['ftpSubDirectory']
         # self.ena.send("find /fire/staging/aexpress/E-MTAB-* -name '%s-*'\n" % self.accession)
         # lines = [i for i in wait_execution(self.ena).split('\n') if self.accession in i]
-        out = '\n'.join(
-            execute_command(
-                "ssh oy-ena-login-1 'find /fire/staging/aexpress/E-MTAB-* -name \"%s-*\" '" % self.accession,
-                'fg_cur'
-            )
-        )
-        lines = [i for i in out.split('\n') if self.accession in i]
-        # print lines
-        if len([l for l in lines if 'find' not in l]) > 0:
-            dir_name = [l for l in lines if '/fire/staging/aexpress/' in l and 'find' not in l and self.accession in l][
-                0].strip().split('/')[-1]
-            print colored.blue(dir_name)
-            return dir_name
+        # out = '\n'.join(
+        #     execute_command(
+        #         "ssh sra-login-2 'find /fire/staging/aexpress/E-MTAB-* -name \"%s-*\" '" % self.accession,
+        #         'fg_cur'
+        #     )
+        # )
+        # lines = [i for i in out.split('\n') if self.accession in i]
+        # # print lines
+        # if len([l for l in lines if 'find' not in l]) > 0:
+        #     dir_name = [l for l in lines if '/fire/staging/aexpress/' in l and 'find' not in l and self.accession in l][
+        #         0].strip().split('/')[-1]
+        #     print colored.blue(dir_name)
+        #     return dir_name
         return self.accession
 
     def rename_back(self):
@@ -1170,7 +1175,7 @@ class ENASubmission:
                     # self.ena.send('mv %s %s\n' % (row.new_data_file, row.data_file))
                     # wait_execution(self.ena)
                     execute_command(
-                        "ssh oy-ena-login-1 'cd %s;mv %s %s'" % (self.ena_full_pathrow.new_data_file, row.data_file),
+                        "ssh sra-login-2 'cd %s;mv %s %s'" % (self.ena_full_pathrow.new_data_file, row.data_file),
                         'fg_cur'
                     )
 

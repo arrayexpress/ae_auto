@@ -41,11 +41,13 @@ def copy_files(ena_dir, local_dir):
     if not os.path.exists(local_dir):
         print 'creating %s' % local_dir
         os.mkdir(local_dir)
-    cmd = 'scp -oStrictHostKeyChecking=no  oy-ena-login-1:%s/*.txt %s' % (ena_dir, local_dir)
+    cmd = 'scp -oStrictHostKeyChecking=no  sra-login-1:%s/*.txt %s' % (ena_dir, local_dir)
+    print cmd
     if LOCAL_EXECUTION:
         out, err = execute_command('cp  %s/*.txt %s' % (ena_dir, local_dir))
     else:
         out, err = execute_command(cmd)
+    print 'executed'
     return out, err
 
 
@@ -75,7 +77,8 @@ def validate(req_id, ena_dir):
     dir_name = ena_dir.split('/')[-1]
     if ena_dir.endswith('/'):
         dir_name = ena_dir.split('/')[-2]
-
+    print ena_dir
+    print dir_name
     try:
         local_dir = os.path.join(TEMP_FOLDER, str(req_id) + dir_name)
         if os.path.exists(local_dir):
@@ -83,6 +86,8 @@ def validate(req_id, ena_dir):
         if not ena_dir.startswith(ENA_DIR):
             ena_dir = os.path.join(ENA_DIR, ena_dir)
         out, err = copy_files(ena_dir, local_dir)
+        print out
+        print err
         if err:
             report['execution_errors'].append(err)
         sdrf_file = ''
@@ -183,11 +188,11 @@ def validate(req_id, ena_dir):
     elif report['file_errors'] or report['integrity_errors'] or report['pairs_errors']:
         v.status = 'F'
     v.save()
-    # print report
+    print report
 
 
 if __name__ == '__main__':
     from random import randint
-
-    validate(randint(1, 99999999), 'pairs')
-    # validate(argv[1], argv[2])
+    from sys import argv
+    #validate(randint(1, 99999999), 'pairs')
+    validate(argv[1], argv[2])

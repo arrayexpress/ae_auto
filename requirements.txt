@@ -31,7 +31,7 @@ pycrypto==2.6.1
 Pygments==2.2.0
 python-dateutil==2.4.2
 pytz==2016.4
-requests==2.7.0
+requests==2.20.0
 rt==1.0.9
 selenium==2.53.6
 sh==1.11

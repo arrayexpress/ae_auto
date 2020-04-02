@@ -12,3 +12,4 @@
 /ae_web/ae_web/settings/base.py
 /ae_web/ae_web/settings/local.py
 /ae_web/ae_web/settings/test.py
+/.idea/

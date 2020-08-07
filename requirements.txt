@@ -10,7 +10,7 @@ chardet==2.3.0
 clint==0.5.1
 # cx-Oracle
 DateTime==4.1.1
-Django==1.8.4
+Django==1.11.29
 django-activity-stream==0.6.0
 django-braces==1.9.0
 django-celery==3.2.2

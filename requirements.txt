@@ -16,7 +16,7 @@ django-braces==1.9.0
 django-celery==3.2.2
 django-filter==0.11.0
 django-jsonfield==0.9.15
-djangorestframework==3.2.3
+djangorestframework==3.9.1
 docutils==0.13.1
 ecdsa==0.13
 funcsigs==0.4

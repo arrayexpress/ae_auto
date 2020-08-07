@@ -29,9 +29,9 @@ def search(query,  page=1, result_format='JSON', iteration=0):
         return _articles
     url = PMC_BASE_URL + 'search/query=' + query + '&format=' + result_format + '&page=' + str(
         page) + '&sort_date:y&resulttype=core'
-    # print url
+    print url
     # exit
-    r = requests.get(url)
+    r = requests.get(url, verify=False)
     res = json.loads(r.text)
     if "errCode" in res.keys() and res["errCode"] == 404:
         time.sleep(30)
@@ -95,34 +95,41 @@ def search_textmined(articles):
     :return: List of articles having one or more ArrayExpress Accession in their text-mined terms.
     :rtype: :obj:`list` of :obj:`dict`
     """
-    url = PMC_BASE_URL + 'PMC/%s/textMinedTerms/ACCESSION/1/json'
+    # https: // www.ebi.ac.uk / europepmc / webservices / rest / PMC / PMC6323929 / textMinedTerms
+
+    url = PMC_BASE_URL + 'PMC/%s/textMinedTerms?semantic_type=ACCESSION&page=1&pageSize=25&format=json'
     return_articles = []
     for article in articles:
         # print url % article['pmcid']
-        res = requests.get(url % article['pmcid'])
-        try:
-            res = json.loads(res.text)
-        except:
+        if 'tmAccessionTypeList' in article.keys():
+            if 'arrayexpress' in article['tmAccessionTypeList']['accessionType'] and 'pmcid' in article.keys():
+                try:
+                    res = requests.get(url % article['pmcid'], verify=False)
+                    res = json.loads(res.text)
+                except Exception as e:
 
-            # print
-            # print res
-            # print res.text
-            raise Exception(url % article['pmcid'])
+                    # print
+                    # print res
+                    # print res.text
+                    print article
+                    print(url % article['id'])
+                    raise
 
-        article['accessions'] = []
-        if 'semanticTypeList' in res.keys() and 'semanticType' in res['semanticTypeList'].keys():
-            for acc in res['semanticTypeList']['semanticType']:
-                if acc['tmSummary']:
-                    for t in acc['tmSummary']:
-                        if t['dbName'] == 'arrayexpress':
-                            article['accessions'].append(t['term'])
-        return_articles.append(article)
+                article['accessions'] = []
+                if 'semanticTypeList' in res.keys() and 'semanticType' in res['semanticTypeList'].keys():
+                    for acc in res['semanticTypeList']['semanticType']:
+                        if acc['tmSummary']:
+                            for t in acc['tmSummary']:
+                                if t['dbName'] == 'arrayexpress':
+                                    article['accessions'].append(t['term'])
+                return_articles.append(article)
     return return_articles
 
 
 if __name__ == '__main__':
     a = search('arrayexpress')
-    print a
+    b = search_textmined(a)
+    print json.dumps(b)
 # from mock import Mock
 #     search=Mock(return_value="mocked stuff")
 #     r= search('arrayExpress')

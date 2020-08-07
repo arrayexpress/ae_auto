@@ -23,9 +23,11 @@ def get_ae_acc_by_ena_acc(ena_acc):
 def get_ena_acc_and_submission_acc_by_ae_acc(ae_acc):
     sql = """SELECT STUDY_ID, SUBMISSION_ID FROM STUDY where 
 (ARRAYEXPRESS_ID = '%s' or STUDY_ALIAS like '%%%s%%') AND (STATUS_ID = 2 or STATUS_ID=4 or STATUS_ID=7)""" % (ae_acc, ae_acc)
-    print sql
+    # print sql
     return execute_select(sql, db)
 
 def get_study_by_acc(acc):
     sql = """SELECT * FROM STUDY WHERE STUDY_ID = '%s'""" % acc
     return execute_select(sql, db)
+
+# get_ena_acc_and_submission_acc_by_ae_acc('E-MTAB-7450')

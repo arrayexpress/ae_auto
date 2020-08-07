@@ -1,14 +1,19 @@
 alabaster==0.7.10
+amqp==1.4.9
+anyjson==0.3.3
 args==0.1.0
 Babel==2.4.0
+billiard==3.3.0.23
 bsub==0.3.5
+celery==3.1.26.post2
 chardet==2.3.0
 clint==0.5.1
-
+# cx-Oracle
 DateTime==4.1.1
 Django==1.8.4
 django-activity-stream==0.6.0
 django-braces==1.9.0
+django-celery==3.2.2
 django-filter==0.11.0
 django-jsonfield==0.9.15
 djangorestframework==3.2.3
@@ -17,6 +22,7 @@ ecdsa==0.13
 funcsigs==0.4
 imagesize==0.7.1
 Jinja2==2.9.6
+kombu==3.0.37
 lxml==3.4.4
 Markdown==2.6.2
 MarkupSafe==1.0
@@ -41,4 +47,6 @@ Sphinx==1.6.1
 sphinxcontrib-websupport==1.0.1
 typing==3.6.1
 zope.interface==4.2.0
-#cx-Oracle==5.2.1
+cx-Oracle==5.2.1
+
+# PYTHONUNBUFFERED=1;PATH=$ORACLE_HOME/bin:$PATH;ORACLE_HOME=/usr/lib/oracle/12.1/client64/;LD_LIBRARY_PATH=/usr/lib/oracle/12.1/client64/lib/

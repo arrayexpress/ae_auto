@@ -41,7 +41,7 @@ def change_ena_release_date(ena_acc, ae_release_date):
         name_='SUBMISSION')
     url = settings.ENA_SRA_URL
     files = {'SUBMISSION': open(os.path.join(settings.TEMP_FOLDER, '%s_submission.xml' % (ena_acc)), 'rb')}
-    r = requests.post(url, files=files, verify=False)
+    r = requests.post(url,auth=(settings.ENA_USERNAME, settings.ENA_PASSWORD), files=files, verify=False)
     content = r.content
     if '<html>' in content:
         time.sleep(20)
@@ -50,6 +50,9 @@ def change_ena_release_date(ena_acc, ae_release_date):
     f = open(os.path.join(settings.TEMP_FOLDER, '%s_receipt.xml' % ena_acc), 'w')
     f.write(content)
     f.close()
+    # print ena_acc
+    # print content
+    # print settings.TEMP_FOLDER
     if 'success' in content:
         return True, content.split('<INFO>')[1].split('</INFO>')[0]
     return False, content.split('<ERROR>')[1].split('</ERROR>')[0]

@@ -32,4 +32,7 @@ if __name__ == '__main__':
     parser.add_argument('file_path', metavar='PATH_TO_FILE.idf', type=str,
                         help='''The path to the IDF file''')
     args = parser.parse_args()
-    fix_idf(args.file_path)
+    try:
+        fix_idf(args.file_path)
+    except:
+        pass

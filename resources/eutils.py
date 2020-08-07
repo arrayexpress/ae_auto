@@ -19,7 +19,7 @@ def esearch(db, term, history=False):
     :return: Json object containing results as collected from the endpoint.
     :rtype: dict or list
     """
-    term = term.replace('(', ' ').replace(')', ' ')
+    term = term.replace('(', ' ').replace(')', ' ').replace('[', '').replace(']', '')
     url = BASE_URL + 'esearch.fcgi'
     data = {'db': db, 'term': term, 'retmode': 'json'}
     if history:
@@ -82,7 +82,7 @@ def esummary(db, query_id, web_env, ret_start=0, ret_max=500):
 
 
 if __name__ == '__main__':
-    organism = "Mycoplasma gallisepticum str. R(high)"
+    organism = "[Candida] intermedia"
     db = 'taxonomy'
     a = esearch(db=db, term=organism)
     # print a

@@ -52,6 +52,8 @@ class ENARun:
         self.run_acc = run_record.run_id
         # print colored.magenta('retrieving the run ' + self.run_acc)
         # db_record = retrieve_run_by_acc(self.run_acc)[0]
+        self.submission_id = run_record.submission_id
+
         self.name = run_record.run_alias
         if self.name is None:
             self.name = self.run_acc
@@ -181,6 +183,7 @@ class ENAStudy:
 
 
 if __name__ == '__main__':
-    study = ENAStudy('ERP022169')
+    study = ENAStudy('ERP109914')
+    e = study.get_exp_by_file_name('scSQ_2083_S1_L001.bam')
     print study
     # print 'Sample\tsample acc\tRun\tExperiment'

@@ -12,7 +12,8 @@ __author__ = 'Ahmed G. Ali'
 class SdrfRaw:
     def __init__(self, index, source, layout, assay_name, extract, data_file, md5, performer, library_selection,
                  library_source, library_strategy, nominal_length, nominal_sdev, exp_protocols, extract_protocol,
-                 factors, chars, spot_length, read_index, ena_sample, bio_sample, ena_alias,  ena_run, fastq_url, combined=False):
+                 factors, chars, spot_length, read_index, ena_sample, bio_sample, ena_alias, ena_run, fastq_url,
+                 combined=False):
         # print extract_protocol
         # exit()
         self.combined = combined
@@ -58,7 +59,6 @@ class SdrfRaw:
         self.extract_detailed = self.extract + '_' + self.layout[0].lower()
         self.fq_uri = None
 
-
     def rename_data_file(self):
         parts = self.data_file.replace('-', '_').split('.')
         name = parts[0]
@@ -68,7 +68,8 @@ class SdrfRaw:
 
 
 class SdrfCollection:
-    def __init__(self, file_path, combined=False, neglect_patterns=[], combined_pairs=False, mixed_pairs=False):
+    def __init__(self, file_path, combined=False, neglect_patterns=[], combined_pairs=False, mixed_pairs=False,
+                 has_extra_rows=False, b10_x=False):
         self.file_path = file_path
         self.neglect_patterns = neglect_patterns
         self.combined = combined
@@ -83,9 +84,14 @@ class SdrfCollection:
         self.pairs = []
         self.file_path = file_path
         self.combined_pairs = combined_pairs
+        self.b10_x = b10_x
+        if self.b10_x:
+            self.combined_pairs = True
+        self.lines = []
         self.__load_sdrf_file()
         self.mixed_pairs = mixed_pairs
-
+        self.has_extra_rows = has_extra_rows
+        self.extra_rows = []
         if not self.combined_pairs:
             self.__find_pairs()
 
@@ -94,6 +100,7 @@ class SdrfCollection:
         f = open(self.file_path, 'r')
         lines = [l.strip() for l in f.readlines()]
         f.close()
+        self.lines = lines[:]
         if self.combined:
             self.sdrf_index = [l.lower() for l in lines].index('[sdrf]') + 1
             if lines[self.sdrf_index] == '':
@@ -142,11 +149,18 @@ class SdrfCollection:
         else:
             self.bio_sample_index = None
         self.assay_index = self.header.index('Assay Name')
+        # print self.assay_index
+        # print self.header
+        # exit()
         self.data_index = None
         if 'Array Data File' in self.header:
             self.data_index = self.header.index('Array Data File')
         elif 'Scan Name' in header:
             self.data_index = self.header.index('Scan Name')
+        elif 'Comment[Array Data File]' in self.header:
+            self.data_index = self.header.index('Comment[Array Data File]')
+        elif 'Comment [Array Data File]' in self.header:
+            self.data_index = self.header.index('Comment [Array Data File]')
 
         self.md5_index = None
         if 'Comment[MD5]' in header:
@@ -268,8 +282,8 @@ class SdrfCollection:
                     ena_sample=ena_sample,
                     bio_sample=bio_sample,
                     ena_alias=ena_alias,
-                    ena_run = ena_run,
-                    fastq_url = fastq_url,
+                    ena_run=ena_run,
+                    fastq_url=fastq_url,
                     combined=self.combined_pairs
                 )
             )
@@ -282,7 +296,7 @@ class SdrfCollection:
                 msg.append('%s was used by %s samples: %s' % (k, str(len(l)), ', '.join(l)))
 
         if repeated:
-            raise Exception('ERROR:\n These file(s) are repeated in the SDRF. Please correct it:\n' + '\n'.join(msg) )
+            raise Exception('ERROR:\n These file(s) are repeated in the SDRF. Please correct it:\n' + '\n'.join(msg))
             print colored.red('ERROR:\n These file(s) are repeated in the SDRF. Please correct it:\n') + colored.blue(
                 '\n'.join(msg))
             exit()
@@ -400,12 +414,12 @@ class SdrfCollection:
                     paired_rows[i].assay_name = common_part_i[:-1]
                     self.pairs.append([paired_rows[i], paired_rows[i]])
 
-
     def rename_data_files(self):
         for row in self.rows:
             row.rename_data_file()
 
-    def add_spot_length(self, files):
+    def  add_spot_length(self, files):
+        print files
         paired_rows = [r for r in self.rows if r.is_paired]
         if not paired_rows:
             return
@@ -414,8 +428,8 @@ class SdrfCollection:
             self.header.insert(self.md5_index + 2, 'Comment[READ_INDEX_1_BASE_COORD]')
         for row in self.rows:
             if row.new_data_file not in files.keys():
-                # print 'already submitted', row.spot_length, row.read_index
-                # print 'Not in files', row.new_data_file
+                print 'already submitted', row.spot_length, row.read_index
+                print 'Not in files', row.new_data_file
                 # exit()
                 continue
             val = files[row.new_data_file]
@@ -460,7 +474,7 @@ class SdrfCollection:
                     # print '-' * 30
                     continue
                     raise Exception('afas')
-                    raise Exception(str(experiments)+'\n==========================\n' +
+                    raise Exception(str(experiments) + '\n==========================\n' +
                                     str([r.extract_detailed.replace(' ', '') for r in self.rows]))
             for row in rows:
                 row.ena_experiment = acc
@@ -498,7 +512,7 @@ class SdrfCollection:
                     r for r in self.rows if r.assay_name.strip() in run or '_'.join(
                         r.data_file.split(r.new_data_file.split('.')[-2])[0].split('_')[:-1]
                     ).strip() == run.split(r.new_data_file.split('.')[-2])[0].strip()
-                    ]
+                ]
             if not rows:
                 rows = [r for r in self.rows if run in r.new_data_file]
                 # print '=======>' ,rows
@@ -533,13 +547,18 @@ class SdrfCollection:
         write_lines = []
         header = self.header[:]
         header.remove('Comment[MD5]')
+        header[self.data_index] = 'Scan Name'
+        header.insert(header.index('Scan Name') + 1, 'Comment[SUBMITTED_FILE_NAME]')
+        header.insert(header.index('Scan Name') + 2, 'Comment[ENA_RUN]')
+
         header.insert(header.index('Source Name') + 1, 'Comment[ENA_SAMPLE]')
         header.insert(header.index('Source Name') + 2, 'Comment[BioSD_SAMPLE]')
         header.insert(header.index('Technology Type') + 1, 'Comment[ENA_EXPERIMENT]')
-        header[header.index('Array Data File')] = 'Scan Name'
-        header.insert(header.index('Scan Name') + 1, 'Comment[SUBMITTED_FILE_NAME]')
-        header.insert(header.index('Scan Name') + 2, 'Comment[ENA_RUN]')
-        header.insert(header.index('Scan Name') + 3, 'Comment[FASTQ_URI]')
+
+        if self.b10_x:
+            header.insert(header.index('Scan Name') + 3, 'Comment[BAM_URI]')
+        else:
+            header.insert(header.index('Scan Name') + 3, 'Comment[FASTQ_URI]')
 
         write_lines.append('\t'.join(header))
         for i in range(1, len(lines)):
@@ -565,7 +584,11 @@ class SdrfCollection:
             except:
                 # print row.__dict__
                 raise
-            line.insert(header.index('Comment[FASTQ_URI]'), row.fq_uri)
+
+            if self.b10_x:
+                line.insert(header.index('Comment[BAM_URI]'), row.fq_uri)
+            else:
+                line.insert(header.index('Comment[FASTQ_URI]'), row.fq_uri)
 
             # print 'mid', line[header.index('Technology Type')]
             if 'Comment[SPOT_LENGTH]' in header:
@@ -577,6 +600,7 @@ class SdrfCollection:
                     line[header.index('Comment[SPOT_LENGTH]') + 1] = row.read_index
 
             line[header.index('Scan Name')] = row.new_data_file
+            # print header
             line[header.index('Assay Name')] = row.original_assay
 
             # assert len(line) == len(header)
@@ -593,8 +617,11 @@ class SdrfCollection:
             add_line = add_line.decode('utf-8', 'ignore')
             if row.combined:
                 print colored.yellow('%s is combined' % row.source)
-                write_lines.append(add_line.replace(row.fq_uri, row.fq_uri.replace('.fastq.gz', '_1.fastq.gz')))
-                write_lines.append(add_line.replace(row.fq_uri, row.fq_uri.replace('.fastq.gz', '_2.fastq.gz')))
+                if self.b10_x:
+                    write_lines.append(add_line)
+                else:
+                    write_lines.append(add_line.replace(row.fq_uri, row.fq_uri.replace('.fastq.gz', '_1.fastq.gz')))
+                    write_lines.append(add_line.replace(row.fq_uri, row.fq_uri.replace('.fastq.gz', '_2.fastq.gz')))
             else:
                 write_lines.append(add_line)
         return write_lines
@@ -641,7 +668,7 @@ class SdrfCollection:
             for j in range(i + 1, len(paired_rows)):
                 if j in paired_index:
                     continue
-                matched = self.__check_matches(paired_rows[i], paired_rows[j])
+                matched = self._check_matches(paired_rows[i], paired_rows[j])
                 if matched:
                     if paired_rows[i].source == paired_rows[j].source:
                         self.pairs.append([paired_rows[i], paired_rows[j]])
@@ -652,11 +679,14 @@ class SdrfCollection:
                         paired_rows[j].pair_order = '_2'
                         break
             if not pair_found:
-                print colored.red("Couldn't find pair for sample: %s with file name: %s" % (
-                    paired_rows[i].source, paired_rows[i].new_data_file), bold=True)
-                raise Exception('Pair not found')
+                if not self.has_extra_rows:
+                    print colored.red("Couldn't find pair for sample: %s with file name: %s" % (
+                        paired_rows[i].source, paired_rows[i].new_data_file), bold=True)
+                    raise Exception('Pair not found')
+                else:
+                    self.extra_rows.append(paired_rows[i])
 
-    def __check_matches(self, row_1, row_2):
+    def _check_matches(self, row_1, row_2):
         file_name1 = row_1.new_data_file
         file_name2 = row_2.new_data_file
         for pattern in self.neglect_patterns:
@@ -686,5 +716,6 @@ class SdrfCollection:
 
 
 if __name__ == '__main__':
-    sdrf = SdrfCollection(file_path=os.path.join(TEMP_FOLDER,'E-MTAB-3901', 'combined.txt'), combined=True)
+    # sdrf = SdrfCollection(file_path=os.path.join(TEMP_FOLDER, 'E-MTAB-3901', 'combined.txt'), combined=True)
+    sdrf = SdrfCollection(file_path=os.path.join(TEMP_FOLDER, 'submission7367_annotare_v1.sdrf.txt'))
     # sdrf.generate_file_to_check('/home/gemmy/Downloads/check.txt')

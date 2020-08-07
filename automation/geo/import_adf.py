@@ -17,6 +17,18 @@ from utils.email.sender import send_email
 __author__ = 'Ahmed G. Ali'
 
 
+def get_platform_url(geo_acc):
+    platform_number = geo_acc.replace('GPL', '')
+    ftp_dir = ''
+    if int(platform_number) < 1000:
+        ftp_dir = 'GPLnnn'
+    else:
+        char_dif = len(platform_number) - len('nnn')
+        ftp_dir = 'GPL' + platform_number[:char_dif] + 'nnn'
+    url = settings.GEO_PLATFORM_URL.format(dir_name=ftp_dir, accession=geo_acc, arch=geo_acc+'_family.soft.gz')
+    return url
+
+
 def download_soft_file(geo_acc, by='platform'):
     # adf_tmp_dir =os.path.join(settings.TEMP_FOLDER, geo_accession.replace('GPL', 'A-GEOD-'))
     adf_tmp_dir = os.path.join(settings.ADF_LOAD_DIR, geo_acc.replace('GPL', 'A-GEOD-'))
@@ -25,17 +37,15 @@ def download_soft_file(geo_acc, by='platform'):
         os.mkdir(adf_tmp_dir)
     file_name = geo_acc + '_family.soft.gz'
     host = settings.GEO_SOFT_URL % by + geo_acc
-    url = settings.GEO_SOFT_URL % by + geo_acc + '/' + file_name
+    url = get_platform_url(geo_acc)
     print url
     # link = FTP(host=settings.GEO_SOFT_URL % by + geo_acc + , timeout=5)
 
-
     # r = requests.get(url, stream=True)
     # with open(os.path.join(adf_tmp_dir, file_name), 'wb') as f:
-        # for chunk in r.iter_content(chunk_size=1024):
-        #     if chunk:  # filter out keep-alive new chunks
-        #         f.write(r.content)
-
+    # for chunk in r.iter_content(chunk_size=1024):
+    #     if chunk:  # filter out keep-alive new chunks
+    #         f.write(r.content)
 
     # with closing(urllib2.urlopen(settings.GEO_SOFT_URL % by + geo_acc + '/' + file_name)) as r:
     #     with open(os.path.join(adf_tmp_dir, file_name), 'wb') as f:

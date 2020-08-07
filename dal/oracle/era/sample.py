@@ -15,10 +15,13 @@ def retrieve_alias_by_sample_id(ena_sample):
     sql = """SELECT SAMPLE_ALIAS from ERA.SAMPLE where SAMPLE_ID = '%s'""" % ena_sample
     return execute_select(sql, db)
 
-
+99
 def retrieve_sample_by_acc(acc):
     return execute_select("""SELECT * FROM SAMPLE WHERE SAMPLE_ID = '%s'""" % acc, db)
 
 
 def retrieve_samples_by_submission_acc(submission_acc):
     return execute_select("""Select * from SAMPLE where SUBMISSION_ID = '%s'""" % submission_acc, db)
+
+if __name__=='__main__':
+    print retrieve_samples_by_submission_acc('ERA624616')

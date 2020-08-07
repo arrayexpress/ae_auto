@@ -41,7 +41,7 @@ def copy_files(ena_dir, local_dir):
     if not os.path.exists(local_dir):
         print 'creating %s' % local_dir
         os.mkdir(local_dir)
-    cmd = 'scp -oStrictHostKeyChecking=no  sra-login-1:%s/*.txt %s' % (ena_dir, local_dir)
+    cmd = 'scp -oStrictHostKeyChecking=no  sra-login:%s/*.txt %s' % (ena_dir, local_dir)
     print cmd
     if LOCAL_EXECUTION:
         out, err = execute_command('cp  %s/*.txt %s' % (ena_dir, local_dir))

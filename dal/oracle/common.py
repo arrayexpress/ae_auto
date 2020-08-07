@@ -12,7 +12,7 @@ def retrieve_connection(db):
         :return: oracle.dbms.Connection object
         """
     con = dbms.connect.oracle(user=db['username'], password=db['password'], database=db['name'], host=db['host'],
-                              port=db['port'], is_service=db.get('is_service', False))
+                              port=db['port'], is_service=db.get('is_service', False), encoding="UTF-8", nencoding="UTF-8")
     return con
 
 

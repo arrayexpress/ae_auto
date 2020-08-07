@@ -87,7 +87,8 @@ def send_ena_action(ena_acc, action, test=False, date=None, samples=False):
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     while '<html>' in content:
         files = {'SUBMISSION': open(file_path, 'rb')}
-        r = requests.post(url, files=files, verify=False, timeout=1000)
+        r = requests.post(url, auth=(settings.ENA_USERNAME, settings.ENA_PASSWORD), files=files, verify=False,
+                          timeout=1000)
         content = r.content
         if '<html>' not in content:
             break
@@ -118,6 +119,7 @@ def valid_date_type(arg_date_str):
     except ValueError:
         msg = "Given Date ({0}) not valid! Expected format, YYYY-MM-DD!".format(arg_date_str)
         raise argparse.ArgumentTypeError(msg)
+
 
 if __name__ == '__main__':
     parser = parse_arguments()

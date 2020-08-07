@@ -16,13 +16,14 @@ __author__ = 'Ahmed G. Ali'
 
 class IDFElementSingle:
     """
-    Single complex IDF entry. e.g. Experiment
+        Single complex IDF entry. e.g. Experiment
 
-    :param exps: JSON object of fields of the entry
-    :type exps: dict with :obj:`str` values
-    :param reg: Common name in the fields to be removed
-    :type reg: str
-    """
+        :param exps: JSON object of fields of the entry
+        :type exps: dict with :obj:`str` values
+        :param reg: Common name in the fields to be removed
+        :type reg: str
+        """
+
     def __init__(self, exps, reg):
         elms = {}
         for title, val in exps.items():

@@ -52,13 +52,14 @@ class ENAExperiment:
         :param center_name: Study affiliation
         :type center_name: str, None
         """
-    def __init__(self, accession, sdrf, idf, time_stamp, added_samples=[], study_accession=None, new_alias=None,
+
+    def __init__(self, accession, sdrf, idf, added_samples=[], study_accession=None, new_alias=None,
                  center_name=None):
 
         self.accession = accession
         self.idf = idf
         self.sdrf = sdrf
-        self.time_stamp = time_stamp
+        # self.time_stamp = ''
         self.added_samples = added_samples
         self.study_accession = study_accession
         if not new_alias:
@@ -80,12 +81,14 @@ class ENAExperiment:
             mapped_centers = load_centers()
             replace = True
             for k, v in mapped_centers.items():
-                if self.submitter.affiliation == k:
+                if self.submitter.affiliation.lower() == k.decode('utf8').lower():
                     self.submitter.affiliation = v
                     print colored.green('''Center name found.
                     Using this name for submission:%s instead of the name in the IDF: %s''' % (v, k))
                     replace = False
                     break
+                    # exit()
+
             if replace:
                 self.submitter.affiliation = unicodedata.normalize('NFKD', self.submitter.affiliation)
                 self.submitter.affiliation = u"".join(
@@ -93,6 +96,7 @@ class ENAExperiment:
 
         self.searched_organisms = {}
         self.save_dir = None
+        self.samples_num = 0
 
     def generate_xmls(self, save_dir):
         """
@@ -115,6 +119,7 @@ class ENAExperiment:
             dct = row.__dict__
             if row.__dict__.get('ena_alias', None):
                 continue
+            self.samples_num += 1
             sample = row.source
             if sample in added_samples or sample in self.added_samples:
                 continue
@@ -165,7 +170,7 @@ class ENAExperiment:
 
         sample_set = sample_api.SampleSetType(SAMPLE=samples)
         sample_set.export(
-            open(os.path.join(self.save_dir, '%s_%s_sample.xml' % (self.accession, self.time_stamp)), 'w'), 0,
+            open(os.path.join(self.save_dir, '%s_sample.xml' % self.accession), 'w'), 0,
             name_='SAMPLE_SET')
 
     def __generate_experiment_xml(self):
@@ -207,10 +212,10 @@ class ENAExperiment:
             # library_descriptor.export(sys.stdout, 0)
             spot_spectator = None
             if row.is_paired:
-                print row.new_data_file, row.source, row.read_index
+                # print row.new_data_file, row.source, row.read_index
                 read_specs = [
                     experiment_api.READ_SPECType(READ_INDEX=0,
-                                                 READ_LABEL='F',
+                                                 READ_LABEL=None,
                                                  READ_CLASS='Application Read',
                                                  READ_TYPE='Forward',
                                                  RELATIVE_ORDER=None,
@@ -218,28 +223,29 @@ class ENAExperiment:
                                                  EXPECTED_BASECALL_TABLE=None),
 
                     experiment_api.READ_SPECType(READ_INDEX=1,
-                                                 READ_LABEL='R',
+                                                 READ_LABEL=None,
                                                  READ_CLASS='Application Read',
                                                  READ_TYPE='Reverse',
                                                  RELATIVE_ORDER=None,
-                                                 BASE_COORD=int(row.read_index),
+                                                 # BASE_COORD=int(row.read_index),
+                                                 BASE_COORD=None,
                                                  EXPECTED_BASECALL_TABLE=None)
                 ]
-                spot_decode = experiment_api.SPOT_DECODE_SPECType(SPOT_LENGTH=int(row.spot_length),
-                                                                  READ_SPEC=read_specs)
-                spot_spectator = experiment_api.SpotDescriptorType(SPOT_DECODE_SPEC=spot_decode)
+                # spot_decode = experiment_api.SPOT_DECODE_SPECType(SPOT_LENGTH=int(row.spot_length),
+                #                                                   READ_SPEC=read_specs)
+                # spot_spectator = experiment_api.SpotDescriptorType(SPOT_DECODE_SPEC=spot_decode)
             if '.csfasta' in row.new_data_file or '.qual' in row.new_data_file:
                 read_specs = [
                     experiment_api.READ_SPECType(READ_INDEX=0,
-                                                 READ_LABEL='F',
+                                                 READ_LABEL=None,
                                                  READ_CLASS='Application Read',
                                                  READ_TYPE='Forward',
                                                  RELATIVE_ORDER=None,
                                                  BASE_COORD=1,
                                                  EXPECTED_BASECALL_TABLE=None)
                 ]
-                spot_decode = experiment_api.SPOT_DECODE_SPECType(READ_SPEC=read_specs)
-                spot_spectator = experiment_api.SpotDescriptorType(SPOT_DECODE_SPEC=spot_decode)
+                # spot_decode = experiment_api.SPOT_DECODE_SPECType(READ_SPEC=read_specs)
+                # spot_spectator = experiment_api.SpotDescriptorType(SPOT_DECODE_SPEC=spot_decode)
             sample_alias = row.__dict__.get('ena_alias', None)
             if not sample_alias:
                 sample_alias = '%s:%s' % (self.accession + self.new_alias, row.source)
@@ -268,7 +274,7 @@ class ENAExperiment:
                                   'Please make sure there is no empty protocol '
                                   'reference just before the Assay Name column.')
                 exit(1)
-            recognized=False
+            recognized = False
             extract_protocol = extract_protocol[0]
             if not extract_protocol.hardware or extract_protocol.hardware == '':
                 print colored.red('Hardware is missing for extract protocol.\nPlease check IDF', bold=True)
@@ -296,8 +302,8 @@ class ENAExperiment:
                 helicos = experiment_api.HELICOSType(INSTRUMENT_MODEL=extract_protocol.hardware)
             # Case SOLiD
             if 'SOLiD' in extract_protocol.hardware or \
-                            'AB 5500 Genetic Analyzer'.lower() in extract_protocol.hardware.lower() or \
-                            'AB 5500xl Genetic Analyzer'.lower() in extract_protocol.hardware.lower():
+                    'AB 5500 Genetic Analyzer'.lower() in extract_protocol.hardware.lower() or \
+                    'AB 5500xl Genetic Analyzer'.lower() in extract_protocol.hardware.lower():
                 recognized = True
                 abi_solid = experiment_api.ABI_SOLIDType(INSTRUMENT_MODEL=extract_protocol.hardware)
 
@@ -313,7 +319,7 @@ class ENAExperiment:
             # Case OXFORD_NANOPORE
             if 'MinION' in extract_protocol.hardware or 'GridION' in extract_protocol.hardware:
                 recognized = True
-                complete_genomics = experiment_api.OXFORD_NANOPOREType(INSTRUMENT_MODEL=extract_protocol.hardware)
+                oxford_nanopore = experiment_api.OXFORD_NANOPOREType(INSTRUMENT_MODEL=extract_protocol.hardware)
             if 'BGISEQ' in extract_protocol.hardware.upper():
                 recognized = True
                 bgiseq = experiment_api.BGISEQType(INSTRUMENT_MODEL=extract_protocol.hardware)
@@ -323,12 +329,15 @@ class ENAExperiment:
                 'ab 3500xl genetic analyzer',
                 'ab 3500 genetic analyzer',
                 'ab 3130xl genetic analyzer',
+                'ab 3130xl genetic analyzer',
                 'ab 3130 genetic analyzer',
                 'ab 310 genetic analyzer'
             ]:
                 recognized = True
                 capillary = experiment_api.CAPILLARYType(INSTRUMENT_MODEL=extract_protocol.hardware)
-            if 'pacbio' in extract_protocol.hardware.lower():
+            # if 'pacbio' in extract_protocol.hardware.lower():
+            if extract_protocol.hardware.strip().lower() in ['PacBio RS'.lower(), 'PacBio RS II'.lower(),
+                                                             'Sequel'.lower()]:
                 recognized = True
                 pacbio_smrt = experiment_api.PACBIO_SMRTType(INSTRUMENT_MODEL=extract_protocol.hardware)
 
@@ -358,8 +367,8 @@ class ENAExperiment:
                 # factor_val = factor_val.decode(char_set)
                 # factor_val = unicodedata.normalize('NFKD', factor_val)
                 # factor_val = u"".join([c for c in factor_val if not unicodedata.combining(c)]).strip()
-                attr = experiment_api.AttributeType(TAG='Experimental Factor: ' +factor.values()[0],
-                                                    VALUE= factor_val, UNITS=None)
+                attr = experiment_api.AttributeType(TAG='Experimental Factor: ' + factor.values()[0],
+                                                    VALUE=factor_val, UNITS=None)
                 # attr.export(sys.stdout, 0)
                 attributes_lst.append(attr)
             expt_attributes = None
@@ -388,7 +397,7 @@ class ENAExperiment:
             experiments.append(experiment)
         exp_set = experiment_api.ExperimentSetType(EXPERIMENT=experiments)
         exp_set.export(
-            open(os.path.join(self.save_dir, '%s_%s_experiment.xml' % (self.accession, self.time_stamp)), 'w'), 0,
+            open(os.path.join(self.save_dir, '%s_experiment.xml' % self.accession), 'w'), 0,
             name_='EXPERIMENT_SET')
 
     def __generate_submission_xml(self):
@@ -397,9 +406,11 @@ class ENAExperiment:
                                                                 self.submitter.mid_initials,
                                                                 self.submitter.last_name))
         contacts = submission_api.CONTACTSType(CONTACT=[contact])
-        xmls = ['sample', 'experiment', 'run']
+        xmls = ['experiment', 'run']
         if not self.added_samples:
-            xmls.append('study')
+            xmls.insert(0, 'study')
+        if self.samples_num > 0:
+            xmls.append('sample')
         else:
             submission = submission_api.SubmissionType(submission_date=None,
                                                        broker_name='ArrayExpress',
@@ -416,17 +427,17 @@ class ENAExperiment:
                                                        CONTACTS=contacts,
                                                        ACTIONS=submission_api.ACTIONSType(ACTION=[
                                                            submission_api.ACTIONType(MODIFY=submission_api.MODIFYType(
-                                                               source='%s_%s_study.xml' % (
-                                                                   self.accession, self.time_stamp), schema='study'))]),
+                                                               source='%s_study.xml' % self.accession,
+                                                               schema='study'))]),
                                                        SUBMISSION_LINKS=None,
                                                        SUBMISSION_ATTRIBUTES=None)
             submission.export(
-                open(os.path.join(self.save_dir, '%s_%s_submission_modify.xml' % (self.accession, self.time_stamp)),
+                open(os.path.join(self.save_dir, '%s_submission_modify.xml' % self.accession),
                      'w'), 0, name_='SUBMISSION')
         action_lst = []
         for xml in xmls:
             action_lst.append(submission_api.ACTIONType(
-                ADD=submission_api.ADDType(source='%s_%s_%s.xml' % (self.accession, self.time_stamp, xml), schema=xml)))
+                ADD=submission_api.ADDType(source='%s_%s.xml' % (self.accession, xml), schema=xml)))
         action_lst.append(
             submission_api.ACTIONType(HOLD=submission_api.HOLDType(HoldUntilDate=self.idf.public_release_date[0])))
         submission = submission_api.SubmissionType(submission_date=None,
@@ -447,7 +458,7 @@ class ENAExperiment:
                                                    SUBMISSION_ATTRIBUTES=None)
 
         submission.export(
-            open(os.path.join(self.save_dir, '%s_%s_submission.xml' % (self.accession, self.time_stamp)), 'w'), 0,
+            open(os.path.join(self.save_dir, '%s_submission.xml' % self.accession), 'w'), 0,
             name_='SUBMISSION')
 
     def __generate_study_xml(self):
@@ -489,17 +500,21 @@ class ENAExperiment:
                                     STUDY_LINKS=study_link,
                                     STUDY_ATTRIBUTES=None)
         study_set = study_api.StudySetType([study])
-        study_set.export(open(os.path.join(self.save_dir, '%s_%s_study.xml' % (self.accession, self.time_stamp)), 'w'),
+        study_set.export(open(os.path.join(self.save_dir, '%s_study.xml' % self.accession), 'w'),
                          0, name_='STUDY_SET')
 
     def __generate_run_xml(self):
+        # print 'added samples:\n', self.added_samples
         runs = []
         added_aliases = []
         added_files = []
         for row in self.sdrf.rows:
+            # print 'Row', row.source, row.is_paired, row.combined
             if (row.is_paired and not row.combined) or \
                     (row.source in self.added_samples or '.qual.' in row.new_data_file):
                 continue
+
+            # print 'Non paired', row.source
             row2 = None
             file_type = 'fastq'
             if row.new_data_file.endswith('.bam'):
@@ -573,6 +588,8 @@ class ENAExperiment:
             if pair[0].source in self.added_samples or pair[1].source in self.added_samples \
                     or '.qual.' in pair[0].new_data_file or '.qual.' in pair[1].new_data_file:
                 continue
+            print 'Paired', row.source
+
             qual1 = None
             file_type = 'fastq'
             if pair[0].new_data_file.endswith('.bam'):
@@ -593,7 +610,7 @@ class ENAExperiment:
                                      filename=pair[0].new_data_file,
                                      quality_scoring_system=None,
                                      checksum=pair[0].md5,
-                                     READ_LABEL='F')
+                                     READ_LABEL=None)
             files = [file1]
             if qual1:
                 files.append(run_api.FILEType(checksum_method='MD5',
@@ -604,7 +621,7 @@ class ENAExperiment:
                                               filename=qual1.new_data_file,
                                               quality_scoring_system=None,
                                               checksum=qual1.md5,
-                                              READ_LABEL='F'))
+                                              READ_LABEL=None))
 
             if pair[0].new_data_file != pair[1].new_data_file:
                 qual2 = None
@@ -624,7 +641,7 @@ class ENAExperiment:
                                          filename=pair[1].new_data_file,
                                          quality_scoring_system=None,
                                          checksum=pair[1].md5,
-                                         READ_LABEL='R')
+                                         READ_LABEL=None)
                 files.append(file2)
                 if qual2:
                     files.append(run_api.FILEType(checksum_method='MD5',
@@ -635,7 +652,7 @@ class ENAExperiment:
                                                   filename=qual2.new_data_file,
                                                   quality_scoring_system=None,
                                                   checksum=qual2.md5,
-                                                  READ_LABEL='R'))
+                                                  READ_LABEL=None))
             files = run_api.FILESType(files)
             data = run_api.DATA_BLOCKType(FILES=files)
             exp_ref = run_api.EXPERIMENT_REFType(refcenter=self.submitter.affiliation,
@@ -668,5 +685,5 @@ class ENAExperiment:
                 RUN_ATTRIBUTES=None)
             runs.append(run)
         run_set = run_api.RunSetType(RUN=runs)
-        run_set.export(open(os.path.join(self.save_dir, '%s_%s_run.xml' % (self.accession, self.time_stamp)), 'w'), 0,
+        run_set.export(open(os.path.join(self.save_dir, '%s_run.xml' % self.accession), 'w'), 0,
                        name_='RUN_SET')

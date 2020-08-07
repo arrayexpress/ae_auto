@@ -4,7 +4,7 @@ from operator import itemgetter
 
 import os
 import shutil
-import copy
+# import copy
 
 from clint.textui import colored
 
@@ -137,6 +137,14 @@ def get_fq_uri(acc, pair_order=''):
     return fq_uri
 
 
+def get_bam_uri(acc, f_name):
+    sub_dir = acc[:6]
+    fq_uri = ENA_FTP_URI.replace('fastq', 'run') + sub_dir
+
+    fq_uri += '/' + acc + '/' + f_name
+    return fq_uri
+
+
 def get_mage_tab(ae_acc):
     """
     Parse the MAGE-TAB files into mapping objects.
@@ -196,7 +204,7 @@ def add_ena_accessions(ae_acc, idf, sdrf, out_file):
     :param out_file: Full path for the output file that contains IDF and SDRF together after adding ENA accessions.
     """
     study = get_ena_acc_and_submission_acc_by_ae_acc(ae_acc)
-    ena_accession = study[0].study_id
+    ena_accession = study[-1].study_id
     # submission_accession = study[0].submission_id
 
     ena_study = ENAStudy(ena_accession)
@@ -210,8 +218,12 @@ def add_ena_accessions(ae_acc, idf, sdrf, out_file):
             row.bio_sample = run.sample.bio_sample
             row.ena_sample = run.sample.sample_acc
             row.ena_experiment = exp.exp_acc
+
             if not row.fq_uri:
-                row.fq_uri = get_fq_uri(run.run_acc, row.pair_order)
+                if sdrf.b10_x:
+                    row.fq_uri = get_bam_uri(run.run_acc, row.data_file)
+                else:
+                    row.fq_uri = get_fq_uri(run.run_acc, row.pair_order)
         else:
             print 'DATA FILE: "%s"' % row.data_file
             print 'No Experiment: ', row.__dict__
@@ -248,6 +260,7 @@ def add_ena_accessions(ae_acc, idf, sdrf, out_file):
 
 
 if __name__ == '__main__':
+    print get_bam_uri(acc='ERR2868830', f_name='SIGAE6_S13_L001.bam')
     # import urllib2
     # try:
     #     request = urllib2.Request('ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR974/ERR974984/ERR974984.fastq.gz')
@@ -257,21 +270,21 @@ if __name__ == '__main__':
     #     print e
     # _idf, _sdrf = get_mage_tab(ae_acc='E-MTAB-4617')
     # add_ena_accessions(ae_acc='E-MTAB-4617', idf=_idf, sdrf=_sdrf, out_file=_idf.id_path)
-    runs = """ERR2093974
-ERR2093974
-ERR2093975
-ERR2093975
-ERR2093976
-ERR2093976
-ERR2093977
-ERR2093977
-ERR2093978
-ERR2093978
-ERR2093979
-ERR2093979
-ERR2093980
-ERR2093980
-ERR2093981
-
-""" .split('\n')
-    print get_idf_ena_comment(runs)
+#     runs = """ERR2093974
+# ERR2093974
+# ERR2093975
+# ERR2093975
+# ERR2093976
+# ERR2093976
+# ERR2093977
+# ERR2093977
+# ERR2093978
+# ERR2093978
+# ERR2093979
+# ERR2093979
+# ERR2093980
+# ERR2093980
+# ERR2093981
+#
+# """.split('\n')
+#     print get_idf_ena_comment(runs)

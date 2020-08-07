@@ -16,6 +16,6 @@ def retrieve_daemon_more_than_week_running_tasks():
               where ct.STATE='RUNNING' and cu.LAST_NAME='Daemon'
               AND START_DATE < TO_DATE('%s', 'YYYY-MM-DD"T"HH24:MI:SS')""" % \
           (datetime.datetime.today() - datetime.timedelta(days=7)).isoformat().split('.')[0]
-    print sql
-    exit()
+    # print sql
+    # exit()
     return execute_select(sql, db)
